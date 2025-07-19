@@ -1,0 +1,208 @@
+/* src/layout/ContentTop/ContentTop.css */
+
+.main-content-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: var(--clr-white); /* Fondo del header */
+    border-bottom: 1px solid var(--clr-light-gray); /* Separador */
+    height: 70px; /* Altura fija para el ContentTop */
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.123); /* Sombra suave */
+    position: sticky; /* O fixed si quieres que flote */
+    top: 0;
+    z-index: 100; /* Asegura que esté por encima del contenido */
+    margin-bottom: 10px;
+}
+
+.content-top-left {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Espacio entre el botón de toggler y el título */
+}
+
+.sidebar-toggler {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+}
+
+.sidebar-toggler:hover {
+    background-color: var(--clr-light-gray);
+}
+
+.sidebar-toggler img {
+    width: 24px;
+    height: 24px;
+    filter: invert(100%);
+}
+
+.content-top-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--clr-dark);
+    margin: 0;
+}
+
+.content-top-btns {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Espacio entre la barra de búsqueda y el botón de notificación */
+    margin: 20px; /* Espacio a la derecha del ContentTop */
+}
+
+/* Estilos de la barra de búsqueda */
+.search-bar-container {
+    flex-grow: 1; /* Permite que la barra ocupe espacio disponible */
+    max-width: 400px; /* Ancho máximo para la barra de búsqueda */
+    position: relative; /* Para posicionar el icono y la 'x' dentro */
+}
+
+.search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border: 3px solid #000000;
+    border-radius: 20px; /* Borde redondeado para el input */
+    padding: 10px 15px;
+    background-color: #f5f5f5;
+    transition: all 0.3s ease;
+}
+
+.search-input-wrapper:focus-within {
+    border-color: var(--clr-primary); /* Color al enfocar */
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    background-color: #fff;
+}
+
+.search-input-icon {
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+    opacity: 0.6;
+}
+
+.search-input-field {
+    flex-grow: 1;
+    border: none;
+    outline: none; /* Quita el contorno al hacer focus */
+    padding: 0; /* Ya tenemos padding en el wrapper */
+    background-color: transparent;
+    font-size: 0.95rem;
+    color: var(--clr-dark);
+}
+
+.search-input-field::placeholder {
+    color: #888;
+}
+
+.clear-search-btn {
+    background: none;
+    border: none;
+    font-size: 1.2em;
+    cursor: pointer;
+    color: #888;
+    margin-left: 10px;
+    padding: 0 5px;
+    line-height: 1; /* Alinea la 'x' */
+    transition: color 0.2s ease;
+}
+
+.clear-search-btn:hover {
+    color: #333;
+}
+
+
+/* Estilos para el botón de notificación (existente) */
+.notification-btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+}
+
+.notification-btn:hover {
+    background-color: var(--clr-light-gray);
+}
+
+.notification-btn img {
+    width: 24px;
+    height: 24px;
+}
+
+.notification-btn-dot {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 8px;
+    height: 8px;
+    background-color: var(--clr-red); /* Define --clr-red en tu archivo de variables si no existe */
+    border-radius: 50%;
+    border: 2px solid var(--clr-white);
+}
+
+/* Para ajustar el tamaño en pantallas más pequeñas */
+@media screen and (max-width: 768px) {
+    .content-top-left {
+        gap: 10px;
+    }
+    .content-top-title {
+        font-size: 1.2rem;
+    }
+    .content-top-btns {
+        gap: 10px;
+    }
+    .search-bar-container {
+        max-width: 250px; /* Reduce el ancho en pantallas más pequeñas */
+    }
+    .search-input-field {
+        font-size: 0.85rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .main-content-top {
+        padding: 15px 15px 0 15px;
+        height: 60px;
+    }
+    .content-top-left {
+        gap: 8px;
+    }
+    .sidebar-toggler img,
+    .notification-btn img {
+        width: 20px;
+        height: 20px;
+    }
+    .content-top-title {
+        font-size: 1.1rem;
+    }
+    .search-bar-container {
+        max-width: 180px; /* Más reducción en móviles */
+    }
+}
+
+
+.exit-btn {
+    width: 70px;
+    height: 43px;
+    margin-left: 10px;
+    padding: 8px 12px;
+    background-color: #bebebe36;
+    color: rgb(0, 0, 0);
+    border: 3px solid #000000;
+    border-radius: 20px;
+    cursor: pointer;
+}
+

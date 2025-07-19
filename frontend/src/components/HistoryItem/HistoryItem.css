@@ -1,0 +1,169 @@
+/* src/components/HistoryItem/HistoryItem.css */
+
+/* Estilos generales del contenedor de la lista de historial */
+.history-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Aumentar el espacio entre los ítems para que se vean mejor */
+    padding: 20px;
+    max-width: 800px; /* Ancho máximo para la lista */
+    margin: 20px auto; /* Centrar la lista */
+    background-color: transparent; /* Fondo transparente, las notificaciones tienen su propio fondo */
+    border-radius: 10px; /* Mantener un ligero borde para el contenedor si lo deseas */
+    box-shadow: none; /* Quitar la sombra del contenedor si las notificaciones tienen la suya */
+}
+
+/* ---------------------------------------------------------------------------------- */
+/* Adaptación de los estilos de Uiverse para .history-item (antes .notification) */
+/* ---------------------------------------------------------------------------------- */
+.history-item.notification {
+    border: 1.5px solid transparent; /* Borde transparente por defecto */
+    display: flex;
+    flex-direction: column;
+    isolation: isolate;
+    position: relative;
+    width: 100%; /* Ocupa el ancho completo del contenedor (máx. 800px) */
+    min-height: 8rem; /* Altura mínima, puede ajustarse si el contenido es más largo */
+    background: #29292c; /* Fondo oscuro de la notificación */
+    border-radius: 1rem; /* Borde redondeado de la notificación */
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fuente más común */
+    font-size: 16px;
+    
+    /* Las variables --gradient y --color serán pasadas directamente desde JSX */
+    /* --gradient: linear-gradient(to bottom, #2eadff, #3d83ff, #7e61ff); */
+    /* --color: #32a6ff; */
+
+    /* Quitar transiciones y sombras previas de .history-item */
+    transition: none; /* El hover ahora es manejado por los elementos internos de la notificación */
+    box-shadow: none;
+    align-items: flex-start; /* Alineación por defecto, si no hay contenido muy largo */
+    justify-content: flex-start;
+    padding: 0; /* El padding se manejará con los divs internos */
+}
+
+/* Pseudo-elemento ::before (el fondo interior más oscuro) */
+.history-item.notification:before {
+    position: absolute;
+    content: "";
+    inset: 0.0625rem; /* Margen interior */
+    border-radius: 0.9375rem; /* Borde interior ligeramente menor */
+    background: #ffffff; /* Fondo aún más oscuro */
+    z-index: 2;
+}
+
+/* Pseudo-elemento ::after (la barra de color vertical a la izquierda) */
+.history-item.notification:after {
+    position: absolute;
+    content: "";
+    width: 0.25rem;
+    inset: 0.65rem auto 0.65rem 0.5rem; /* Posicionamiento de la barra */
+    border-radius: 0.125rem;
+    background: var(--gradient); /* Usa el degradado dinámico */
+    transition: transform 300ms ease;
+    z-index: 4;
+}
+
+/* Efecto hover en la barra vertical */
+.history-item.notification:hover:after {
+    transform: translateX(0.15rem);
+}
+
+/* Estilos para el título (.notititle) */
+.notititle {
+    color: var(--color); /* Usa el color dinámico */
+    padding: 0.65rem 0.25rem 0.4rem 1.25rem; /* Padding interno */
+    font-weight: 500;
+    font-size: 1.1rem;
+    transition: transform 300ms ease;
+    z-index: 5;
+    text-align: left; /* Alineación del texto */
+}
+
+/* Efecto hover en el título */
+.history-item.notification:hover .notititle {
+    transform: translateX(0.15rem);
+}
+
+/* Estilos para el cuerpo (.notibody) */
+.notibody {
+    color: #000000; /* Color de texto del cuerpo */
+    padding: 0 1.25rem; /* Padding horizontal */
+    transition: transform 300ms ease;
+    z-index: 5;
+    text-align: left; /* Alineación del texto */
+    flex-grow: 1; /* Permite que ocupe el espacio disponible */
+}
+
+/* Efecto hover en el cuerpo */
+.history-item.notification:hover .notibody {
+    transform: translateX(0.25rem);
+}
+
+/* Nuevo estilo para el footer (donde va el usuario) */
+.notifooter {
+    color: #000000; /* Color de texto más claro para el footer */
+    padding: 0.5rem 1.25rem 0.65rem 1.25rem; /* Padding para el footer */
+    font-size: 0.8em;
+    text-align: right; /* Alineación a la derecha */
+    width: 100%; /* Ocupa todo el ancho */
+    box-sizing: border-box; /* Incluye padding en el ancho */
+    z-index: 5;
+}
+
+
+/* Estilos para los brillos (notiglow, notiborderglow) */
+.notiglow,
+.notiborderglow {
+    position: absolute;
+    width: 20rem;
+    height: 20rem;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle closest-side at center, white, transparent); /* Degradado circular blanco */
+    opacity: 0;
+    transition: opacity 300ms ease;
+}
+
+.notiglow {
+    z-index: 3;
+}
+
+.notiborderglow {
+    z-index: 1;
+}
+
+/* Efecto hover en los brillos */
+.history-item.notification:hover .notiglow {
+    opacity: 0.1; /* Se hace visible con poca opacidad */
+}
+
+.history-item.notification:hover .notiborderglow {
+    opacity: 0.1; /* Se hace visible con poca opacidad */
+}
+
+/* Quitar los estilos anteriores de .history-icon, ya no se usa directamente en el HTML */
+/* Si necesitas un icono dentro, tendrías que añadir un div con clase y ajustarlo. */
+/* .history-icon { ... } */
+
+
+/* Responsive adjustments (Mantener y adaptar según sea necesario) */
+@media (max-width: 600px) {
+    .history-item.notification {
+        min-height: 7rem; /* Ajustar altura mínima para móviles */
+    }
+    .notititle {
+        font-size: 1rem;
+        padding: 0.5rem 0.25rem 0.3rem 1rem;
+    }
+    .notibody {
+        font-size: 0.9em;
+        padding: 0 1rem;
+    }
+    .notifooter {
+        font-size: 0.75em;
+        padding: 0.4rem 1rem 0.5rem 1rem;
+    }
+    .history-item.notification:after {
+        inset: 0.5rem auto 0.5rem 0.4rem;
+    }
+}

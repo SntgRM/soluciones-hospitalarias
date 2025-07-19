@@ -1,0 +1,199 @@
+/* src/components/Cards/Cards.css */
+
+.product-summary-cards-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.summary-cards-container {
+    display: flex;
+    flex-direction: column; /* ¡CAMBIO CLAVE: Columnas para la lista! */
+    gap: 10px; /* Reducir el espacio entre los ítems de la lista */
+    /* justify-content: space-around; REMOVIDO: Ya no se distribuyen alrededor, se apilan */
+    padding: 0 20px; /* Añadir padding horizontal si es necesario */
+}
+
+.summary-card {
+    /* Hacer la tarjeta más como un ítem de lista */
+    width: 100%; /* Ocupa todo el ancho del contenedor */
+    height: 50px; /* ¡ALTURA FIJA SOLICITADA! */
+    /* flex: 0 0 auto; REMOVIDO: No es necesario con width: 100% y height fijo */
+
+    border-radius: 8px; /* ¡CAMBIO: Borde redondeado más sutil, NO 50px! */
+    padding: 0 25px; /* Padding horizontal, vertical ajustado por height */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra más suave */
+    /* text-align: center; REMOVIDO: Ya no centrado, ahora es flex */
+    cursor: pointer;
+    /* Transiciones: transform y box-shadow de la tarjeta */
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Transiciones más rápidas */
+    
+    display: flex;
+    flex-direction: row; /* ¡CAMBIO CLAVE: Disposición horizontal! */
+    align-items: center; /* Alinea verticalmente los ítems */
+    justify-content: space-between; /* Distribuye el espacio entre los ítems */
+    color: var(--clr-dark); /* Color del texto por defecto, ya no es siempre blanco */
+    background-color: white; /* Fondo blanco por defecto para lista */
+
+
+    /* PROPIEDADES PARA EL EFECTO DE HOVER CON COLORES GIRATORIOS (Ajustadas) */
+    position: relative;
+    overflow: hidden; /* Crucial para el efecto de "aura" */
+    z-index: 1; /* Asegura que la tarjeta está encima de los pseudo-elementos */
+}
+
+/* Contenido de la tarjeta (para controlar visibilidad) */
+.summary-card-content {
+    display: flex; /* Mantener flex */
+    flex-direction: row; /* También en fila si está contenido */
+    align-items: center;
+    /* justify-content: center; REMOVIDO */
+    /* transition: opacity 0.3s ease-in-out; REMOVIDO, ya no se ocultan */
+    width: 100%; /* Asegura que ocupe todo el ancho disponible */
+    height: 100%; /* Asegura que ocupe toda la altura */
+}
+
+/* EFECTO AL HACER HOVER EN LA TARJETA (MODIFICADO) */
+.summary-card:hover {
+    transform: translateY(-3px); /* Levanta un poco la tarjeta */
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15); /* Sombra más pronunciada */
+    /* background-color: white !important; REMOVIDO: Ya es blanco por defecto */
+    /* color: black; REMOVIDO: El color de texto se mantiene por defecto */
+}
+
+
+/* Asegurar que el título siempre se vea y no cambie su posición drásticamente */
+.summary-card .card-title {
+    color: white; /* El color del título siempre es oscuro */
+    font-weight: 600;
+    font-size: 1.1rem; /* Tamaño de fuente para el título */
+    margin: 0 15px; /* Espacio a los lados del título */
+    flex-grow: 1; /* Permite que el título ocupe el espacio restante */
+    text-align: left; /* Alinear el título a la izquierda */
+    white-space: nowrap; /* Evita que el texto se rompa */
+    overflow: hidden; /* Oculta si el texto es demasiado largo */
+    text-overflow: ellipsis; /* Añade puntos suspensivos */
+    transition: none; /* Quitar transiciones si no hay cambio de color */
+    /* Ajustes para centrar el título cuando otros elementos se ocultan */
+    /* display: flex; REMOVIDO */
+    /* align-items: center; REMOVIDO */
+    /* justify-content: center; REMOVIDO */
+    /* height: 100%; REMOVIDO */
+    /* text-align: center; REMOVIDO */
+    /* padding-top: 0; REMOVIDO */
+}
+
+
+/* Pseudo-elementos para el efecto giratorio (Ajustados para el nuevo border-radius) */
+.summary-card::before,
+.summary-card::after {
+    display: block;
+    content: '';
+    position: absolute;
+    /* Las dimensiones deben coincidir con las de la tarjeta */
+    width: 100%;
+    height: 100%;
+    border-radius: 8px; /* ¡Mismo border-radius que la tarjeta! */
+    z-index: -1; /* Envía los pseudo-elementos detrás del contenido de la tarjeta */
+    opacity: 0; /* Inicialmente invisibles */
+    transition: opacity 0.3s ease-in-out; /* Transición para su aparición */
+}
+
+
+/* DEFINICIÓN DE ANIMACIONES (Mantener las mismas, funcionan para el efecto de "aura") */
+@keyframes clockwise { /* ... sin cambios ... */ }
+@keyframes counterclockwise { /* ... sin cambios ... */ }
+
+
+/* Estilos para icono, título y conteo (¡Ajustados para la nueva disposición!) */
+.card-icon {
+    font-size: 2rem; /* Tamaño del icono */
+    margin-right: 15px; /* Espacio a la derecha del icono */
+    color: var(--clr-primary); /* Color para el icono */
+    /* transiciones de opacidad y margin-bottom REMOVIDAS */
+}
+
+.card-count {
+    font-size: 1.8rem; /* Tamaño del conteo */
+    font-weight: 700;
+    color: white; /* Color para el conteo */
+    margin-left: 15px; /* Espacio a la izquierda del conteo */
+    /* transiciones de opacidad y margin-bottom REMOVIDAS */
+    flex-shrink: 0; /* Evita que el conteo se encoja si el espacio es limitado */
+}
+
+/* Responsive adjustments (Necesitarán ajustes más significativos para una lista) */
+/* Estas media queries anteriores están pensadas para cards cuadradas.
+   Ahora que son ítems de lista, podrías simplificarlas o ajustarlas
+   para controlar el padding del contenedor principal o el tamaño de fuente.
+*/
+@media screen and (max-width: 992px) {
+    .summary-card {
+        /* No necesitas cálculos de width complejos, sigue siendo 100% */
+        width: 100%;
+        height: 50px; /* Mantener la altura fija */
+        padding: 0 15px; /* Reducir padding horizontal */
+    }
+    .card-title {
+        font-size: 1rem;
+    }
+    .card-icon {
+        font-size: 1.8rem;
+    }
+    .card-count {
+        font-size: 1.6rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    /* Aquí el `grid-column` puede seguir siendo útil para el wrapper general */
+    .product-summary-cards-wrapper {
+        grid-column-start: 1;
+        grid-column-end: 3;
+    }
+    .summary-cards-container {
+        gap: 10px; /* Espacio entre ítems */
+        padding: 10px 0;
+    }
+    .summary-card {
+        width: 100%; /* Sigue siendo 100% */
+        height: 50px; /* Mantener la altura fija */
+        padding: 0 10px; /* Más reducción de padding */
+    }
+    .card-icon {
+        font-size: 1.6rem;
+        margin-right: 10px;
+    }
+    .card-title {
+        font-size: 0.95rem;
+    }
+    .card-count {
+        font-size: 1.5rem;
+    }
+}
+
+/* Estilos para el título de la cuadrícula, si no está global */
+.grid-c-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px; /* Menos margen inferior */
+    padding: 0 20px; /* Padding acorde al contenedor de la lista */
+}
+
+.grid-c-title-text {
+    font-size: 1.2rem; /* Ajustar tamaño de título principal */
+    font-weight: 700;
+    color: var(--clr-text-dark);
+}
+
+.grid-c-title-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.grid-c-title-icon img {
+    width: 22px;
+    filter: invert(30%);
+}

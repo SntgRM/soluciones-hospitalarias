@@ -1,0 +1,102 @@
+/* src/components/ProductListItem/ProductListItem.css */
+
+/* Estilos existentes para la lista y los ítems */
+.product-list-container {
+    display: flex;
+    flex-direction: column; /* Para que los ítems se apilen verticalmente */
+    gap: 15px; /* Espacio entre los ítems de la lista */
+    padding: 20px;
+    max-width: 900px; /* O el ancho que desees para tu lista */
+    margin: 20px auto; /* Centrar la lista si no es de ancho completo */
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.product-list-item {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    padding: 15px 20px;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.product-list-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.product-icon {
+    font-size: 2.2em; /* Tamaño del icono */
+    color: #28a70e; /* Color primario */
+    margin-right: 20px;
+    min-width: 40px; /* Para mantener alineación */
+    text-align: center;
+}
+
+.product-icon .fa {
+    /* Asegúrate de que los iconos de Font Awesome estén renderizando correctamente */
+    line-height: 1;
+}
+
+.product-info {
+    flex-grow: 1; /* Permite que la información ocupe el espacio restante */
+}
+
+.product-title {
+    margin: 0;
+    font-size: 1.1em;
+    color: #333;
+    font-weight: 600;
+}
+
+.product-title a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.product-title a:hover {
+    color: #17a81e; /* Color al pasar el ratón */
+}
+
+.product-description {
+    margin: 5px 0 0;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.product-actions {
+    margin-left: 20px;
+    display: flex;
+    gap: 10px; /* Espacio entre botones si hay varios */
+}
+
+.edit-button, .view-details-button {
+    background-color: #1c5be0; /* Color verde para editar */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    display: flex; /* Para alinear el icono y el texto */
+    align-items: center;
+    gap: 5px; /* Espacio entre icono y texto */
+    transition: background-color 0.2s ease;
+    text-decoration: none; /* Para el Link si se usa */
+}
+
+.edit-button:hover {
+    background-color: #124bc7;
+}
+
+/* Estilos para el botón de ver detalles si lo implementas */
+.view-details-button {
+    background-color: #6c757d; /* Color gris */
+}
+
+.view-details-button:hover {
+    background-color: #5a6268;
+}

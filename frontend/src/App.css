@@ -1,0 +1,111 @@
+@import url("https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+:root {
+   --clr-primary: #2b2b2b; /* background sidebar */
+   --clr-secondary: #ffffff; /* background del contendio */
+   --clr-over-boton: #21d14723;
+   --clr-black: #dfdfdf; /* background cards */
+  --clr-primar-light: #000000;  /* barras (faltantes) */
+  --clr-white: #ffffff; /* letras */
+  --clr-pumpkin: #03701b; /* botones */
+  --clr-silver: #ffffff; /* letras cards */
+  --clr-silver-v1: #03701b; /* letras nombres */
+  --clr-scarlet: #000000; /* tarjetas y sidebar */
+  --clr-scarlet-v1: rgb(254, 30, 0, 0.79); /* tarjetas de credito */
+  --clr-green: #000000;
+  --clr-yellow: #fec80a;/* tarjetas de credito */
+  --clr-jet: #302924;
+  --clr-peach: #00ff55;
+  --clr-recivido: #2a12fd;
+  --clr-empacado: #ec7e00;
+  --clr-enviado: #11d421;
+  --font-family-bai: "Bai Jamjuree", sans-serif;
+  --transition-default: all 300ms ease-in-out;
+}
+
+body {
+  font-family: var(--font-family-bai);
+}
+
+ul {
+  list-style-type: none;
+}
+a {
+  color: unset;
+  text-decoration: none;
+  color: var(--clr-white);
+}
+button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.img-fit-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.text-white {
+  color: var(--clr-white);
+}
+.text-silver-v1 {
+  color: var(--clr-silver-v1);
+}
+.text-scarlet {
+  color: var(--clr-scarlet);
+}
+.text-green {
+  color: var(--clr-green);
+}
+.bg-jet {
+  background: var(--clr-jet);
+}
+
+.text-sm {
+  font-size: 14px;
+}
+
+.app {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* commons */
+.lg-value {
+  font-size: 24px;
+  font-weight: 600;
+}
+.grid-common {
+  background-color: var(--clr-white); /* Fondo del header */
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.123); /* Sombra suave */
+}
+.grid-c-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.grid-c-title-text {
+  font-weight: 400;
+}
+.grid-c-title-icon img {
+  width: 24px;
+  filter: invert(100%);
+}
+
+@media screen and (max-width: 1400px) {
+  .grid-common {
+    padding: 16px;
+  }
+  body {
+    font-size: 14px !important;
+  }
+}
