@@ -22,10 +22,26 @@ import IMAGOTIPO from "../assets/images/IMAGOTIPO.png";
 import ISOTIPO from "../assets/images/ISOTIPO.png";
 
 export const iconsImgs = {
-    alert, bell, bills, budget, card, check, empty_check, gears, home, menu, plane, plus, report, search, user, wallet, wealth
-}
-
-export const personsImgs = {
-    IMAGOTIPO, ISOTIPO
+  alert,
+  bell,
+  bills,
+  budget,
+  card,
+  check,
+  empty_check,
+  gears,
+  home,
+  menu,
+  plane,
+  plus,
+  report,
+  search,
+  user,
+  wallet,
+  wealth,
 };
 
+export const personsImgs = {
+  IMAGOTIPO,
+  ISOTIPO,
+};
