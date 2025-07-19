@@ -6,7 +6,7 @@ import './form.css'; // Asegúrate de que este CSS esté en la misma carpeta o l
 // Importa las imágenes desde src/assets/img
 // Es la forma recomendada por Vite para procesar assets dentro de src
 import rightSideImage from '../../assets/images/login.jpeg'; // Asegúrate de que esta ruta sea correcta
-import croppedLogo from '../../assets/images/ISOTIPO.png';
+import IMAGOTIPO from '../../assets/images/IMAGOTIPO.png';
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -36,7 +36,7 @@ const Login = () => {
             <div className="auth-content-wrapper">
                 <form className="auth-form" onSubmit={handleSubmit}>
                     {/* Usa las variables importadas para las imágenes */}
-                    <img className="logo" src={croppedLogo} alt="Logo de la empresa" />
+                    <img className="logo" src={IMAGOTIPO} alt="Logo de la empresa" />
                     
                     <h2 className='auth-title'>Login</h2>
                     <p className='auth-subtitle'>Inicia sesión en tu cuenta</p>
