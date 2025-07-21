@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'authentication',
+    'warehouse',
 ]
 
 MIDDLEWARE = [
@@ -144,4 +145,4 @@ REST_FRAMEWORK = {
     ],
 }
 
-DATABASE_ROUTERS = ['server.routers.AuthRouter']
+DATABASE_ROUTERS = ['server.routers.MultiDBRouter']
