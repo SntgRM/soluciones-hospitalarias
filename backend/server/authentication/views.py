@@ -16,7 +16,6 @@ def login(request):
             'user': {
                 'id': user.id,
                 'username': user.username,
-                'email': user.email,
                 'first_name': user.first_name,
                 'last_name': user.last_name
             },
@@ -25,6 +24,7 @@ def login(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def logout(request):
     try:
         # Eliminar el token del usuario actual
@@ -34,12 +34,12 @@ def logout(request):
         return Response({'error': 'Error al hacer logout'}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def profile(request):
     return Response({
         'user': {
             'id': request.user.id,
             'username': request.user.username,
-            'email': request.user.email,
             'first_name': request.user.first_name,
             'last_name': request.user.last_name
         }
@@ -48,11 +48,11 @@ def profile(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def create_user(request):
-    if not request.user.is_admin:
+    if not request.user.is_staff:
         return Response({'error': 'No tiene permisos para crear usuarios'}, status=status.HTTP_403_FORBIDDEN)
     
     serializer = UserRegistrationSerializer(data=request.data)
     if serializer.is_valid():
         user = serializer.save()
-        return Response({'message': 'Usuario creado existosamente'})
+        return Response({'message': 'Usuario creado exitosamente'})
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

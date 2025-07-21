@@ -1,44 +1,54 @@
 // icons svg images
-import alert from "../assets/icons/alert.svg";
-import bell from "../assets/icons/bell.svg";
-import bills from "../assets/icons/bills.svg";
-import budget from "../assets/icons/budget.svg";
-import card from "../assets/icons/card.svg";
 import check from "../assets/icons/check.svg";
-import empty_check from "../assets/icons/empty_check.svg";
-import gears from "../assets/icons/gears.svg";
-import home from "../assets/icons/home.svg";
 import menu from "../assets/icons/menu.svg";
-import plane from "../assets/icons/plane.svg";
-import plus from "../assets/icons/plus.svg";
-import report from "../assets/icons/report.svg";
 import search from "../assets/icons/search.svg";
 import user from "../assets/icons/user.svg";
-import wallet from "../assets/icons/wallet.svg";
-import wealth from "../assets/icons/wealth.svg";
+import edit from "../assets/icons/edit.svg";
+import lock from "../assets/icons/lock.svg";
+import arrow from "../assets/icons/arrow.svg";
+// icons status
+import ban from "../assets/icons/ban.svg";
+import xCircle from "../assets/icons/xCircle.svg";
+import truck from "../assets/icons/truck.svg";
+import send from "../assets/icons/send.svg";
+import bike from "../assets/icons/bike.svg";
+import packageIcon from "../assets/icons/package.svg";
+import settings from "../assets/icons/settings.svg";
+import check1 from "../assets/icons/check1.svg";
+
+// Iconos sidebar
+import door from "../assets/icons/door.svg";
+import bookText from "../assets/icons/bookText.svg"
+import folder from "../assets/icons/folder.svg"
+import house from "../assets/icons/house.svg"
+import info from "../assets/icons/info.svg"
+
 
 // images
 import IMAGOTIPO from "../assets/images/IMAGOTIPO.png";
 import ISOTIPO from "../assets/images/ISOTIPO.png";
 
 export const iconsImgs = {
-  alert,
-  bell,
-  bills,
-  budget,
-  card,
   check,
-  empty_check,
-  gears,
-  home,
   menu,
-  plane,
-  plus,
-  report,
   search,
   user,
-  wallet,
-  wealth,
+  edit,
+  door,
+  bookText,
+  folder,
+  info,
+  house,
+  lock,
+  arrow,
+  ban,
+  xCircle,
+  truck,
+  send,
+  bike,
+  packageIcon,
+  settings,
+  check1,
 };
 
 export const personsImgs = {

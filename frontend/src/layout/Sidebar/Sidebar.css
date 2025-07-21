@@ -1,13 +1,10 @@
 .sidebar {
-  background: hsla(300, 2%, 24%, 1);
-  background: linear-gradient(45deg, hsla(300, 2%, 24%, 1) 0%, hsla(0, 0%, 8%, 1) 82%);
-  background: -moz-linear-gradient(45deg, hsla(300, 2%, 24%, 1) 0%, hsla(0, 0%, 8%, 1) 82%);
-  background: -webkit-linear-gradient(45deg, hsla(300, 2%, 24%, 1) 0%, hsla(0, 0%, 8%, 1) 82%);
+  background: linear-gradient(180deg, #141414 0%, #212121 100%);
   filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#3E3C3E", endColorstr="#141414", GradientType=1 );
   width: 260px;
   padding: 36px 20px;
   transition: var(--transition-default);
-  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.781);
+  box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.781);
   z-index: 1000; /* Asegúrate de que no quede detrás de otros elementos */
 }
   .user-info {
@@ -82,6 +79,7 @@
   }
   .nav-link-icon {
     width: 22px;
+    filter : invert(100%);
   }
   .nav-link-text {
     text-transform: capitalize;
