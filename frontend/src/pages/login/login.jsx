@@ -1,13 +1,12 @@
 // src/components/login.jsx
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import {iconsImgs} from '../../utils/images'; // Asegúrate de que esta ruta sea correcta
 import './form.css'; // Asegúrate de que este CSS esté en la misma carpeta o la ruta correcta
 
 // Importa las imágenes desde src/assets/img
 // Es la forma recomendada por Vite para procesar assets dentro de src
 import rightSideImage from '../../assets/images/login.jpeg'; // Asegúrate de que esta ruta sea correcta
-import IMAGOTIPO from '../../assets/images/IMAGOTIPO.png';
-
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -34,41 +33,19 @@ const Login = () => {
         <div className="auth-container">
             {/* Nuevo contenedor para agrupar el formulario y la imagen derecha */}
             <div className="auth-content-wrapper">
-                <form className="auth-form" onSubmit={handleSubmit}>
-                    {/* Usa las variables importadas para las imágenes */}
-                    <img className="logo" src={IMAGOTIPO} alt="Logo de la empresa" />
-                    
-                    <h2 className='auth-title'>Login</h2>
-                    <p className='auth-subtitle'>Inicia sesión en tu cuenta</p>
-                    
-                    {error && <p className="error-message">{error}</p>}
-                    
-                    <div className="form-group">
-                        <label htmlFor="username"><strong>Usuario</strong></label>
-
-                        <input
-                            type="text"
-                            id="username"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            required
-                        />
+                <form action="" className="form_main">
+                    <p className="heading">Login</p>
+                    <div className="inputContainer">
+                        <img src={iconsImgs.user} alt="user" />
+                    <input type="text" class="inputField" id="username" placeholder="Username" />
                     </div>
-                    <div className="form-group">
-                        <label className='lts' htmlFor="password"><strong>Contraseña</strong></label>
-                        <input
-                            type="password"
-                            id="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <button type="submit" disabled={loading}>
-                        {loading ? 'Iniciando...' : 'Entrar'}
-                    </button>
+                    <div className="inputContainer">
+                        <img src={iconsImgs.lock} alt="lock" />
+                        <input type="password" class="inputField" id="password" placeholder="Password" />
+                    </div>  
+                    <button id="button">Entrar</button>
+                        <a className="forgotLink" href="#">Forgot your password?</a>
                 </form>
-
                 {/* La nueva imagen a la derecha */}
                 <div className="right-image-panel">
                     {/* Utiliza la variable importada para la imagen del lado derecho */}
