@@ -48,11 +48,11 @@ def profile(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def create_user(request):
-    if not request.user.is_admin:
+    if not request.user.is_staff:
         return Response({'error': 'No tiene permisos para crear usuarios'}, status=status.HTTP_403_FORBIDDEN)
     
     serializer = UserRegistrationSerializer(data=request.data)
     if serializer.is_valid():
         user = serializer.save()
-        return Response({'message': 'Usuario creado existosamente'})
+        return Response({'message': 'Usuario creado exitosamente'})
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
