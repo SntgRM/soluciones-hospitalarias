@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { productsData } from '../../data/data';
-import { iconsImgs } from '../../utils/images'; // Asegúrate de que esta ruta sea correcta
+import { iconsImgs } from '../../utils/images';
 import './Cards.css';
 
 const Cards = () => {
@@ -13,63 +13,63 @@ const Cards = () => {
         return acc;
     }, {});
 
-    // Datos para las tarjetas resumen - ¡ACTUALIZADOS!
+    // Datos para las tarjetas resumen
     const summaryItems = [
         {
             id: 'en alistamiento',
             title: 'En Alistamiento',
             count: productCounts['en alistamiento'] || 0,
-            icon: '📝', // Icono de ejemplo
-            bgColor: '#FFD700' // Dorado
+            icon: iconsImgs.check1,
+            bgColor: '#FFD700'
         },
         {
             id: 'en preparación',
             title: 'En Preparación',
             count: productCounts['en preparación'] || 0,
-            icon: '🛠️', // Icono de ejemplo
-            bgColor: '#831386ff' // Naranja
+            icon: iconsImgs.settings,
+            bgColor: '#831386ff'
         },
         {
             id: 'empacado',
             title: 'Empacado',
             count: productCounts.empacado || 0,
-            icon: '📦', // Icono de ejemplo
-            bgColor: '#831386ff' // Verde
+            icon: iconsImgs.packageIcon,
+            bgColor: '#831386ff'
         },
         {
             id: 'en reparto',
             title: 'En Reparto',
             count: productCounts['en reparto'] || 0,
-            icon: '🛵', // Icono de ejemplo
-            bgColor: '#e68a00ff' // Azul cielo
+            icon: iconsImgs.bike,
+            bgColor: '#e68a00ff'
         },
         {
             id: 'enviado al cliente',
             title: 'Enviado al Cliente',
             count: productCounts['enviado al cliente'] || 0,
-            icon: '📧', // Icono de ejemplo (por correo/notificación)
-            bgColor: '#13af1bff' // Gris
+            icon: iconsImgs.send,
+            bgColor: '#13af1bff'
         },
         {
             id: 'enviado en transportadora',
             title: 'Enviado en Transportadora',
             count: productCounts['enviado en transportadora'] || 0,
-            icon: '🚛', // Icono de ejemplo
-            bgColor: '#13af1bff' // Púrpura
+            icon: iconsImgs.truck,
+            bgColor: '#13af1bff'
         },
         {
             id: 'pedido no recibido',
             title: 'Pedido No Recibido',
             count: productCounts['pedido no recibido'] || 0,
-            icon: '❌', // Icono de ejemplo
-            bgColor: '#3f3f3fff' // Rojo
+            icon: iconsImgs.xCircle,
+            bgColor: '#3f3f3fff'
         },
         {
             id: 'anulado',
             title: 'Anulado',
             count: productCounts.anulado || 0,
-            icon: '🚫', // Icono de ejemplo
-            bgColor: '#0079f1ff' // Gris oscuro
+            icon: iconsImgs.ban,
+            bgColor: '#0079f1ff'
         },
     ];
 
@@ -88,16 +88,22 @@ const Cards = () => {
             </div>
 
             <div className="summary-cards-container">
-                {summaryItems.map(item => (
+                {summaryItems.map((item) => (
                     <div
                         key={item.id}
                         className="summary-card"
-                        style={{ backgroundColor: item.bgColor }}
                         onClick={() => handleCardClick(item.id)}
+                        style={{ border: `1px solid ${item.bgColor}` }}
                     >
-                        <div className="card-icon">{item.icon}</div>
-                        <h4 className="card-title">{item.title}</h4>
-                        <p className="card-count">{item.count}</p>
+                        <div className="card-content">
+                            <div className="card-icon-box" style={{ backgroundColor: item.bgColor }}>
+                                <img src={item.icon} alt={item.title} className="card-icon" />
+                            </div>
+                            <div className="card-text">
+                                <h4 className="card-title">{item.title}</h4>
+                                <p className="card-count">{item.count}</p>
+                            </div>
+                        </div>
                     </div>
                 ))}
             </div>
