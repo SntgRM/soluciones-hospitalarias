@@ -8,7 +8,7 @@
     background-color: var(--clr-white); /* Fondo del header */
     border-bottom: 1px solid var(--clr-light-gray); /* Separador */
     height: 70px; /* Altura fija para el ContentTop */
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.123); /* Sombra suave */
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.123);
     position: sticky; /* O fixed si quieres que flote */
     top: 0;
     z-index: 100; /* Asegura que esté por encima del contenido */
@@ -31,6 +31,7 @@
     justify-content: center;
     border-radius: 50%;
     transition: background-color 0.2s ease;
+    filter: invert(100%); /* Para que el icono sea blanco */
 }
 
 .sidebar-toggler:hover {
@@ -68,8 +69,8 @@
     position: relative;
     display: flex;
     align-items: center;
-    border: 3px solid #000000;
-    border-radius: 20px; /* Borde redondeado para el input */
+    border-bottom: 1px solid #0000003a;
+    border-radius: 8px;
     padding: 10px 15px;
     background-color: #f5f5f5;
     transition: all 0.3s ease;
@@ -77,7 +78,6 @@
 
 .search-input-wrapper:focus-within {
     border-color: var(--clr-primary); /* Color al enfocar */
-    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
     background-color: #fff;
 }
 
@@ -206,3 +206,64 @@
     cursor: pointer;
 }
 
+
+
+.search_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 35px;
+  display: flex;
+  justify-content: flex-end; /* alinea el botón a la derecha */
+  padding-right: 10px;   /* o el valor que quieras que "se note" */
+  width: 100%;           /* para ocupar todo el ancho */
+  box-sizing: border-box;
+}
+
+.input_search {
+  max-width: 190px;
+  height: 100%;
+  outline: none;
+  font-size: 14px;
+  font-weight: 500;
+  background-color: #cecece;
+  caret-color: #f7f7f8;
+  color: #fff;
+  padding: 7px 10px;
+  border: 2px solid transparent;
+  border-top-left-radius: 7px;
+  border-bottom-left-radius: 7px;
+  margin-right: 1px;
+  transition: all .2s ease;
+}
+
+.input_search:hover {
+  border: 2px solid rgba(255, 255, 255, 0.16);
+}
+
+.input_search:focus {
+  border: 2px solid var(--clr-pumpkin);
+}
+
+.search__btn {
+  border: none;
+  cursor: pointer;
+  background-color: var(--clr-pumpkin);
+  border-top-right-radius: 7px;
+  border-bottom-right-radius: 7px;
+  height: 100%;
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search__btn:hover {
+  background-color: rgba(54, 54, 56, 1);
+}
+
+.search__btn img {
+  width: 20px;
+  height: 20px;
+  filter: invert(100%);
+}

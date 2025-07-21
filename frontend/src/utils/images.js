@@ -1,44 +1,33 @@
 // icons svg images
-import alert from "../assets/icons/alert.svg";
-import bell from "../assets/icons/bell.svg";
-import bills from "../assets/icons/bills.svg";
-import budget from "../assets/icons/budget.svg";
-import card from "../assets/icons/card.svg";
 import check from "../assets/icons/check.svg";
-import empty_check from "../assets/icons/empty_check.svg";
-import gears from "../assets/icons/gears.svg";
-import home from "../assets/icons/home.svg";
 import menu from "../assets/icons/menu.svg";
-import plane from "../assets/icons/plane.svg";
-import plus from "../assets/icons/plus.svg";
-import report from "../assets/icons/report.svg";
 import search from "../assets/icons/search.svg";
 import user from "../assets/icons/user.svg";
-import wallet from "../assets/icons/wallet.svg";
-import wealth from "../assets/icons/wealth.svg";
+import edit from "../assets/icons/edit.svg";
+
+// Iconos sidebar
+import door from "../assets/icons/door.svg";
+import bookText from "../assets/icons/bookText.svg"
+import folder from "../assets/icons/folder.svg"
+import house from "../assets/icons/house.svg"
+import info from "../assets/icons/info.svg"
+
 
 // images
 import IMAGOTIPO from "../assets/images/IMAGOTIPO.png";
 import ISOTIPO from "../assets/images/ISOTIPO.png";
 
 export const iconsImgs = {
-  alert,
-  bell,
-  bills,
-  budget,
-  card,
   check,
-  empty_check,
-  gears,
-  home,
   menu,
-  plane,
-  plus,
-  report,
   search,
   user,
-  wallet,
-  wealth,
+  edit,
+  door,
+  bookText,
+  folder,
+  info,
+  house,
 };
 
 export const personsImgs = {

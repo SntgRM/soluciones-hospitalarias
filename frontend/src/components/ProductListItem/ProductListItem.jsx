@@ -2,6 +2,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom'; // Si lo usas para el Link del título
 import { FaEdit } from 'react-icons/fa'; // Importa el icono de lápiz para editar (necesitas instalar react-icons)
+import edit from '../../assets/icons/edit.svg';
+
 
 // Asegúrate de tener instalado react-icons: npm install react-icons
 
@@ -25,8 +27,7 @@ const ProductListItem = ({ id, iconClass, title, description, onEditClick }) => 
             <div className="product-actions">
                 {/* Botón de editar. Llama a onEditClick pasando el ID del producto */}
                 <button className="edit-button" onClick={() => onEditClick(id)}>
-                    <FaEdit /> {/* Icono de lápiz */}
-                    <span>Editar</span>
+                    <img src={edit} alt="Editar" />
                 </button>
                 {/* Otros botones como "Ver Detalles" podrían ir aquí */}
                 {/* <Link to={detailUrl} className="view-details-button">Ver Detalles</Link> */}

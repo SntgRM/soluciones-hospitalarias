@@ -13,7 +13,7 @@
    --clr-black: #dfdfdf; /* background cards */
   --clr-primar-light: #000000;  /* barras (faltantes) */
   --clr-white: #ffffff; /* letras */
-  --clr-pumpkin: #03701b; /* botones */
+  --clr-pumpkin: #049924; /* botones */
   --clr-silver: #ffffff; /* letras cards */
   --clr-silver-v1: #03701b; /* letras nombres */
   --clr-scarlet: #000000; /* tarjetas y sidebar */
@@ -25,12 +25,12 @@
   --clr-recivido: #2a12fd;
   --clr-empacado: #ec7e00;
   --clr-enviado: #11d421;
-  --font-family-bai: "Bai Jamjuree", sans-serif;
+  --font-family-main: "Inter", sans-serif;
   --transition-default: all 300ms ease-in-out;
 }
 
 body {
-  font-family: var(--font-family-bai);
+  font-family: var(--font-family-main);
 }
 
 ul {
@@ -85,7 +85,7 @@ button {
 }
 .grid-common {
   background-color: var(--clr-white); /* Fondo del header */
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.123); /* Sombra suave */
+  box-shadow: 3px 5px 11px 3px rgba(0, 0, 0, 0.123)
 }
 .grid-c-title {
   display: flex;
@@ -96,10 +96,53 @@ button {
 .grid-c-title-text {
   font-weight: 400;
 }
+.grid-c-title-icon {
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
 .grid-c-title-icon img {
   width: 24px;
   filter: invert(100%);
 }
+
+/* Tooltip flotante */
+.grid-c-title-icon .tooltip {
+  position: absolute;
+  bottom: 120%; /* posición arriba del icono */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: black;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+/* Flechita opcional */
+.grid-c-title-icon .tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%; /* apunta hacia el ícono */
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: black transparent transparent transparent;
+}
+
+.grid-c-title-icon:hover .tooltip {
+  opacity: 1;
+}
+
+
 
 @media screen and (max-width: 1400px) {
   .grid-common {

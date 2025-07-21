@@ -9,26 +9,32 @@ export const navigationLinks = [
     {
         id: 1,
         title: 'Inicio',
-        image: iconsImgs.home, 
+        image: iconsImgs.house, 
         path: '/'
     },
     {
         id: 2,
         title: 'Registro',
-        image: iconsImgs.budget,
+        image: iconsImgs.bookText,
         path: '/registro'
     },
     {
         id: 3,
         title: 'Historial',
-        image: iconsImgs.plane,
+        image: iconsImgs.folder,
         path: '/historial'
     },
     {
         id: 4,
         title: 'Ayuda',
-        image: iconsImgs.gears,
+        image: iconsImgs.info,
         path: '/ayuda'
+    },
+        {
+        id: 4,
+        title: 'Salir',
+        image: iconsImgs.door,
+        path: '/login'
     },
     // ... otros enlaces de navegación
 ];

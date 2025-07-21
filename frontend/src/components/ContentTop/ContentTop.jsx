@@ -30,30 +30,14 @@ navigate('/login'); // Redirige al login
             </div>
             <div className="content-top-btns">
                 <form className="search-bar-container" onSubmit={handleSearchSubmit}>
-                    <div className="search-input-wrapper">
-                        <img src={iconsImgs.search} alt="Search Icon" className="search-input-icon" />
-                        <input
-                            type="text"
-                            placeholder="Buscar..."
-                            className="search-input-field"
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
-                        {searchTerm && (
-                            <button
-                                type="button"
-                                className="clear-search-btn"
-                                onClick={() => setSearchTerm('')}
-                            >
-                                &times;
-                            </button>
-                        )}
+                    <div className="search_container">
+                        <input type="text" name="text" className="input_search" placeholder="Search" />
+                        <button className="search__btn">
+                            <img src={iconsImgs.search} alt="Search" />
+                        </button>
                     </div>
                     {/* Botón adicional "Salir", puedes cambiarlo por lógica o ruta si es necesario */}
                 </form>
-                    <button type="button" className="exit-btn" onClick={handleLogout}>
-                        Salir
-                    </button>
             </div>
         </div>
     );

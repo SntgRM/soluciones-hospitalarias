@@ -82,6 +82,7 @@
   }
   .nav-link-icon {
     width: 22px;
+    filter : invert(100%);
   }
   .nav-link-text {
     text-transform: capitalize;

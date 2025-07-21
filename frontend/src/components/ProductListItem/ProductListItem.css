@@ -18,7 +18,7 @@
     align-items: center;
     background-color: #fff;
     padding: 15px 20px;
-    border-radius: 6px;
+    border-radius: 8px;
     box-shadow: 0 1px 4px rgba(0,0,0,0.08);
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
@@ -74,22 +74,12 @@
 }
 
 .edit-button, .view-details-button {
-    background-color: #1c5be0; /* Color verde para editar */
-    color: white;
+    background-color: transparent;
     border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.9em;
-    display: flex; /* Para alinear el icono y el texto */
-    align-items: center;
-    gap: 5px; /* Espacio entre icono y texto */
-    transition: background-color 0.2s ease;
-    text-decoration: none; /* Para el Link si se usa */
 }
 
 .edit-button:hover {
-    background-color: #124bc7;
+    cursor: pointer;
 }
 
 /* Estilos para el botón de ver detalles si lo implementas */

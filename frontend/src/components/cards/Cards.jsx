@@ -82,7 +82,8 @@ const Cards = () => {
             <div className="grid-c-title">
                 <h3 className="grid-c-title-text">Resumen de Pedidos</h3>
                 <button className="grid-c-title-icon" onClick={() => navigate('/productos')}>
-                    <img src={iconsImgs.check} alt="Ver Todos" /><p>Ver todos</p>
+                    <img src={iconsImgs.check} alt="Ver Todos" />
+                    <span className="tooltip">Ver todos</span>
                 </button>
             </div>
 
