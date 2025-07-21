@@ -78,8 +78,18 @@ WSGI_APPLICATION = 'server.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'sh_usuarios',
+        'USER': 'root',
+        'PASSWORD': 'root',
+        'PORT': '3306',
+    },
+    'bodega': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'sh_bodega',
+        'USER': 'root',
+        'PASSWORD': 'root',
+        'PORT': '3306'
     }
 }
 
@@ -133,3 +143,5 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
 }
+
+DATABASE_ROUTERS = ['server.routers.AuthRouter']
