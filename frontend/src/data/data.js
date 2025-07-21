@@ -31,7 +31,7 @@ export const navigationLinks = [
         path: '/ayuda'
     },
         {
-        id: 4,
+        id: 5,
         title: 'Salir',
         image: iconsImgs.door,
         path: '/login'
