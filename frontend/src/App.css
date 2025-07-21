@@ -6,6 +6,28 @@
   box-sizing: border-box;
 }
 
+/* MODO OSCURO */
+body.dark {
+  --clr-primary: #1e1e1e;
+  --clr-secondary: #2c2c2c;
+  --clr-over-boton: #21d14723;
+  --clr-black: #2e2e2e;
+  --clr-primar-light: #ffffff;
+  --clr-white: #e4e4e4;
+  --clr-pumpkin: #2ecc71;
+  --clr-silver: #bbbbbb;
+  --clr-silver-v1: #80ff9f;
+  --clr-scarlet: #ffffff;
+  --clr-scarlet-v1: rgba(255, 87, 34, 0.8);
+  --clr-green: #66ffb2;
+  --clr-yellow: #ffe066;
+  --clr-jet: #121212;
+  --clr-peach: #00ff99;
+  --clr-recivido: #7065ff;
+  --clr-empacado: #f7a440;
+  --clr-enviado: #32d96f;
+}
+
 :root {
    --clr-primary: #2b2b2b; /* background sidebar */
    --clr-secondary: #ffffff; /* background del contendio */
@@ -85,7 +107,7 @@ button {
 }
 .grid-common {
   background-color: var(--clr-white); /* Fondo del header */
-  box-shadow: 3px 5px 11px 3px rgba(0, 0, 0, 0.123)
+  box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.123)
 }
 .grid-c-title {
   display: flex;
