@@ -24,6 +24,7 @@ def login(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def logout(request):
     try:
         # Eliminar el token del usuario actual
@@ -33,6 +34,7 @@ def logout(request):
         return Response({'error': 'Error al hacer logout'}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def profile(request):
     return Response({
         'user': {
