@@ -15,6 +15,11 @@ class Alistadores(models.Model):
     class Meta:
         managed = False
         db_table = 'alistadores'
+        verbose_name = "Alistador"
+        verbose_name_plural = "Alistadores"
+    
+    def __str__(self):
+        return self.nombre_alistador
 
 
 class CamposVisiblesEstado(models.Model):
@@ -26,6 +31,9 @@ class CamposVisiblesEstado(models.Model):
         managed = False
         db_table = 'campos_visibles_estado'
 
+    def __str__(self):
+        return f"{self.campo} (Estado: {self.id_estado})"
+
 
 class Clientes(models.Model):
     id_cliente = models.AutoField(primary_key=True)
@@ -34,7 +42,11 @@ class Clientes(models.Model):
     class Meta:
         managed = False
         db_table = 'clientes'
+        verbose_name = "Cliente"
+        verbose_name_plural = "Clientes"
 
+    def __str__(self):
+        return self.nombre_cliente
 
 class Empacadores(models.Model):
     id_empacador = models.AutoField(primary_key=True)
@@ -43,7 +55,11 @@ class Empacadores(models.Model):
     class Meta:
         managed = False
         db_table = 'empacadores'
-
+        verbose_name = "Empacador"
+        verbose_name_plural = "Empacadores"
+    
+    def __str__(self):
+        return self.nombre_empacador
 
 class Enrutadores(models.Model):
     id_enrutador = models.AutoField(primary_key=True)
@@ -52,6 +68,11 @@ class Enrutadores(models.Model):
     class Meta:
         managed = False
         db_table = 'enrutadores'
+        verbose_name = "Enrutador"
+        verbose_name_plural = "Enrutadores"
+    
+    def __str__(self):
+        return self.nombre_enrutador
 
 class Transportadoras(models.Model):
     id_transportadora = models.AutoField(primary_key=True)
@@ -60,7 +81,11 @@ class Transportadoras(models.Model):
     class Meta:
         managed = False
         db_table = 'transportadoras'
+        verbose_name = "Transportadora"
+        verbose_name_plural = "Transportadoras"
 
+    def __str__(self):
+        return self.nombre_transportadora
 
 class Vendedores(models.Model):
     id_vendedor = models.AutoField(primary_key=True)
@@ -69,7 +94,11 @@ class Vendedores(models.Model):
     class Meta:
         managed = False
         db_table = 'vendedores'
+        verbose_name = "Vendedor"
+        verbose_name_plural = "Vendedores"
 
+    def __str__(self):
+        return self.nombre_vendedor
 
 class EstadosPedido(models.Model):
     id_estado = models.AutoField(primary_key=True)
@@ -78,6 +107,9 @@ class EstadosPedido(models.Model):
     class Meta:
         managed = False
         db_table = 'estados_pedido'
+    
+    def __str__(self):
+        return self.nombre_estado
 
 
 class Facturas(models.Model):
@@ -110,6 +142,16 @@ class Facturas(models.Model):
     class Meta:
         managed = False
         db_table = 'facturas'
+        verbose_name = "Factura"
+        verbose_name_plural = "Facturas"
+
+    def __str__(self):
+        return (
+            f"Factura #{self.id_factura} - "
+            f"Cliente: {self.id_cliente.nombre_cliente if self.id_cliente else 'Sin cliente'} - "
+            f"Ciudad: {self.ciudad or 'Sin ciudad'} - "
+            f"Estado: {self.id_estado.nombre_estado if self.id_estado else 'Sin estado'} - "
+        )
 
 
 class HistorialEstados(models.Model):
@@ -122,5 +164,15 @@ class HistorialEstados(models.Model):
     class Meta:
         managed = False
         db_table = 'historial_estados'
+        verbose_name = "Historial de Estado"
+        verbose_name_plural = "Historiales de Estados"
+
+    def __str__(self):
+        return (
+            f"Historial #{self.id_historial} | "
+            f"Factura: {self.id_factura.id_factura if self.id_factura else 'N/A'} | "
+            f"Cliente: {self.id_factura.id_cliente.nombre_cliente if self.id_factura and self.id_factura.id_cliente else 'Sin cliente'} | "
+            f"Estado: {self.id_estado.nombre_estado if self.id_estado else 'Sin estado'} | "
+        )
 
 
