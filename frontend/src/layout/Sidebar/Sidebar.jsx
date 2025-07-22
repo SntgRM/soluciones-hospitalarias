@@ -34,7 +34,8 @@ const Sidebar = () => {
       color: "#1A1A1A",
     }).then((result) => {
       if (result.isConfirmed) {
-        navigate("/login"); // Redirige al login
+        localStorage.removeItem("authToken");
+        navigate("/login");
       }
     });
   };
@@ -56,7 +57,6 @@ const Sidebar = () => {
             <li className="nav-item" key={navigationLink.id}>
               {navigationLink.title === "Salir" ? (
                 <a
-                  href="/login"
                   onClick={handleLogoutClick}
                   className="nav-link"
                 >
