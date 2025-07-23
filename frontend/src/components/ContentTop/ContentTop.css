@@ -51,7 +51,7 @@
 .content-top-title {
     font-size: 1.5rem;
     font-weight: 600;
-    color: var(--clr-dark);
+    color: black;
     margin: 0;
     white-space: nowrap; /* Evita que el título se divida en múltiples líneas */
     overflow: hidden;
