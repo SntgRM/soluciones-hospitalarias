@@ -5,16 +5,17 @@ import { navigationLinks } from "../../data/data";
 import "./Sidebar.css";
 import { SidebarContext } from "../../context/sidebarContext";
 import Swal from "sweetalert2";
+import User from "../../pages/user/user.jsx"; // Importar el componente User
 
 const Sidebar = () => {
   const [sidebarClass, setSidebarClass] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isVentasDropdownOpen, setIsVentasDropdownOpen] = useState(false);
-  const { isSidebarOpen } = useContext(SidebarContext); // Restaurar el contexto
+  const { isSidebarOpen } = useContext(SidebarContext);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isSidebarOpen) { // Usar isSidebarOpen del contexto
+    if (isSidebarOpen) {
       setSidebarClass("sidebar-change");
     } else {
       setSidebarClass("");
@@ -44,7 +45,7 @@ const Sidebar = () => {
       color: "#1A1A1A",
     }).then((result) => {
       if (result.isConfirmed) {
-        localStorage.removeItem("authToken"); // Restaurar manejo del token
+        localStorage.removeItem("authToken");
         navigate("/login");
       }
     });
@@ -61,6 +62,7 @@ const Sidebar = () => {
         />
         <span className="info-name">NOMBRE DE USUARIO</span>
       </div>
+
 
       {/* Navegación con dropdowns */}
       <nav className="navigation">
@@ -165,6 +167,19 @@ const Sidebar = () => {
             </ul>
           </div>
         </div>
+        {/* ✅ Botón "User" fuera de los dropdowns */}
+        <ul className="nav-list extra-links">
+          <li className="nav-item">
+            <NavLink
+              to="/usuario"
+              className={({ isActive }) =>
+                `nav-link ${isActive ? "active" : ""}`
+              }
+            >
+              <span className="nav-link-text">User</span>
+            </NavLink>
+          </li>
+        </ul>
       </nav>
     </div>
   );
