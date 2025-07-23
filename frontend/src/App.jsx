@@ -11,7 +11,8 @@ import Home from "./pages/home/home.jsx";
 import Registro from "./pages/registro/registro.jsx";
 import Products from "./pages/products/products.jsx";
 import Login from "./pages/login/login.jsx";
-import NotFound from "./pages/404/NotFound.jsx";
+import NotFound from "./pages/NotFound/notFound.jsx";
+import User from "./pages/user/user.jsx";
 
 // Componente para rutas protegidas
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
@@ -40,6 +41,7 @@ function App() {
                 <Route path="historial" element={<Historial />} />
                 <Route path="registro" element={<Registro />} />
                 <Route path="productos" element={<Products />} />
+                <Route path="usuario" element={<User />} />
               </Route>
 
               {/* Rutas públicas sin sidebar */}
