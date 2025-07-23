@@ -11,9 +11,12 @@ import Home from "./pages/home/home.jsx";
 import Registro from "./pages/registro/registro.jsx";
 import Products from "./pages/products/products.jsx";
 import Login from "./pages/login/login.jsx";
+import NotFound from "./pages/404/NotFound.jsx";
 
 // Componente para rutas protegidas
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+
+
 
 function App() {
   return (
@@ -43,15 +46,7 @@ function App() {
               <Route path="/login" element={<Login />} />
 
               {/* Ruta 404 */}
-              <Route
-                path="*"
-                element={
-                  <div>
-                    <h1>404 Not Found</h1>
-                    <p>La página solicitada no existe.</p>
-                  </div>
-                }
-              />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
         </SidebarProvider>
