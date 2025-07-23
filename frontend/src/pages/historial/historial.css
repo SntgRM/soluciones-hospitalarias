@@ -1,41 +1,170 @@
+/* ELIMINÉ TODOS LOS ESTILOS DE .main-content porque ahora están en Content.css */
+
 .historial-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
+  padding: 0 0 20px 0;
   flex-wrap: wrap;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #e9ecef;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.grid-c-title-text {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--clr-dark, #333);
+  margin: 0;
+  margin-left: 10px;
+  flex: 1;
 }
 
 .filtro-select {
-  padding: 8px 12px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: 2px solid #e9ecef;
   font-size: 14px;
+  font-weight: 500;
   background-color: #fff;
   cursor: pointer;
   transition: all 0.3s ease;
+  min-width: 150px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .filtro-select:hover {
-  border-color: #999;
+  border-color: var(--clr-pumpkin, #ff6b35);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.filtro-select:focus {
+  outline: none;
+  border-color: var(--clr-pumpkin, #ff6b35);
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+}
+
+/* Contenedor de la lista de historial */
+.history-list-container {
+  max-width: 100%;
+  margin: 0 auto;
 }
 
 .btn-volver-arriba {
   position: fixed;
   bottom: 30px;
   right: 30px;
-  padding: 8px 8px;
-  border-radius: 8px;
-  border: 2px solid #000000;
-  z-index: 1000;
+  padding: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--clr-pumpkin, #ff6b35);
   background-color: #fff;
-  transition: transform 0.15s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  transition: all 0.3s ease;
   cursor: pointer;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-volver-arriba:hover {
+  background-color: var(--clr-pumpkin, #ff6b35);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.btn-volver-arriba:hover img {
+  filter: invert(100%);
 }
 
 .btn-volver-arriba:active {
-  transform: scale(0.95);
+  transform: scale(0.95) translateY(-2px);
 }
 
+.btn-volver-arriba img {
+  width: 20px;
+  height: 20px;
+  transition: filter 0.3s ease;
+}
 
+/* Media queries específicos para el historial */
+@media screen and (max-width: 768px) {
+  .historial-header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+  }
+  
+  .grid-c-title-text {
+    font-size: 1.5rem;
+  }
+  
+  .filtro-select {
+    width: 100%;
+    min-width: unset;
+  }
+  
+  .btn-volver-arriba {
+    bottom: 20px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+  }
+  
+  .btn-volver-arriba img {
+    width: 18px;
+    height: 18px;
+  }
+}
 
+@media screen and (max-width: 420px) {
+  .historial-header {
+    padding: 0 0 15px 0;
+    margin-bottom: 15px;
+    
+  }
+  
+  .grid-c-title-text {
+    font-size: 1.3rem;
+  }
+  
+  .btn-volver-arriba {
+    bottom: 15px;
+    right: 15px;
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.filtro-fechas-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.filtro-datepicker {
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+  font-size: 14px;
+  font-weight: 500;
+  background-color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 150px;
+  margin-left: 5px;
+}
+
+.filtro-datepicker:hover {
+  border-color: var(--clr-pumpkin);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.filtro-datepicker:focus {
+  outline: none;
+  border-color: var(--clr-pumpkin);
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+}
