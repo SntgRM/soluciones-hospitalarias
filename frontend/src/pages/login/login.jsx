@@ -38,7 +38,7 @@ const Login = () => {
             <div className="auth-content-wrapper">
                 <form onSubmit={handleSubmit} className="form_main">
                     <p className="heading">Login</p>
-                    {error && <p className="error">{error}</p>}
+                    {error && <p className="error_message">{error}</p>}
                     <div className="inputContainer">
                         <img src={iconsImgs.user} alt="user" />
                         <input

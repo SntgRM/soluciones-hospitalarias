@@ -155,3 +155,6 @@
   border-radius: 20px;
 }
 
+.error_message{
+  z-index: 2;
+}
