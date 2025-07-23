@@ -13,7 +13,6 @@ class Alistadores(models.Model):
     nombre_alistador = models.CharField(max_length=100)
 
     class Meta:
-        managed = False
         db_table = 'alistadores'
         verbose_name = "Alistador"
         verbose_name_plural = "Alistadores"
@@ -28,7 +27,6 @@ class CamposVisiblesEstado(models.Model):
     requerido = models.IntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'campos_visibles_estado'
 
     def __str__(self):
@@ -40,7 +38,6 @@ class Clientes(models.Model):
     nombre_cliente = models.CharField(max_length=255)
 
     class Meta:
-        managed = False
         db_table = 'clientes'
         verbose_name = "Cliente"
         verbose_name_plural = "Clientes"
@@ -53,7 +50,6 @@ class Empacadores(models.Model):
     nombre_empacador = models.CharField(max_length=100)
 
     class Meta:
-        managed = False
         db_table = 'empacadores'
         verbose_name = "Empacador"
         verbose_name_plural = "Empacadores"
@@ -66,7 +62,6 @@ class Enrutadores(models.Model):
     nombre_enrutador = models.CharField(max_length=100)
 
     class Meta:
-        managed = False
         db_table = 'enrutadores'
         verbose_name = "Enrutador"
         verbose_name_plural = "Enrutadores"
@@ -79,7 +74,6 @@ class Transportadoras(models.Model):
     nombre_transportadora = models.CharField(max_length=255)
 
     class Meta:
-        managed = False
         db_table = 'transportadoras'
         verbose_name = "Transportadora"
         verbose_name_plural = "Transportadoras"
@@ -92,7 +86,6 @@ class Vendedores(models.Model):
     nombre_vendedor = models.CharField(max_length=255)
 
     class Meta:
-        managed = False
         db_table = 'vendedores'
         verbose_name = "Vendedor"
         verbose_name_plural = "Vendedores"
@@ -105,7 +98,6 @@ class EstadosPedido(models.Model):
     nombre_estado = models.CharField(max_length=100)
 
     class Meta:
-        managed = False
         db_table = 'estados_pedido'
     
     def __str__(self):
@@ -140,7 +132,6 @@ class Facturas(models.Model):
     id_empacador = models.ForeignKey(Empacadores, models.DO_NOTHING, db_column='id_empacador', blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'facturas'
         verbose_name = "Factura"
         verbose_name_plural = "Facturas"
@@ -162,7 +153,6 @@ class HistorialEstados(models.Model):
     observacion = models.TextField(blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'historial_estados'
         verbose_name = "Historial de Estado"
         verbose_name_plural = "Historiales de Estados"
