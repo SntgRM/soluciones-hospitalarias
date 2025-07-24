@@ -1,7 +1,7 @@
 /* Variables CSS específicas para User */
 .user-management-container {
-  --user-primary-color: #3b82f6;
-  --user-primary-hover: #2563eb;
+  --user-primary-color: #0db30d;
+  --user-primary-hover: #0cb40c;
   --user-primary-light: rgba(59, 130, 246, 0.1);
   --user-success-color: #10b981;
   --user-success-hover: #059669;
