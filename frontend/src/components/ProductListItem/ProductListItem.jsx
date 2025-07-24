@@ -3,7 +3,6 @@ import "./ProductListItem.css"
 import * as Icons from "lucide-react"
 
 const ProductListItem = ({ id, icon, title, description, onEditClick }) => {
-  // Mapeo de iconos FontAwesome a Lucide React
   const iconMap = {
     "fa-building": "Building2",
     "fa-user": "User",

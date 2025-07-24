@@ -56,15 +56,6 @@ const EditProductSidebar = ({ product, onClose, onSave }) => {
                             onChange={(e) => setEditedDescription(e.target.value)}
                         ></textarea>
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="icon">Ícono (clase Font Awesome):</label>
-                        <input
-                            type="text"
-                            id="icon"
-                            value={editedIcon}
-                            onChange={(e) => setEditedIcon(e.target.value)}
-                        />
-                    </div>
                     <div className="form-actions">
                         <button type="submit" className="save-btn">Guardar Cambios</button>
                         <button type="button" className="cancel-btn" onClick={onClose}>Cancelar</button>
