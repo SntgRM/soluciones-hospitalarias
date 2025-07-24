@@ -11,7 +11,7 @@ import Home from "./pages/home/home.jsx";
 import Registro from "./pages/registro/registro.jsx";
 import Products from "./pages/products/products.jsx";
 import Login from "./pages/login/login.jsx";
-import NotFound from "./pages/NotFound/notFound.jsx";
+import NotFound from "./pages/NotFound/NotFound.jsx";
 import User from "./pages/user/user.jsx";
 
 // Componente para rutas protegidas
