@@ -58,7 +58,7 @@
 
 .grid-c-title-icon {
   background: var(--cards-primary-light);
-  border: 1px solid var(--cards-primary-color);
+  border: 1px solid var(--cards-success-color);
   border-radius: var(--cards-border-radius);
   padding: 8px;
   cursor: pointer;
@@ -70,7 +70,7 @@
 }
 
 .grid-c-title-icon:hover {
-  background: var(--cards-primary-color);
+  background: var(--cards-success-color);
   transform: translateY(-1px);
   box-shadow: var(--cards-shadow-md);
 }
