@@ -276,13 +276,7 @@
   margin-bottom: 16px;
 }
 
-.user-avatar {
-  background: linear-gradient(135deg, var(--user-primary-color), var(--user-primary-hover));
-  color: white;
-  padding: 12px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
+
 
 .user-basic-info {
   flex: 1;
