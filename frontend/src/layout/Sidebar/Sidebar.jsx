@@ -115,25 +115,12 @@ const Sidebar = () => {
               ▼
             </span>
           </button>
-
           <div className={`dropdown-menu ${isVentasDropdownOpen ? "open" : ""}`}>
             <ul className="nav-list">
-              {navigationLinks_admin.map((navigationLink) => (
-                <li className="nav-item" key={navigationLink.id}>
-                  {navigationLink.title === "Salir" ? (
-                    <a
-                      href="/login"
-                      onClick={handleLogoutClick}
-                      className="nav-link"
-                    >
-                      <img
-                        src={navigationLink.image}
-                        className="nav-link-icon"
-                        alt={navigationLink.title}
-                      />
-                      <span className="nav-link-text">{navigationLink.title}</span>
-                    </a>
-                  ) : (
+              {navigationLinks_ventas
+                .filter((navigationLink) => navigationLink.title !== "Salir")
+                .map((navigationLink) => (
+                  <li className="nav-item" key={navigationLink.id}>
                     <NavLink
                       to={navigationLink.path}
                       className={({ isActive }) =>
@@ -148,12 +135,9 @@ const Sidebar = () => {
                       />
                       <span className="nav-link-text">{navigationLink.title}</span>
                     </NavLink>
-                  )}
-                </li>
-              ))}
+                  </li>
+                ))}
             </ul>
-
-
           </div>
         </div>
 

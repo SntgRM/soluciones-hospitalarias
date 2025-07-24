@@ -35,7 +35,6 @@ export const navigationLinks_ventas = [
         image: iconsImgs.bookText,
         path: '/notFound'
     },
-    // ... otros enlaces de navegación
 ];
 
 export const navigationLinks_admin = [
