@@ -36,10 +36,8 @@ export default function NotFound() {
           </div>
 
           <h1 className="p404-title">¡Página no encontrada!</h1>
-          <p className="p404-description">
-            Parece que la página que buscas se ha agotado en nuestra farmacia. No te preocupes, tenemos muchas otras
-            opciones disponibles.
-          </p>
+          <p className="p404-description">Oops, la página que estás buscando no existe o ha sido movida. Pero no te preocupes, puedes volver al inicio o explorar otras secciones.</p>
+
 
           <div className="p404-actions">
             <Link to="/" className="p404-btn-primary">

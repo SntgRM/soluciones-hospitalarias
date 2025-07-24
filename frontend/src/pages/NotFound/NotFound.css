@@ -174,7 +174,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
   margin-bottom: 1.5rem;
 }
 
@@ -199,7 +198,7 @@
 }
 
 .pharmacy-404-page .p404-pill-top {
-  width: 120px;
+  width: 90px;
   height: 80px;
   background: linear-gradient(135deg, var(--p404-pill-red), var(--p404-pill-red-dark));
   border-radius: 60px 60px 0 0;
@@ -288,7 +287,7 @@
 }
 
 .pharmacy-404-page .p404-pill-bottom {
-  width: 120px;
+  width: 90px;
   height: 80px;
   background: linear-gradient(135deg, var(--p404-pill-cyan), var(--p404-pill-cyan-dark));
   border-radius: 0 0 60px 60px;
@@ -444,7 +443,7 @@
 
   .pharmacy-404-page .p404-pill-top,
   .pharmacy-404-page .p404-pill-bottom {
-    width: 80px;
+    width: 65px;
     height: 65px;
   }
 
@@ -522,7 +521,7 @@
 
   .pharmacy-404-page .p404-pill-top,
   .pharmacy-404-page .p404-pill-bottom {
-    width: 60px;
+    width: 50px;
     height: 45px;
   }
 
