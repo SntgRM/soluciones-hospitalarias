@@ -141,7 +141,7 @@
 
 /* Estilos comunes para tarjetas */
 .grid-common {
-  background: #ffffff;
+  background: linear-gradient(135deg, #ffffff 0%, var(--home-gray-50) 100%);
   border: 1px solid var(--home-gray-200);
   border-radius: var(--home-border-radius-lg);
   padding: 24px;

@@ -82,8 +82,8 @@ const Home = () => {
                   <Package size={24} />
                 </div>
                 <div className="stat-content">
-                  <span className="stat-number">1,247</span>
-                  <span className="stat-text">Productos</span>
+                  <span className="stat-number">247</span>
+                  <span className="stat-text">Pedidos</span>
                 </div>
               </div>
               <div className="stat-item">
@@ -92,7 +92,7 @@ const Home = () => {
                 </div>
                 <div className="stat-content">
                   <span className="stat-number">89</span>
-                  <span className="stat-text">Ventas Hoy</span>
+                  <span className="stat-text">Entregados hoy</span>
                 </div>
               </div>
               <div className="stat-item">
@@ -100,7 +100,7 @@ const Home = () => {
                   <Users size={24} />
                 </div>
                 <div className="stat-content">
-                  <span className="stat-number">342</span>
+                  <span className="stat-number">43</span>
                   <span className="stat-text">Clientes</span>
                 </div>
               </div>
