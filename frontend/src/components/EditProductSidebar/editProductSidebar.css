@@ -73,6 +73,7 @@
 
 .form-group {
     margin-bottom: 15px;
+    font-family: var(--font-family-main)
 }
 
 .form-group label {
