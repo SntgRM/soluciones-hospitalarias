@@ -1,11 +1,6 @@
-// src/data/data.js
-
-// Asegúrate de importar todas las imágenes o assets que uses en tus datos
-// La ruta es '../utils/images' porque data.js está en src/data/ y utils está en src/
 import { iconsImgs, personsImgs } from '../utils/images'; 
 
-// Exportación de navigationLinks
-export const navigationLinks = [
+export const navigationLinks_bodega = [
     {
         id: 1,
         title: 'Inicio',
@@ -24,14 +19,39 @@ export const navigationLinks = [
         image: iconsImgs.folder,
         path: '/historial'
     },
+    // ... otros enlaces de navegación
+];
+
+export const navigationLinks_ventas = [
     {
-        id: 4,
+        id: 1,
+        title: '#',
+        image: iconsImgs.house, 
+        path: '/notFound'
+    },
+    {
+        id: 2,
+        title: '#',
+        image: iconsImgs.bookText,
+        path: '/notFound'
+    },
+];
+
+export const navigationLinks_admin = [
+    {
+        id: 1,
+        title: 'Usuario',
+        image: iconsImgs.user, 
+        path: './usuario'
+    },
+    {
+        id: 2,
         title: 'Ayuda',
         image: iconsImgs.info,
-        path: '/ayuda'
+        path: './ayuda'
     },
-        {
-        id: 5,
+    {
+        id: 3,
         title: 'Salir',
         image: iconsImgs.door,
         path: '/login'
@@ -39,38 +59,6 @@ export const navigationLinks = [
     // ... otros enlaces de navegación
 ];
 
-// Exportación de transactions
-export const transactions = [
-    {
-        id: 1,
-        image: personsImgs.person_one, 
-        name: "Sarah Parker",
-        date: "23/04/2023",
-        amount: 180.00
-    },
-    {
-        id: 2,
-        image: personsImgs.person_two,
-        name: "Hannah M.",
-        date: "23/04/2023",
-        amount: 50.00
-    },
-    {
-        id: 3,
-        image: personsImgs.person_three,
-        name: "James D.",
-        date: "22/04/2023",
-        amount: 250.00
-    },
-    {
-        id: 4,
-        image: personsImgs.person_four,
-        name: "Emily R.",
-        date: "21/04/2023",
-        amount: 120.00
-    },
-    // ... más transacciones
-];
 
 // Exportación de reportData
 export const reportData = [

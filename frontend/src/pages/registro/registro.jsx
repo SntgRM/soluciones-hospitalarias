@@ -414,7 +414,7 @@ function RegistroPedido() {
 
         {/* Botones de acción */}
         <div className="form-actions">
-          <button type="button" onClick={handleReset} className="btn-secondary" disabled={isSubmitting}>
+          <button type="button" onClick={handleReset} className="btn-secondary-registro" disabled={isSubmitting}>
             <RotateCcw size={18} />
             Limpiar Formulario
           </button>

@@ -23,6 +23,7 @@ import {
   UserIcon,
   Building,
   Hash,
+
 } from "lucide-react"
 
 // Datos de ejemplo
@@ -368,9 +369,6 @@ function User() {
             {filteredUsers.map((user) => (
               <div key={user.id} className="user-card">
                 <div className="user-card-header">
-                  <div className="user-avatar">
-                    <UserIcon size={24} />
-                  </div>
                   <div className="user-basic-info">
                     <h4 className="user-name">{user.nombre}</h4>
                     <p className="user-email">{user.email}</p>

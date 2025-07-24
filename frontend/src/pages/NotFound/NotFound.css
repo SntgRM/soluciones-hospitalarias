@@ -1,265 +1,79 @@
-/* PRELOADER STYLES */
-.preloader {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background: linear-gradient(
+/* ========================================
+   ESTILOS INDEPENDIENTES PARA PÁGINA 404
+   Namespace: .pharmacy-404-page
+   ======================================== */
+
+/* Reset específico para el componente 404 */
+.pharmacy-404-page * {
+  box-sizing: border-box;
+}
+
+.pharmacy-404-page {
+  /* Variables CSS específicas para 404 */
+  --p404-primary-green: #44d15c;
+  --p404-secondary-green: #0d8511;
+  --p404-gradient-bg: linear-gradient(
     90deg,
-    rgb(68, 209, 92) 0%,
+    #44d15c 0%,
     rgba(13, 133, 17, 0.836) 40%,
     rgba(13, 133, 17, 0.836) 60%,
-    rgba(68, 209, 92) 100%
+    #44d15c 100%
   );
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  animation: preloader-fadeout 0.5s ease-in-out 2s forwards;
+  --p404-white: #ffffff;
+  --p404-white-95: rgba(255, 255, 255, 0.95);
+  --p404-white-90: rgba(255, 255, 255, 0.9);
+  --p404-white-80: rgba(255, 255, 255, 0.8);
+  --p404-white-70: rgba(255, 255, 255, 0.7);
+  --p404-white-60: rgba(255, 255, 255, 0.6);
+  --p404-white-30: rgba(255, 255, 255, 0.3);
+  --p404-white-20: rgba(255, 255, 255, 0.2);
+  --p404-white-10: rgba(255, 255, 255, 0.1);
+  --p404-black-50: rgba(0, 0, 0, 0.5);
+  --p404-black-30: rgba(0, 0, 0, 0.3);
+  --p404-black-20: rgba(0, 0, 0, 0.2);
+  --p404-black-10: rgba(0, 0, 0, 0.1);
+  --p404-text-dark: #2d3748;
+  --p404-text-medium: #4a5568;
+  --p404-blue-primary: #667eea;
+  --p404-blue-hover: #2563eb;
+  --p404-pill-red: #ff6b6b;
+  --p404-pill-red-dark: #ee5a52;
+  --p404-pill-cyan: #4ecdc4;
+  --p404-pill-cyan-dark: #44a08d;
+  --p404-pill-yellow: #feca57;
+  --p404-pill-pink: #ff9ff3;
+  --p404-pill-blue: #48dbfb;
+  --p404-pill-blue-dark: #0abde3;
+  --p404-pill-green: #1dd1a1;
+  --p404-pill-green-dark: #10ac84;
+  --p404-pill-purple: #fd79a8;
+  --p404-pill-purple-dark: #e84393;
+  --p404-shadow-light: 0 4px 15px rgba(255, 107, 107, 0.4);
+  --p404-shadow-cyan: 0 4px 15px rgba(78, 205, 196, 0.4);
+  --p404-shadow-main: 0 20px 40px rgba(0, 0, 0, 0.1);
+  --p404-shadow-button: 0 4px 15px rgba(10, 139, 10, 0.4);
+  --p404-shadow-button-hover: 0 6px 20px rgba(102, 126, 234, 0.6);
+  --p404-transition: all 0.3s ease;
+  --p404-font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-@keyframes preloader-fadeout {
-  to {
-    opacity: 0;
-    visibility: hidden;
-  }
-}
-
-.preloader-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-}
-
-.horizontal-pill {
-  position: relative;
-  width: 200px;
-  height: 80px;
-  display: flex;
-  align-items: center;
-}
-
-.pill-left {
-  width: 100px;
-  height: 80px;
-  background: linear-gradient(135deg, #ff6b6b, #ee5a52);
-  border-radius: 40px 0 0 40px;
-  position: relative;
-  z-index: 2;
-  animation: pill-open-left 1.5s ease-in-out forwards;
-  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
-}
-
-.pill-right {
-  width: 100px;
-  height: 80px;
-  background: linear-gradient(135deg, #4ecdc4, #44a08d);
-  border-radius: 0 40px 40px 0;
-  position: relative;
-  z-index: 2;
-  animation: pill-open-right 1.5s ease-in-out forwards;
-  box-shadow: 0 4px 15px rgba(78, 205, 196, 0.4);
-}
-
-@keyframes pill-open-left {
-  0% {
-    transform: translateX(0);
-  }
-  60% {
-    transform: translateX(-15px);
-  }
-  100% {
-    transform: translateX(-25px);
-  }
-}
-
-@keyframes pill-open-right {
-  0% {
-    transform: translateX(0);
-  }
-  60% {
-    transform: translateX(15px);
-  }
-  100% {
-    transform: translateX(25px);
-  }
-}
-
-.pill-powder-explosion {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100px;
-  height: 60px;
-  z-index: 1;
-}
-
-.powder-particle {
-  position: absolute;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 50%;
-  opacity: 0;
-}
-
-.particle-1 {
-  width: 8px;
-  height: 8px;
-  top: 20px;
-  left: 40px;
-  animation: powder-explosion-1 1.5s ease-out 0.8s forwards;
-}
-
-.particle-2 {
-  width: 6px;
-  height: 6px;
-  top: 30px;
-  left: 50px;
-  animation: powder-explosion-2 1.5s ease-out 0.9s forwards;
-}
-
-.particle-3 {
-  width: 10px;
-  height: 10px;
-  top: 25px;
-  left: 35px;
-  animation: powder-explosion-3 1.5s ease-out 1s forwards;
-}
-
-.particle-4 {
-  width: 5px;
-  height: 5px;
-  top: 35px;
-  left: 45px;
-  animation: powder-explosion-4 1.5s ease-out 1.1s forwards;
-}
-
-.particle-5 {
-  width: 7px;
-  height: 7px;
-  top: 15px;
-  left: 55px;
-  animation: powder-explosion-5 1.5s ease-out 1.2s forwards;
-}
-
-@keyframes powder-explosion-1 {
-  0% {
-    opacity: 0;
-    transform: translate(0, 0) scale(0);
-  }
-  50% {
-    opacity: 1;
-    transform: translate(-20px, -15px) scale(1.2);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-40px, -30px) scale(0.5);
-  }
-}
-
-@keyframes powder-explosion-2 {
-  0% {
-    opacity: 0;
-    transform: translate(0, 0) scale(0);
-  }
-  50% {
-    opacity: 1;
-    transform: translate(15px, -20px) scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(30px, -40px) scale(0.3);
-  }
-}
-
-@keyframes powder-explosion-3 {
-  0% {
-    opacity: 0;
-    transform: translate(0, 0) scale(0);
-  }
-  50% {
-    opacity: 1;
-    transform: translate(-10px, 20px) scale(1.5);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-25px, 40px) scale(0.2);
-  }
-}
-
-@keyframes powder-explosion-4 {
-  0% {
-    opacity: 0;
-    transform: translate(0, 0) scale(0);
-  }
-  50% {
-    opacity: 1;
-    transform: translate(25px, 10px) scale(0.8);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(50px, 20px) scale(0.1);
-  }
-}
-
-@keyframes powder-explosion-5 {
-  0% {
-    opacity: 0;
-    transform: translate(0, 0) scale(0);
-  }
-  50% {
-    opacity: 1;
-    transform: translate(10px, -25px) scale(1.1);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(20px, -50px) scale(0.4);
-  }
-}
-
-.loading-text {
-  color: white;
-  font-size: 1.5rem;
-  font-weight: 600;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  animation: loading-pulse 1.5s ease-in-out infinite;
-}
-
-@keyframes loading-pulse {
-  0%,
-  100% {
-    opacity: 0.7;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.05);
-  }
-}
-
-/* EXISTING STYLES - NOT FOUND PAGE */
-.not-found {
+/* Contenedor principal de la página 404 */
+.pharmacy-404-page.not-found-wrapper {
   width: 100%;
   min-height: 100vh;
-  background: #50eb6a;
-  background: linear-gradient(
-    90deg,
-    rgb(68, 209, 92) 0%,
-    rgba(13, 133, 17, 0.836) 40%,
-    rgba(13, 133, 17, 0.836) 60%,
-    rgba(68, 209, 92) 100%
-  );
+  background: var(--p404-gradient-bg);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--p404-font-family);
   position: relative;
-  animation: page-fadein 0.8s ease-in-out;
+  overflow: hidden;
+  animation: pharmacy-404-page-fadein 0.8s ease-in-out;
+  margin: 0;
+  padding: 0;
 }
 
-@keyframes page-fadein {
+@keyframes pharmacy-404-page-fadein {
   from {
     opacity: 0;
     transform: translateY(20px);
@@ -270,7 +84,8 @@
   }
 }
 
-.container {
+/* Contenedor interno */
+.pharmacy-404-page .p404-container {
   width: 100%;
   max-width: 1200px;
   padding: 2rem;
@@ -279,7 +94,8 @@
   z-index: 2;
 }
 
-.floating-pills {
+/* Píldoras flotantes decorativas */
+.pharmacy-404-page .p404-floating-pills {
   position: absolute;
   top: 0;
   left: 0;
@@ -289,51 +105,51 @@
   z-index: 1;
 }
 
-.pill {
+.pharmacy-404-page .p404-pill {
   position: absolute;
   width: 20px;
   height: 40px;
-  background: linear-gradient(to bottom, #ff6b6b 50%, #4ecdc4 50%);
+  background: linear-gradient(to bottom, var(--p404-pill-red) 50%, var(--p404-pill-cyan) 50%);
   border-radius: 20px;
   opacity: 0.3;
-  animation: float 6s ease-in-out infinite;
+  animation: pharmacy-404-float 6s ease-in-out infinite;
 }
 
-.pill-1 {
+.pharmacy-404-page .p404-pill-1 {
   top: 10%;
   left: 10%;
   animation-delay: 0s;
 }
 
-.pill-2 {
+.pharmacy-404-page .p404-pill-2 {
   top: 20%;
   right: 15%;
   animation-delay: 1s;
-  background: linear-gradient(to bottom, #feca57 50%, #ff9ff3 50%);
+  background: linear-gradient(to bottom, var(--p404-pill-yellow) 50%, var(--p404-pill-pink) 50%);
 }
 
-.pill-3 {
+.pharmacy-404-page .p404-pill-3 {
   bottom: 30%;
   left: 20%;
   animation-delay: 2s;
-  background: linear-gradient(to bottom, #48dbfb 50%, #0abde3 50%);
+  background: linear-gradient(to bottom, var(--p404-pill-blue) 50%, var(--p404-pill-blue-dark) 50%);
 }
 
-.pill-4 {
+.pharmacy-404-page .p404-pill-4 {
   bottom: 20%;
   right: 10%;
   animation-delay: 3s;
-  background: linear-gradient(to bottom, #1dd1a1 50%, #10ac84 50%);
+  background: linear-gradient(to bottom, var(--p404-pill-green) 50%, var(--p404-pill-green-dark) 50%);
 }
 
-.pill-5 {
+.pharmacy-404-page .p404-pill-5 {
   top: 50%;
   left: 5%;
   animation-delay: 4s;
-  background: linear-gradient(to bottom, #fd79a8 50%, #e84393 50%);
+  background: linear-gradient(to bottom, var(--p404-pill-purple) 50%, var(--p404-pill-purple-dark) 50%);
 }
 
-@keyframes float {
+@keyframes pharmacy-404-float {
   0%,
   100% {
     transform: translateY(0px) rotate(0deg);
@@ -343,16 +159,18 @@
   }
 }
 
-.content {
-  background: rgba(255, 255, 255, 0.95);
+/* Contenido principal */
+.pharmacy-404-page .p404-content {
+  background: var(--p404-white-95);
   backdrop-filter: blur(10px);
   border-radius: 20px;
   padding: 2rem 1.5rem;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: var(--p404-shadow-main);
+  border: 1px solid var(--p404-white-20);
 }
 
-.error-code {
+/* Código de error 404 */
+.pharmacy-404-page .p404-error-code {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -360,14 +178,18 @@
   margin-bottom: 1.5rem;
 }
 
-.four {
+.pharmacy-404-page .p404-four {
   font-size: 6rem;
   font-weight: 900;
-  color: #2d3748;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  color: var(--p404-text-dark);
+  text-shadow: 2px 2px 4px var(--p404-black-10);
+  font-family: var(--p404-font-family);
+  line-height: 1;
+  margin: 0;
 }
 
-.pill-zero {
+/* Píldora como "0" */
+.pharmacy-404-page .p404-pill-zero {
   position: relative;
   width: 120px;
   height: 180px;
@@ -376,18 +198,18 @@
   align-items: center;
 }
 
-.pill-top {
+.pharmacy-404-page .p404-pill-top {
   width: 120px;
   height: 80px;
-  background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+  background: linear-gradient(135deg, var(--p404-pill-red), var(--p404-pill-red-dark));
   border-radius: 60px 60px 0 0;
   position: relative;
-  box-shadow: inset 0 -10px 20px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 -10px 20px var(--p404-black-10), 0 2px 8px var(--p404-black-20);
   transform: translateY(5px);
   overflow: hidden;
 }
 
-.pill-gap {
+.pharmacy-404-page .p404-pill-gap {
   width: 120px;
   height: 20px;
   position: relative;
@@ -396,40 +218,40 @@
   justify-content: center;
 }
 
-.powder-spill {
+.pharmacy-404-page .p404-powder-spill {
   width: 80px;
   height: 8px;
-  background: radial-gradient(ellipse, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.6) 50%, transparent 100%);
+  background: radial-gradient(ellipse, var(--p404-white-90) 0%, var(--p404-white-60) 50%, transparent 100%);
   border-radius: 50%;
   position: relative;
-  animation: powder-float 3s ease-in-out infinite;
+  animation: pharmacy-404-powder-float 3s ease-in-out infinite;
 }
 
-.powder-spill::before {
+.pharmacy-404-page .p404-powder-spill::before {
   content: "";
   position: absolute;
   width: 4px;
   height: 4px;
-  background: rgba(255, 255, 255, 0.8);
+  background: var(--p404-white-80);
   border-radius: 50%;
   top: -2px;
   left: 20%;
-  animation: particle-1 2s ease-in-out infinite;
+  animation: pharmacy-404-particle-1 2s ease-in-out infinite;
 }
 
-.powder-spill::after {
+.pharmacy-404-page .p404-powder-spill::after {
   content: "";
   position: absolute;
   width: 3px;
   height: 3px;
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--p404-white-70);
   border-radius: 50%;
   top: -1px;
   right: 25%;
-  animation: particle-2 2.5s ease-in-out infinite;
+  animation: pharmacy-404-particle-2 2.5s ease-in-out infinite;
 }
 
-@keyframes powder-float {
+@keyframes pharmacy-404-powder-float {
   0%,
   100% {
     opacity: 0.8;
@@ -441,7 +263,7 @@
   }
 }
 
-@keyframes particle-1 {
+@keyframes pharmacy-404-particle-1 {
   0%,
   100% {
     transform: translateY(0px) translateX(0px);
@@ -453,7 +275,7 @@
   }
 }
 
-@keyframes particle-2 {
+@keyframes pharmacy-404-particle-2 {
   0%,
   100% {
     transform: translateY(0px) translateX(0px);
@@ -465,66 +287,69 @@
   }
 }
 
-.pill-bottom {
+.pharmacy-404-page .p404-pill-bottom {
   width: 120px;
   height: 80px;
-  background: linear-gradient(135deg, #4ecdc4, #44a08d);
+  background: linear-gradient(135deg, var(--p404-pill-cyan), var(--p404-pill-cyan-dark));
   border-radius: 0 0 60px 60px;
   position: relative;
-  box-shadow: inset 0 10px 20px rgba(0, 0, 0, 0.1), 0 -2px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 10px 20px var(--p404-black-10), 0 -2px 8px var(--p404-black-20);
   transform: translateY(-5px);
 }
 
-.pill-powder {
+.pharmacy-404-page .p404-pill-powder {
   position: absolute;
   bottom: -5px;
   left: 50%;
   transform: translateX(-50%);
   width: 60px;
   height: 15px;
-  background: radial-gradient(ellipse, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.4) 70%, transparent 100%);
+  background: radial-gradient(ellipse, var(--p404-white-80) 0%, var(--p404-white-40) 70%, transparent 100%);
   border-radius: 50%;
   opacity: 0.9;
 }
 
-.pill-top::before,
-.pill-bottom::before {
+.pharmacy-404-page .p404-pill-top::before,
+.pharmacy-404-page .p404-pill-bottom::before {
   content: "";
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
   width: 80px;
   height: 2px;
-  background: rgba(255, 255, 255, 0.3);
+  background: var(--p404-white-30);
 }
 
-.pill-top::before {
+.pharmacy-404-page .p404-pill-top::before {
   bottom: 10px;
 }
 
-.pill-bottom::before {
+.pharmacy-404-page .p404-pill-bottom::before {
   top: 10px;
 }
 
-.title {
+/* Título y descripción */
+.pharmacy-404-page .p404-title {
   font-size: 2rem;
   font-weight: 700;
-  color: #2d3748;
-  margin-bottom: 1rem;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  color: var(--p404-text-dark);
+  margin: 0 0 1rem 0;
+  text-shadow: 1px 1px 2px var(--p404-black-10);
+  font-family: var(--p404-font-family);
+  line-height: 1.2;
 }
 
-.description {
+.pharmacy-404-page .p404-description {
   font-size: 1.2rem;
-  color: #4a5568;
-  margin-bottom: 2rem;
+  color: var(--p404-text-medium);
+  margin: 0 auto 2rem auto;
   line-height: 1.6;
   max-width: 500px;
-  margin-left: auto;
-  margin-right: auto;
+  font-family: var(--p404-font-family);
 }
 
-.actions {
+/* Acciones/Botones */
+.pharmacy-404-page .p404-actions {
   display: flex;
   gap: 1rem;
   justify-content: center;
@@ -532,214 +357,347 @@
   margin-bottom: 1.5rem;
 }
 
-.btn-primary-404 {
+.pharmacy-404-page .p404-btn-primary {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   background: linear-gradient(135deg, #3dc749, #12941c);
-  color: white;
+  color: var(--p404-white);
   padding: 1rem 2rem;
   border-radius: 50px;
   text-decoration: none;
   font-weight: 600;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(10, 139, 10, 0.4);
+  transition: var(--p404-transition);
+  box-shadow: var(--p404-shadow-button);
+  font-family: var(--p404-font-family);
+  border: none;
+  cursor: pointer;
 }
 
-.btn-primary-404:hover {
+.pharmacy-404-page .p404-btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
-}
-
-.btn-secondary {
-  display: inline-flex;
-  align-items: center;
-  background: transparent;
-  color: #667eea;
-  padding: 1rem 2rem;
-  border: 2px solid #667eea;
-  border-radius: 50px;
+  box-shadow: var(--p404-shadow-button-hover);
   text-decoration: none;
-  font-weight: 600;
-  transition: all 0.3s ease;
+  color: var(--p404-white);
 }
 
-.btn-secondary:hover {
-  background: #667eea;
-  color: white;
-  transform: translateY(-2px);
+.pharmacy-404-page .p404-btn-primary:focus {
+  outline: 2px solid var(--p404-white-50);
+  outline-offset: 2px;
 }
 
-.icon {
+.pharmacy-404-page .p404-btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Icono dentro del botón */
+.pharmacy-404-page .p404-icon {
   width: 20px;
   height: 20px;
   stroke-width: 2;
+  flex-shrink: 0;
 }
 
-.medical-icons {
+/* Iconos médicos decorativos */
+.pharmacy-404-page .p404-medical-icons {
   display: flex;
   justify-content: center;
   gap: 2rem;
   opacity: 0.3;
 }
 
-.stethoscope,
-.cross {
+.pharmacy-404-page .p404-stethoscope,
+.pharmacy-404-page .p404-cross {
   width: 40px;
   height: 40px;
-  color: #667eea;
+  color: var(--p404-blue-primary);
 }
 
-.stethoscope svg,
-.cross svg {
+.pharmacy-404-page .p404-stethoscope svg,
+.pharmacy-404-page .p404-cross svg {
   width: 100%;
   height: 100%;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .horizontal-pill {
-    width: 150px;
-    height: 60px;
+/* ========================================
+   RESPONSIVE DESIGN INDEPENDIENTE
+   ======================================== */
+
+/* Tablets */
+@media screen and (max-width: 768px) {
+  .pharmacy-404-page .p404-container {
+    padding: 1.5rem;
   }
 
-  .pill-left,
-  .pill-right {
-    width: 75px;
-    height: 60px;
+  .pharmacy-404-page .p404-content {
+    padding: 1.5rem 1rem;
   }
 
-  .pill-left {
-    border-radius: 30px 0 0 30px;
-  }
-
-  .pill-right {
-    border-radius: 0 30px 30px 0;
-  }
-
-  .loading-text {
-    font-size: 1.2rem;
-  }
-
-  .four {
+  .pharmacy-404-page .p404-four {
     font-size: 3.5rem;
   }
 
-  .pill-zero {
+  .pharmacy-404-page .p404-pill-zero {
     width: 80px;
     height: 150px;
   }
 
-  .pill-top,
-  .pill-bottom {
+  .pharmacy-404-page .p404-pill-top,
+  .pharmacy-404-page .p404-pill-bottom {
     width: 80px;
     height: 65px;
   }
 
-  .pill-gap {
+  .pharmacy-404-page .p404-pill-gap {
     width: 80px;
     height: 15px;
   }
 
-  .powder-spill {
+  .pharmacy-404-page .p404-powder-spill {
     width: 60px;
     height: 6px;
   }
 
-  .pill-top {
+  .pharmacy-404-page .p404-pill-top {
     border-radius: 40px 40px 0 0;
   }
 
-  .pill-bottom {
+  .pharmacy-404-page .p404-pill-bottom {
     border-radius: 0 0 40px 40px;
   }
 
-  .title {
-    font-size: 2rem;
+  .pharmacy-404-page .p404-title {
+    font-size: 1.75rem;
   }
 
-  .description {
+  .pharmacy-404-page .p404-description {
     font-size: 1rem;
   }
 
-  .actions {
+  .pharmacy-404-page .p404-actions {
     flex-direction: column;
     align-items: center;
   }
 
-  .btn-primary-404,
-  .btn-secondary {
+  .pharmacy-404-page .p404-btn-primary {
     width: 100%;
     max-width: 300px;
   }
+
+  .pharmacy-404-page .p404-medical-icons {
+    gap: 1.5rem;
+  }
+
+  .pharmacy-404-page .p404-stethoscope,
+  .pharmacy-404-page .p404-cross {
+    width: 32px;
+    height: 32px;
+  }
 }
 
-@media (max-width: 480px) {
-  .horizontal-pill {
-    width: 120px;
-    height: 50px;
-  }
-
-  .pill-left,
-  .pill-right {
-    width: 60px;
-    height: 50px;
-  }
-
-  .pill-left {
-    border-radius: 25px 0 0 25px;
-  }
-
-  .pill-right {
-    border-radius: 0 25px 25px 0;
-  }
-
-  .loading-text {
-    font-size: 1rem;
-  }
-
-  .container {
+/* Móviles */
+@media screen and (max-width: 480px) {
+  .pharmacy-404-page .p404-container {
     padding: 1rem;
   }
 
-  .content {
-    padding: 2rem 1rem;
+  .pharmacy-404-page .p404-content {
+    padding: 1.5rem 0.75rem;
+    border-radius: 16px;
   }
 
-  .error-code {
+  .pharmacy-404-page .p404-error-code {
     gap: 0.5rem;
+    margin-bottom: 1rem;
   }
 
-  .four {
+  .pharmacy-404-page .p404-four {
     font-size: 2.5rem;
   }
 
-  .pill-zero {
+  .pharmacy-404-page .p404-pill-zero {
     width: 60px;
     height: 110px;
   }
 
-  .pill-top,
-  .pill-bottom {
+  .pharmacy-404-page .p404-pill-top,
+  .pharmacy-404-page .p404-pill-bottom {
     width: 60px;
     height: 45px;
   }
 
-  .pill-gap {
+  .pharmacy-404-page .p404-pill-gap {
     width: 60px;
     height: 12px;
   }
 
-  .powder-spill {
+  .pharmacy-404-page .p404-powder-spill {
     width: 45px;
     height: 5px;
   }
 
-  .pill-top {
+  .pharmacy-404-page .p404-pill-top {
     border-radius: 30px 30px 0 0;
   }
 
-  .pill-bottom {
+  .pharmacy-404-page .p404-pill-bottom {
     border-radius: 0 0 30px 30px;
+  }
+
+  .pharmacy-404-page .p404-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .pharmacy-404-page .p404-description {
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .pharmacy-404-page .p404-btn-primary {
+    padding: 0.875rem 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  .pharmacy-404-page .p404-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .pharmacy-404-page .p404-medical-icons {
+    gap: 1rem;
+  }
+
+  .pharmacy-404-page .p404-stethoscope,
+  .pharmacy-404-page .p404-cross {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+/* Móviles muy pequeños */
+@media screen and (max-width: 360px) {
+  .pharmacy-404-page .p404-container {
+    padding: 0.75rem;
+  }
+
+  .pharmacy-404-page .p404-content {
+    padding: 1.25rem 0.5rem;
+  }
+
+  .pharmacy-404-page .p404-four {
+    font-size: 2rem;
+  }
+
+  .pharmacy-404-page .p404-pill-zero {
+    width: 50px;
+    height: 90px;
+  }
+
+  .pharmacy-404-page .p404-pill-top,
+  .pharmacy-404-page .p404-pill-bottom {
+    width: 50px;
+    height: 35px;
+  }
+
+  .pharmacy-404-page .p404-pill-gap {
+    width: 50px;
+    height: 10px;
+  }
+
+  .pharmacy-404-page .p404-powder-spill {
+    width: 35px;
+    height: 4px;
+  }
+
+  .pharmacy-404-page .p404-pill-top {
+    border-radius: 25px 25px 0 0;
+  }
+
+  .pharmacy-404-page .p404-pill-bottom {
+    border-radius: 0 0 25px 25px;
+  }
+
+  .pharmacy-404-page .p404-title {
+    font-size: 1.25rem;
+  }
+
+  .pharmacy-404-page .p404-description {
+    font-size: 0.8rem;
+  }
+
+  .pharmacy-404-page .p404-btn-primary {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.8rem;
+  }
+
+  .pharmacy-404-page .p404-icon {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* Landscape en móviles */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+  .pharmacy-404-page .p404-container {
+    padding: 1rem;
+  }
+
+  .pharmacy-404-page .p404-content {
+    padding: 1rem;
+  }
+
+  .pharmacy-404-page .p404-four {
+    font-size: 2.5rem;
+  }
+
+  .pharmacy-404-page .p404-pill-zero {
+    width: 60px;
+    height: 100px;
+  }
+
+  .pharmacy-404-page .p404-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .pharmacy-404-page .p404-description {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  .pharmacy-404-page .p404-medical-icons {
+    display: none;
+  }
+}
+
+/* Estados de accesibilidad */
+.pharmacy-404-page .p404-btn-primary:focus-visible {
+  outline: 3px solid var(--p404-white);
+  outline-offset: 2px;
+}
+
+/* Reducir movimiento para usuarios que lo prefieren */
+@media (prefers-reduced-motion: reduce) {
+  .pharmacy-404-page .p404-pill,
+  .pharmacy-404-page .p404-powder-spill,
+  .pharmacy-404-page .p404-powder-spill::before,
+  .pharmacy-404-page .p404-powder-spill::after {
+    animation: none;
+  }
+
+  .pharmacy-404-page {
+    animation: none;
+  }
+}
+
+/* Mejoras de contraste para modo alto contraste */
+@media (prefers-contrast: high) {
+  .pharmacy-404-page .p404-content {
+    border: 2px solid var(--p404-text-dark);
+  }
+
+  .pharmacy-404-page .p404-btn-primary {
+    border: 2px solid var(--p404-text-dark);
   }
 }

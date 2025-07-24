@@ -1,7 +1,7 @@
 /* Variables CSS */
 :root {
-  --primary-color: #3b82f6;
-  --primary-hover: #2563eb;
+  --primary-color: #0db30d;
+  --primary-hover: #0cb40c;
   --primary-light: rgba(59, 130, 246, 0.1);
   --success-color: #10b981;
   --success-hover: #059669;
@@ -251,7 +251,7 @@
 }
 
 .btn-primary,
-.btn-secondary {
+.btn-secondary-registro {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -288,19 +288,19 @@
   transform: none;
 }
 
-.btn-secondary {
+.btn-secondary-registro {
   background: #ffffff;
   color: var(--gray-700);
   border-color: var(--gray-300);
 }
 
-.btn-secondary:hover:not(:disabled) {
+.btn-secondary-registro:hover:not(:disabled) {
   background: var(--gray-50);
   border-color: var(--gray-400);
   transform: translateY(-1px);
 }
 
-.btn-secondary:disabled {
+.btn-secondary-registro:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
@@ -415,7 +415,7 @@
   }
 
   .btn-primary,
-  .btn-secondary {
+  .btn-secondary-registro {
     width: 100%;
   }
 }
