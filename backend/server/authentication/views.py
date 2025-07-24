@@ -1,9 +1,22 @@
-from rest_framework import status
+from rest_framework import status, viewsets
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
-from .serializers import UserLoginSerializer, UserRegistrationSerializer
+from .models import User
+from .serializers import UserLoginSerializer, UserRegistrationSerializer, UserSerializer, UserUpdateSerializer
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return UserRegistrationSerializer
+        if self.action == 'partial_update':
+            return UserUpdateSerializer
+        return UserSerializer
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -44,15 +57,3 @@ def profile(request):
             'last_name': request.user.last_name
         }
     })
-
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def create_user(request):
-    if not request.user.is_staff:
-        return Response({'error': 'No tiene permisos para crear usuarios'}, status=status.HTTP_403_FORBIDDEN)
-    
-    serializer = UserRegistrationSerializer(data=request.data)
-    if serializer.is_valid():
-        user = serializer.save()
-        return Response({'message': 'Usuario creado exitosamente'})
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

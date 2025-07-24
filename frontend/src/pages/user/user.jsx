@@ -1,112 +1,24 @@
-"use client"
-
 import { useState, useEffect } from "react"
 import "./User.css"
-import {
-  Users,
-  Search,
-  Edit,
-  Trash2,
-  Eye,
-  EyeOff,
-  Save,
-  X,
-  Filter,
-  UserPlus,
-  Mail,
-  Phone,
-  MapPin,
-  Calendar,
-  Shield,
-  CheckCircle,
-  AlertCircle,
-  UserIcon,
-  Building,
-  Hash,
-
-} from "lucide-react"
-
-// Datos de ejemplo
-const initialUsers = [
-  {
-    id: 1,
-    nombre: "María García",
-    email: "maria.garcia@farmacia.com",
-    telefono: "+57 300 123 4567",
-    rol: "administrador",
-    estado: "activo",
-    fechaCreacion: "2024-01-15",
-    ultimoAcceso: "2024-07-17 10:30 AM",
-    direccion: "Calle 123 #45-67, Bogotá",
-    departamento: "Administración",
-  },
-  {
-    id: 2,
-    nombre: "Juan Pérez",
-    email: "juan.perez@farmacia.com",
-    telefono: "+57 301 234 5678",
-    rol: "farmaceutico",
-    estado: "activo",
-    fechaCreacion: "2024-02-20",
-    ultimoAcceso: "2024-07-17 09:15 AM",
-    direccion: "Carrera 45 #12-34, Medellín",
-    departamento: "Farmacia",
-  },
-  {
-    id: 3,
-    nombre: "Ana Fernández",
-    email: "ana.fernandez@farmacia.com",
-    telefono: "+57 302 345 6789",
-    rol: "vendedor",
-    estado: "inactivo",
-    fechaCreacion: "2024-03-10",
-    ultimoAcceso: "2024-07-15 02:45 PM",
-    direccion: "Avenida 80 #23-45, Cali",
-    departamento: "Ventas",
-  },
-  {
-    id: 4,
-    nombre: "Carlos Rodríguez",
-    email: "carlos.rodriguez@farmacia.com",
-    telefono: "+57 303 456 7890",
-    rol: "inventario",
-    estado: "activo",
-    fechaCreacion: "2024-04-05",
-    ultimoAcceso: "2024-07-16 04:20 PM",
-    direccion: "Calle 67 #89-12, Barranquilla",
-    departamento: "Inventario",
-  },
-  {
-    id: 5,
-    nombre: "Laura Martínez",
-    email: "laura.martinez@farmacia.com",
-    telefono: "+57 304 567 8901",
-    rol: "farmaceutico",
-    estado: "activo",
-    fechaCreacion: "2024-05-12",
-    ultimoAcceso: "2024-07-17 08:00 AM",
-    direccion: "Transversal 34 #56-78, Bucaramanga",
-    departamento: "Farmacia",
-  },
-]
+import { Users, Search, Edit, Trash2, Eye, EyeOff, Save, X, Filter, UserPlus, BadgeDollarSign, Calendar, Shield, Warehouse, Crown, UserIcon, Hash, AtSign } from "lucide-react";
 
 const roles = [
-  { value: "administrador", label: "Administrador", color: "#ef4444" },
-  { value: "farmaceutico", label: "Farmacéutico", color: "#3b82f6" },
-  { value: "vendedor", label: "Vendedor", color: "#10b981" },
-  { value: "inventario", label: "Inventario", color: "#f59e0b" },
+{ value: "administrador", label: "Administrador", color: "#f59e0b" },
+  { value: "bodega", label: "Bodega", color: "#3b82f6" },
+  { value: "ventas", label: "Ventas", color: "#ef4444" },
 ]
 
 const departamentos = ["Administración", "Farmacia", "Ventas", "Inventario", "Recursos Humanos", "Contabilidad"]
 
+import { getUsers, createUser, updateUser, deleteUser } from "../../services/api"
+
 function User() {
-  const [users, setUsers] = useState(initialUsers)
-  const [filteredUsers, setFilteredUsers] = useState(initialUsers)
+  const [users, setUsers] = useState([])
+  const [filteredUsers, setFilteredUsers] = useState([])
   const [searchTerm, setSearchTerm] = useState("")
   const [filterRole, setFilterRole] = useState("todos")
-  const [filterStatus, setFilterStatus] = useState("todos")
   const [showModal, setShowModal] = useState(false)
-  const [modalMode, setModalMode] = useState("create") // create, edit, view
+  const [modalMode, setModalMode] = useState("create")
   const [selectedUser, setSelectedUser] = useState(null)
   const [showPassword, setShowPassword] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -114,33 +26,39 @@ function User() {
   const [userToDelete, setUserToDelete] = useState(null)
 
   const [formData, setFormData] = useState({
-    nombre: "",
-    apellido: "",
-    email: "",
-    telefono: "",
-    rol: "vendedor",
-    estado: "activo",
-    direccion: "",
-    departamento: "",
+    username: "",
+    first_name: "",
+    role: "ventas",
     password: "",
   })
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const data = await getUsers();
+        setUsers(data);
+        setFilteredUsers(data);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+    fetchUsers();
+  }, []);
 
   // Filtrar usuarios
   useEffect(() => {
     const filtered = users.filter((user) => {
       const matchesSearch =
-        user.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.telefono.includes(searchTerm)
+        user.first_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.id.toString().includes(searchTerm)
 
-      const matchesRole = filterRole === "todos" || user.rol === filterRole
-      const matchesStatus = filterStatus === "todos" || user.estado === filterStatus
+      const matchesRole = filterRole === "todos" || user.role === filterRole
 
-      return matchesSearch && matchesRole && matchesStatus
+      return matchesSearch && matchesRole
     })
 
     setFilteredUsers(filtered)
-  }, [users, searchTerm, filterRole, filterStatus])
+  }, [users, searchTerm, filterRole])
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -149,14 +67,8 @@ function User() {
 
   const resetForm = () => {
     setFormData({
-      nombre: "",
-      apellido: "",
-      email: "",
-      telefono: "",
-      rol: "vendedor",
-      estado: "activo",
-      direccion: "",
-      departamento: "",
+      first_name: "",
+      role: "bodega",
       password: "",
     })
   }
@@ -168,15 +80,8 @@ function User() {
 
     if (mode === "edit" && user) {
       setFormData({
-        nombre: user.nombre.split(" ")[0] || "",
-        apellido: user.nombre.split(" ").slice(1).join(" ") || "",
-        email: user.email,
-        telefono: user.telefono,
-        rol: user.rol,
-        estado: user.estado,
-        direccion: user.direccion,
-        departamento: user.departamento,
-        password: "",
+        first_name: user.first_name,
+        role: user.role,
       })
     } else if (mode === "create") {
       resetForm()
@@ -194,34 +99,26 @@ function User() {
     e.preventDefault()
     setIsSubmitting(true)
 
-    // Simular API call
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-
-    if (modalMode === "create") {
-      const newUser = {
-        id: Date.now(),
-        ...formData,
-        nombre: `${formData.nombre} ${formData.apellido}`.trim(),
-        fechaCreacion: new Date().toISOString().split("T")[0],
-        ultimoAcceso: "Nunca",
+    try {
+      if (modalMode === "create") {
+        const newUser = await createUser(formData);
+        setUsers((prev) => [...prev, newUser]);
+        window.location.reload();
+      } else if (modalMode === "edit") {
+        const updatedUser = await updateUser(selectedUser.id, formData);
+        setUsers((prev) =>
+          prev.map((user) =>
+            user.id === selectedUser.id ? updatedUser : user
+          )
+        );
+        window.location.reload();
       }
-      setUsers((prev) => [...prev, newUser])
-    } else if (modalMode === "edit") {
-      setUsers((prev) =>
-        prev.map((user) =>
-          user.id === selectedUser.id
-            ? {
-                ...user,
-                ...formData,
-                nombre: `${formData.nombre} ${formData.apellido}`.trim(),
-              }
-            : user,
-        ),
-      )
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    } finally {
+      setIsSubmitting(false)
+      closeModal()
     }
-
-    setIsSubmitting(false)
-    closeModal()
   }
 
   const handleDelete = (user) => {
@@ -232,13 +129,16 @@ function User() {
   const confirmDelete = async () => {
     setIsSubmitting(true)
 
-    // Simular API call
-    await new Promise((resolve) => setTimeout(resolve, 800))
-
-    setUsers((prev) => prev.filter((user) => user.id !== userToDelete.id))
-    setShowDeleteConfirm(false)
-    setUserToDelete(null)
-    setIsSubmitting(false)
+    try {
+      await deleteUser(userToDelete.id);
+      setUsers((prev) => prev.filter((user) => user.id !== userToDelete.id));
+    } catch (error) {
+      console.error("Error deleting user:", error);
+    } finally {
+      setShowDeleteConfirm(false)
+      setUserToDelete(null)
+      setIsSubmitting(false)
+    }
   }
 
   const getRoleColor = (role) => {
@@ -249,10 +149,6 @@ function User() {
   const getRoleLabel = (role) => {
     const roleObj = roles.find((r) => r.value === role)
     return roleObj ? roleObj.label : role
-  }
-
-  const getStatusColor = (status) => {
-    return status === "activo" ? "#10b981" : "#ef4444"
   }
 
   return (
@@ -281,7 +177,7 @@ function User() {
           <Search size={18} className="user-search-icon" />
           <input
             type="text"
-            placeholder="Buscar por nombre, email o teléfono..."
+            placeholder="Buscar por nombre o ID..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="user-search-input"
@@ -300,18 +196,6 @@ function User() {
               ))}
             </select>
           </div>
-
-          <div className="user-filter-item">
-            <select
-              value={filterStatus}
-              onChange={(e) => setFilterStatus(e.target.value)}
-              className="user-filter-select"
-            >
-              <option value="todos">Todos los estados</option>
-              <option value="activo">Activos</option>
-              <option value="inactivo">Inactivos</option>
-            </select>
-          </div>
         </div>
       </div>
 
@@ -325,35 +209,35 @@ function User() {
             <span className="user-stat-number">{users.length}</span>
             <span className="user-stat-label">Total Usuarios</span>
           </div>
-        </div>
-
-        <div className="user-stat-card">
-          <div className="user-stat-icon user-stat-active">
-            <CheckCircle size={24} />
-          </div>
-          <div className="user-stat-content">
-            <span className="user-stat-number">{users.filter((u) => u.estado === "activo").length}</span>
-            <span className="user-stat-label">Usuarios Activos</span>
-          </div>
-        </div>
-
-        <div className="user-stat-card">
-          <div className="user-stat-icon user-stat-inactive">
-            <AlertCircle size={24} />
-          </div>
-          <div className="user-stat-content">
-            <span className="user-stat-number">{users.filter((u) => u.estado === "inactivo").length}</span>
-            <span className="user-stat-label">Usuarios Inactivos</span>
-          </div>
-        </div>
+        </div>  
 
         <div className="user-stat-card">
           <div className="user-stat-icon user-stat-admins">
-            <Shield size={24} />
+            <Crown size={24} />
           </div>
           <div className="user-stat-content">
-            <span className="user-stat-number">{users.filter((u) => u.rol === "administrador").length}</span>
+            <span className="user-stat-number">{users.filter((u) => u.role === "administrador").length}</span>
             <span className="user-stat-label">Administradores</span>
+          </div>
+        </div>
+
+        <div className="user-stat-card">
+          <div className="user-stat-icon user-stat-warehouse">
+            <Warehouse size={24} />
+          </div>
+          <div className="user-stat-content">
+            <span className="user-stat-number">{users.filter((u) => u.role === "bodega").length}</span>
+            <span className="user-stat-label">Bodega</span>
+          </div>
+        </div>
+
+        <div className="user-stat-card">
+          <div className="user-stat-icon user-stat-sales">
+            <BadgeDollarSign size={24} />
+          </div>
+          <div className="user-stat-content">
+            <span className="user-stat-number">{users.filter((u) => u.role === "ventas").length}</span>
+            <span className="user-stat-label">Ventas</span>
           </div>
         </div>
       </div>
@@ -369,8 +253,11 @@ function User() {
             {filteredUsers.map((user) => (
               <div key={user.id} className="user-card">
                 <div className="user-card-header">
+                  <div className="user-avatar">
+                    <UserIcon size={24} />
+                  </div>
                   <div className="user-basic-info">
-                    <h4 className="user-name">{user.nombre}</h4>
+                    <h4 className="user-name">{`${user.first_name}`}</h4>
                     <p className="user-email">{user.email}</p>
                   </div>
                   <div className="user-actions">
@@ -398,35 +285,13 @@ function User() {
                   </div>
                 </div>
 
-                <div className="user-card-body">
-                  <div className="user-info-row">
-                    <Phone size={14} />
-                    <span>{user.telefono}</span>
-                  </div>
-                  <div className="user-info-row">
-                    <Building size={14} />
-                    <span>{user.departamento}</span>
-                  </div>
-                  <div className="user-info-row">
-                    <Calendar size={14} />
-                    <span>Último acceso: {user.ultimoAcceso}</span>
-                  </div>
-                </div>
-
                 <div className="user-card-footer">
                   <div
                     className="user-role-badge"
-                    style={{ backgroundColor: `${getRoleColor(user.rol)}15`, color: getRoleColor(user.rol) }}
+                    style={{ backgroundColor: `${getRoleColor(user.role)}15`, color: getRoleColor(user.role) }}
                   >
                     <Shield size={12} />
-                    {getRoleLabel(user.rol)}
-                  </div>
-                  <div
-                    className="user-status-badge"
-                    style={{ backgroundColor: `${getStatusColor(user.estado)}15`, color: getStatusColor(user.estado) }}
-                  >
-                    {user.estado === "activo" ? <CheckCircle size={12} /> : <AlertCircle size={12} />}
-                    {user.estado === "activo" ? "Activo" : "Inactivo"}
+                    {getRoleLabel(user.role)}
                   </div>
                 </div>
               </div>
@@ -442,7 +307,6 @@ function User() {
               onClick={() => {
                 setSearchTerm("")
                 setFilterRole("todos")
-                setFilterStatus("todos")
               }}
             >
               Limpiar filtros
@@ -475,50 +339,22 @@ function User() {
                       <div className="user-detail-item">
                         <UserIcon size={16} />
                         <span className="user-detail-label">Nombre:</span>
-                        <span className="user-detail-value">{selectedUser.nombre}</span>
+                        <span className="user-detail-value">{`${selectedUser.first_name}`}</span>
                       </div>
                       <div className="user-detail-item">
-                        <Mail size={16} />
-                        <span className="user-detail-label">Email:</span>
-                        <span className="user-detail-value">{selectedUser.email}</span>
+                        <UserIcon size={16} />
+                        <span className="user-detail-label">ID:</span>
+                        <span className="user-detail-value">{selectedUser.id}</span>
                       </div>
-                      <div className="user-detail-item">
-                        <Phone size={16} />
-                        <span className="user-detail-label">Teléfono:</span>
-                        <span className="user-detail-value">{selectedUser.telefono}</span>
-                      </div>
-                      <div className="user-detail-item">
-                        <MapPin size={16} />
-                        <span className="user-detail-label">Dirección:</span>
-                        <span className="user-detail-value">{selectedUser.direccion}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="user-detail-section">
-                    <h4>Información Laboral</h4>
-                    <div className="user-detail-grid">
                       <div className="user-detail-item">
                         <Shield size={16} />
                         <span className="user-detail-label">Rol:</span>
-                        <span className="user-detail-value">{getRoleLabel(selectedUser.rol)}</span>
-                      </div>
-                      <div className="user-detail-item">
-                        <Building size={16} />
-                        <span className="user-detail-label">Departamento:</span>
-                        <span className="user-detail-value">{selectedUser.departamento}</span>
-                      </div>
-                      <div className="user-detail-item">
-                        <CheckCircle size={16} />
-                        <span className="user-detail-label">Estado:</span>
-                        <span className="user-detail-value">
-                          {selectedUser.estado === "activo" ? "Activo" : "Inactivo"}
-                        </span>
+                        <span className="user-detail-value">{getRoleLabel(selectedUser.role)}</span>
                       </div>
                       <div className="user-detail-item">
                         <Calendar size={16} />
                         <span className="user-detail-label">Fecha de creación:</span>
-                        <span className="user-detail-value">{selectedUser.fechaCreacion}</span>
+                        <span className="user-detail-value">{new Date(selectedUser.date_joined).toLocaleDateString()}</span>
                       </div>
                     </div>
                   </div>
@@ -529,32 +365,32 @@ function User() {
                     <div className="user-form-group">
                       <label className="user-form-label">
                         <UserIcon size={16} />
-                        Nombre *
+                        Nombre Completo *
                       </label>
                       <input
                         type="text"
-                        name="nombre"
-                        value={formData.nombre}
+                        name="first_name"
+                        value={formData.first_name}
                         onChange={handleInputChange}
                         required
                         className="user-form-input"
-                        placeholder="Ingrese el nombre"
+                        placeholder="Ingrese el nombre completo"
                       />
                     </div>
 
                     <div className="user-form-group">
                       <label className="user-form-label">
-                        <UserIcon size={16} />
-                        Apellido *
+                        <AtSign size={16} />
+                        Nombre de Usuario *
                       </label>
                       <input
                         type="text"
-                        name="apellido"
-                        value={formData.apellido}
+                        name="username"
+                        value={formData.username}
                         onChange={handleInputChange}
                         required
                         className="user-form-input"
-                        placeholder="Ingrese el apellido"
+                        placeholder="Ingrese un nombre de usuario"
                       />
                     </div>
 
@@ -564,8 +400,8 @@ function User() {
                         Rol *
                       </label>
                       <select
-                        name="rol"
-                        value={formData.rol}
+                        name="role"
+                        value={formData.role}
                         onChange={handleInputChange}
                         required
                         className="user-form-select"
@@ -644,7 +480,7 @@ function User() {
             </div>
             <div className="user-delete-modal-body">
               <p>
-                ¿Estás seguro de que deseas eliminar al usuario <strong>{userToDelete?.nombre}</strong>?
+                ¿Estás seguro de que deseas eliminar al usuario <strong>{`${userToDelete?.first_name}`}</strong>?
               </p>
               <p className="user-delete-warning">Esta acción no se puede deshacer.</p>
             </div>
