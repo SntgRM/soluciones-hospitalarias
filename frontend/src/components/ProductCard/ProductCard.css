@@ -1,115 +1,193 @@
-/* src/components/ProductCard/ProductCard.css */
+/* Variables CSS específicas para ProductCard */
+:root {
+  --product-card-primary: #3b82f6;
+  --product-card-primary-hover: #2563eb;
+  --product-card-gray-50: #f9fafb;
+  --product-card-gray-100: #f3f4f6;
+  --product-card-gray-200: #e5e7eb;
+  --product-card-gray-700: #374151;
+  --product-card-gray-800: #1f2937;
+  --product-card-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --product-card-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --product-card-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --product-card-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --product-card-border-radius: 12px;
+  --product-card-border-radius-lg: 16px;
+  --product-card-transition: all 0.3s ease;
+}
 
-/* Contenedor principal de las tarjetas de producto (si hay varios) */
+/* Contenedor de las tarjetas de producto */
 .products-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 30px; /* Espacio entre las tarjetas */
-    justify-content: center;
-    padding: 20px;
-    background-color: #f1f1f1; /* O el color de fondo de tu sección de productos */
-    min-height: 100vh; /* Para que el fondo se vea si hay pocas tarjetas */
-    align-items: center; /* Centra las tarjetas si hay pocas */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+  padding: 0;
 }
 
-
-/* Estilos para la tarjeta individual del producto */
+/* Tarjeta individual del producto */
 .product-card-wrapper {
-    position: relative;
-    width: 300px; /* Ancho de la tarjeta */
-    height: 200px; /* Alto de la tarjeta */
-    margin: 0; /* Ya manejado por el gap del contenedor */
-    /* background: transparent; */ /* La primera slide definirá el color visible */
-    border-radius: 10px; /* Puedes ajustar el radio si lo deseas */
-    overflow: hidden; /* Importante para el efecto de deslizamiento */
-    box-shadow: 0 20px 40px rgba(0,0,0,0.2); /* Sombra inicial, se ajustará en slide2 */
+  position: relative;
+  width: 280px;
+  height: 180px;
+  border-radius: var(--product-card-border-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--product-card-shadow-md);
+  transition: var(--product-card-transition);
+  cursor: pointer;
 }
 
-/* Estilo para el icono dentro de la primera slide */
-.product-card-wrapper .product-icon {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #2c73df; /* Color de fondo del icono */
-    display: flex; /* Centra el icono */
-    align-items: center;
-    justify-content: center;
+.product-card-wrapper:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--product-card-shadow-xl);
 }
 
-.product-card-wrapper .product-icon .fa {
-    font-size: 80px; /* Tamaño del icono */
-    color: #fff; /* Color del icono */
-    transition: 0.5s; /* Transición para el icono si quieres algún efecto adicional */
+/* Slides de la tarjeta */
+.product-slide {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  transition: var(--product-card-transition);
 }
 
-/* Estilos para las slides (caras de la tarjeta) */
-.product-card-wrapper .product-slide {
-    width: 100%; /* Las slides ocupan el 100% del wrapper */
-    height: 100%; /* Las slides ocupan el 100% del wrapper */
-    /* La transición general se podría eliminar aquí o hacerla muy corta si cada slide tiene su propia transición */
-    transition: 0.5s; /* Ajusta o elimina esta si las específicas son suficientes */
-    position: absolute; /* Permite posicionarlas una encima de otra */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-sizing: border-box; /* Asegura que padding no afecte el tamaño total */
+/* Primera slide (icono) */
+.product-slide.product-slide1 {
+  z-index: 2;
+  background: linear-gradient(135deg, var(--product-card-primary), var(--product-card-primary-hover));
+  transform: translateY(0);
 }
 
-.product-card-wrapper .product-slide.product-slide1 {
-    z-index: 1; /* Asegura que la primera slide esté arriba inicialmente */
-    background: #2c73df; /* Color de fondo de la primera slide (igual que el icono) */
-    transform: translateY(0); /* Posición inicial (arriba) */
-    /* TIEMPO DE SLIDE REDUCIDO */
-    transition: .4s ease-in-out; /* Antes .7s, ahora más rápido */
-}
-
-/* Efecto al hacer hover: la primera slide se desliza hacia arriba */
 .product-card-wrapper:hover .product-slide.product-slide1 {
-    transform: translateY(-100%); /* Desliza completamente hacia arriba */
+  transform: translateY(-100%);
 }
 
-.product-card-wrapper .product-slide.product-slide2 {
-    z-index: 0; /* Inicialmente debajo de slide1 */
-    padding: 20px;
-    background: #fff; /* Color de fondo de la segunda slide */
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4); /* Sombra para la slide visible */
-    transform: translateY(100%); /* Posición inicial (abajo, fuera de vista) */
-    /* TIEMPO DE SLIDE REDUCIDO */
-    transition: .5s ease-in-out; /* Antes .8s, ahora más rápido (ligeramente más lento que slide1 para un efecto escalonado sutil) */
-    flex-direction: column; /* Organiza contenido verticalmente */
+/* Icono en la primera slide */
+.product-icon {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Efecto al hacer hover: la segunda slide se desliza hacia su posición */
+.product-icon .fa {
+  font-size: 4rem;
+  color: #ffffff;
+  transition: var(--product-card-transition);
+}
+
+.product-card-wrapper:hover .product-icon .fa {
+  transform: scale(1.1);
+}
+
+/* Segunda slide (contenido) */
+.product-slide.product-slide2 {
+  z-index: 1;
+  padding: 24px;
+  background: #ffffff;
+  border: 1px solid var(--product-card-gray-200);
+  transform: translateY(100%);
+  flex-direction: column;
+  text-align: center;
+  gap: 12px;
+}
+
 .product-card-wrapper:hover .product-slide.product-slide2 {
-    transform: translateY(0); /* Se desliza para ocupar la posición de la tarjeta */
+  transform: translateY(0);
 }
 
-/* Línea decorativa en la segunda slide */
-.product-card-wrapper .product-slide.product-slide2::after {
-    content: "";
-    position: absolute;
-    width: 30px;
-    height: 4px;
-    bottom: 15px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #2c73df; /* Color de la línea */
+/* Línea decorativa */
+.product-slide.product-slide2::after {
+  content: "";
+  position: absolute;
+  width: 40px;
+  height: 3px;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, var(--product-card-primary), var(--product-card-primary-hover));
+  border-radius: 2px;
 }
 
-/* Estilos del contenido de la segunda slide */
-.product-card-wrapper .product-slide.product-slide2 .product-content p {
-    margin: 0;
+/* Contenido de la segunda slide */
+.product-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.product-content h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--product-card-gray-800);
+  line-height: 1.3;
+}
+
+.product-content p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--product-card-gray-700);
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* Media queries */
+@media screen and (max-width: 768px) {
+  .products-container {
+    gap: 16px;
     padding: 0;
-    text-align: center;
-    color: #414141;
+  }
+
+  .product-card-wrapper {
+    width: 260px;
+    height: 160px;
+  }
+
+  .product-icon .fa {
+    font-size: 3rem;
+  }
+
+  .product-slide.product-slide2 {
+    padding: 20px;
+  }
+
+  .product-content h3 {
+    font-size: 1.125rem;
+  }
+
+  .product-content p {
+    font-size: 0.8125rem;
+  }
 }
 
-.product-card-wrapper .product-slide.product-slide2 .product-content h3 {
-    margin: 0 0 10px 0;
-    padding: 0;
-    font-size: 24px;
-    text-align: center;
-    color: #414141;
+@media screen and (max-width: 480px) {
+  .product-card-wrapper {
+    width: 240px;
+    height: 140px;
+  }
+
+  .product-icon .fa {
+    font-size: 2.5rem;
+  }
+
+  .product-slide.product-slide2 {
+    padding: 16px;
+    gap: 8px;
+  }
+
+  .product-content h3 {
+    font-size: 1rem;
+  }
+
+  .product-content p {
+    font-size: 0.75rem;
+  }
 }
