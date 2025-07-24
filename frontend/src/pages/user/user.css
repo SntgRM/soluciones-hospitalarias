@@ -3,8 +3,8 @@
   --user-primary-color: #0db30d;
   --user-primary-hover: #0cb40c;
   --user-primary-light: rgba(59, 130, 246, 0.1);
-  --user-success-color: #10b981;
-  --user-success-hover: #059669;
+  --user-success-color: #104bb9;
+  --user-success-hover: #054496;
   --user-success-light: rgba(16, 185, 129, 0.1);
   --user-warning-color: #f59e0b;
   --user-danger-color: #ef4444;
@@ -193,11 +193,11 @@
   background: linear-gradient(135deg, var(--user-primary-color), var(--user-primary-hover));
 }
 
-.user-stat-active {
+.user-stat-warehouse {
   background: linear-gradient(135deg, var(--user-success-color), var(--user-success-hover));
 }
 
-.user-stat-inactive {
+.user-stat-sales {
   background: linear-gradient(135deg, var(--user-danger-color), var(--user-danger-hover));
 }
 
