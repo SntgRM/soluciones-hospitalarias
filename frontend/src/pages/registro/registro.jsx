@@ -87,37 +87,37 @@ function RegistroPedido() {
     })
   }
 
-  const getEstadoColor = (estado) => {
-    switch (estado) {
-      case "en_alistamiento":
-        return "#f59e0b"
-      case "en_proceso":
-        return "#3b82f6"
-      case "empacado":
-        return "#8b5cf6"
-      case "en_reparto":
-        return "#06b6d4"
-      case "enviado_cliente":
-        return "#10b981"
-      case "enviado_transportadora":
-        return "#ef4444"
-      default:
-        return "#6b7280"
-    }
-  }
+  // const getEstadoColor = (estado) => {
+  //   switch (estado) {
+  //     case "en_alistamiento":
+  //       return "#f59e0b"
+  //     case "en_proceso":
+  //       return "#3b82f6"
+  //     case "empacado":
+  //       return "#8b5cf6"
+  //     case "en_reparto":
+  //       return "#06b6d4"
+  //     case "enviado_cliente":
+  //       return "#10b981"
+  //     case "enviado_transportadora":
+  //       return "#ef4444"
+  //     default:
+  //       return "#6b7280"
+  //   }
+  // }
 
-  const getPrioridadColor = (prioridad) => {
-    switch (prioridad) {
-      case "alta":
-        return "#ef4444"
-      case "media":
-        return "#f59e0b"
-      case "baja":
-        return "#10b981"
-      default:
-        return "#6b7280"
-    }
-  }
+  // const getPrioridadColor = (prioridad) => {
+  //   switch (prioridad) {
+  //     case "alta":
+  //       return "#ef4444"
+  //     case "media":
+  //       return "#f59e0b"
+  //     case "baja":
+  //       return "#10b981"
+  //     default:
+  //       return "#6b7280"
+  //   }
+  // }
 
   if (submitSuccess) {
     return (
@@ -242,7 +242,6 @@ function RegistroPedido() {
                     value={formData.estado}
                     onChange={handleChange}
                     className="form-select"
-                    style={{ borderLeftColor: getEstadoColor(formData.estado) }}
                   >
                     <option value="en_alistamiento">En Alistamiento</option>
                     <option value="en_proceso">En Proceso</option>
@@ -264,7 +263,6 @@ function RegistroPedido() {
                     value={formData.prioridad}
                     onChange={handleChange}
                     className="form-select"
-                    style={{ borderLeftColor: getPrioridadColor(formData.prioridad) }}
                   >
                     <option value="alta">Alta</option>
                     <option value="media">Media</option>
