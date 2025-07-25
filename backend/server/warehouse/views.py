@@ -1,48 +1,211 @@
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Facturas
-from .serializers import FacturaSerializer
+from .models import Pedidos, EstadosPedidos
+from django.db.models import Count
+from .serializers import PedidoSerializer
 
-class FacturaViewAll(APIView):
+# Mostrar todas los pedidos
+class PedidoViewAll(APIView):
     def get(self, request):
-        facturas = Facturas.objects.all()
-        serializer = FacturaSerializer(facturas, many=True)
-        return Response(serializer.data)
+        try:
+            pedidos = Pedidos.objects.all()
 
-class FacturaDetail(APIView):
+            if not pedidos.exists():
+                return Response(
+                    {"mensaje": "No hay pedidos registradas."},
+                    status=status.HTTP_204_NO_CONTENT
+                )
+
+            serializer = PedidoSerializer(pedidos, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response(
+                {
+                    "error": "Ocurrió un error al obtener los pedidos.",
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+# Mostrar los detalles de un pedido específico
+class PedidoDetail(APIView):
     def get(self, request, pk):
         try:
-            factura = Facturas.objects.get(pk=pk)
-            serializer = FacturaSerializer(factura)
-            return Response(serializer.data)
-        except Facturas.DoesNotExist:
-            return Response({'error': 'Factura no encontrada'}, status=404)
+            pedido = Pedidos.objects.get(pk=pk)
+            serializer = PedidoSerializer(pedido)
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
-class FacturaCreate(APIView):
-    def post(sefl, request):
-        serializer = FacturaSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=201)
-        return Response(serializer.errors, status=400)
-    
-class FacturaUpdate(APIView):
-    def put(self, request, pk):
+        except Pedidos.DoesNotExist:
+            return Response(
+                {'error': 'Pedido no encontrado.'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        except Exception as e:
+            return Response(
+                {
+                    'error': 'Ocurrió un error al obtener el pedido.',
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+# Crear un nuevo pedido
+class PedidoCreate(APIView):
+    def post(self, request):
         try:
-            factura = Facturas.objects.get(pk=pk)
-            serializer = FacturaSerializer(factura, data=request.data)
+            serializer = PedidoSerializer(data=request.data)
             if serializer.is_valid():
                 serializer.save()
-                return Response(serializer.data)
-            return Response(serializer.errors, status=400)
-        except Facturas.DoesNotExist:
-            return Response({'error': 'Factura no encontrada'}, status=404)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class FacturaDelete(APIView):
+        except Exception as e:
+            return Response(
+                {
+                    'error': 'Ocurrió un error al crear el pedido.',
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+# Actualizar un pedido según su ID
+class PedidoUpdate(APIView):
+    def put(self, request, pk):
+        try:
+            pedido = Pedidos.objects.get(pk=pk)
+            serializer = PedidoSerializer(pedido, data=request.data)
+
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        except Pedidos.DoesNotExist:
+            return Response(
+                {'error': 'Pedido no encontrado.'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        except Exception as e:
+            return Response(
+                {
+                    'error': 'Ocurrió un error al actualizar el pedido.',
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+# Eliminar un pedido según su ID
+class PedidoDelete(APIView):
     def delete(self, request, pk):
         try:
-            factura = Facturas.objects.get(pk=pk)
-            factura.delete()
-            return Response(status=204)
-        except Facturas.DoesNotExist:
-            return Response({'error': 'Factura no encontrada'}, status=404)
+            pedido = Pedidos.objects.get(pk=pk)
+            pedido.delete()
+            return Response(
+                {'mensaje': 'Pedido eliminado correctamente.'},
+                status=status.HTTP_204_NO_CONTENT
+            )
+
+        except Pedidos.DoesNotExist:
+            return Response(
+                {'error': 'Pedido no encontrado.'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        except Exception as e:
+            return Response(
+                {
+                    'error': 'Ocurrió un error al eliminar el pedido.',
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+# Mostrar el total de pedidos por estado
+class PedidoResumenEstados(APIView):
+    def get(self, request):
+        try:
+            # Agrupar pedidos por estado
+            resumen = Pedidos.objects.values('id_estado').annotate(total=Count('id_estado'))
+
+            if not resumen:
+                return Response(
+                    {"mensaje": "No hay pedidos registrados."},
+                    status=status.HTTP_204_NO_CONTENT
+                )
+
+            data = []
+            for item in resumen:
+                try:
+                    estado = EstadosPedidos.objects.get(id_estado=item['id_estado'])
+                    data.append({
+                        'id_estado': estado.id_estado,
+                        'nombre_estado': estado.nombre_estado,
+                        'total': item['total']
+                    })
+                except EstadosPedidos.DoesNotExist:
+                    # Estado huérfano: existe en pedidos pero no en tabla de estados
+                    data.append({
+                        'id_estado': item['id_estado'],
+                        'nombre_estado': 'Estado desconocido',
+                        'total': item['total']
+                    })
+
+            return Response(data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response(
+                {
+                    "error": "Ocurrió un error inesperado al obtener el resumen de pedidos.",
+                    "detalle": str(e)
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+# Mostrar un pedido por su estado 
+class PedidosPorEstado(APIView):
+    def get(self, request, id_estado):
+        try:
+            # Validar que el estado exista
+            estado = EstadosPedidos.objects.filter(id_estado=id_estado).first()
+            if not estado:
+                return Response(
+                    {'error': 'Estado no válido o no existe.'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            # Buscar pedidos con ese estado
+            pedidos = Pedidos.objects.filter(id_estado=id_estado)
+            if not pedidos.exists():
+                return Response(
+                    {'mensaje': f'No hay pedidos en el estado: {estado.nombre_estado}'},
+                    status=status.HTTP_204_NO_CONTENT
+                )
+
+            serializer = PedidoSerializer(pedidos, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response(
+                {'error': 'Error al obtener pedidos por estado.'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+# Mostrar los pedidos de cada transportador asignado
+class PedidosPorTransportadora(APIView):
+    def get(self, request, id_transportadora):
+        try:
+            pedidos = Pedidos.objects.filter(id_transportadora=id_transportadora)
+            if not pedidos.exists():
+                return Response(
+                    {'mensaje': 'No hay pedidos para esta transportadora.'},
+                    status=status.HTTP_204_NO_CONTENT
+                )
+
+            serializer = PedidoSerializer(pedidos, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response(
+                {'error': 'Error al obtener pedidos por transportadora.'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )

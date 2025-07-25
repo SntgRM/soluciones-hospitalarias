@@ -91,7 +91,7 @@ class EstadosPedidos(models.Model):
         verbose_name = "Estado de Pedido"
         verbose_name_plural = "Estados de Pedidos"
 
-class Facturas(models.Model):
+class Pedidos(models.Model):
     id_factura = models.IntegerField(primary_key=True)
     fecha_recibido = models.DateTimeField(blank=True, null=True)
     valor = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
@@ -113,22 +113,22 @@ class Facturas(models.Model):
     id_empacador = models.ForeignKey(Empacadores, models.DO_NOTHING, db_column='id_empacador', blank=True, null=True)
 
     def __str__(self):
-        return f"Factura {self.id_factura} - Cliente: {self.id_cliente.nombre_cliente if self.id_cliente else 'N/A'}"
+        return f"Pedidos {self.id_factura} - Cliente: {self.id_cliente.nombre_cliente if self.id_cliente else 'N/A'}"
 
     class Meta:
-        db_table = 'facturas'
-        verbose_name = "Factura"
-        verbose_name_plural = "Facturas"
+        db_table = 'pedidos'
+        verbose_name = "Pedido"
+        verbose_name_plural = "Pedidos"
 
 class HistorialEstados(models.Model):
     id_historial = models.AutoField(primary_key=True)
-    id_factura = models.ForeignKey(Facturas, models.DO_NOTHING, db_column='id_factura')
+    id_factura = models.ForeignKey(Pedidos, models.DO_NOTHING, db_column='id_factura')
     id_estado = models.ForeignKey(EstadosPedidos, models.DO_NOTHING, db_column='id_estado')
     fecha_cambio = models.DateTimeField()
     observacion = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f"Historial {self.id_historial} - Factura: {self.id_factura.id_factura} - Estado: {self.id_estado.nombre_estado}"    
+        return f"Historial {self.id_historial} - Pedido: {self.id_factura.id_factura} - Estado: {self.id_estado.nombre_estado}"    
 
     class Meta:
         db_table = 'historial_estados'
