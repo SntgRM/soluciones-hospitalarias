@@ -19,6 +19,12 @@ export const navigationLinks_bodega = [
         image: iconsImgs.folder,
         path: '/historial'
     },
+    {
+        id: 4,
+        title: 'Transportadora',
+        image: iconsImgs.folder,
+        path: '/transportadora'
+    },
     // ... otros enlaces de navegación
 ];
 
