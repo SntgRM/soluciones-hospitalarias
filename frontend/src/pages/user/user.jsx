@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import "./User.css"
 import { personsImgs } from "../../utils/images"
-import { AtSign, BadgeDollarSign, Calendar, Crown, Edit, Edit3, Eye, EyeOff, Filter, Hash, Save, Search, Shield, Trash2, UserIcon, UserPlus, Users, Warehouse, X } from "lucide-react";
+import { AtSign, BadgeDollarSign, Calendar, Crown, Edit, Edit3, Eye, EyeOff, Filter, Lock, Save, Search, Shield, Trash2, UserIcon, UserPlus, Users, Warehouse, X } from "lucide-react";
 
 const roles = [
   { value: "administrador", label: "Administrador", color: "#f59e0b" },
@@ -375,9 +375,9 @@ function User() {
                         <span className="user-detail-value">{`${selectedUser.first_name}`}</span>
                       </div>
                       <div className="user-detail-item">
-                        <UserIcon size={16} />
-                        <span className="user-detail-label">ID:</span>
-                        <span className="user-detail-value">{selectedUser.id}</span>
+                        <AtSign size={16} />
+                        <span className="user-detail-label">Nombre de Usuario:</span>
+                        <span className="user-detail-value">{selectedUser.username}</span>
                       </div>
                       <div className="user-detail-item">
                         <Shield size={16} />
@@ -475,8 +475,8 @@ function User() {
                       {modalMode === "create" && (
                       <div className="user-form-group">
                         <label className="user-form-label">
-                          <Hash size={16} />
-                          Contraseña temporal *
+                          <Lock size={16} />
+                          Contraseña *
                         </label>
                         <div className="user-password-input">
                           <input
@@ -486,7 +486,7 @@ function User() {
                             onChange={handleInputChange}
                             required
                             className="user-form-input password-input"
-                            placeholder="Contraseña temporal"
+                            placeholder="Contraseña"
                           />
                           <span
                             className="user-password-icon"
