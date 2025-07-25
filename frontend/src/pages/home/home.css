@@ -1,7 +1,7 @@
 /* Variables CSS específicas para Home */
 :root {
-  --home-primary-color: #3b82f6;
-  --home-primary-hover: #2563eb;
+  --primary-color: #0db30d;
+  --primary-hover: #0cb40c;
   --home-primary-light: rgba(59, 130, 246, 0.1);
   --home-success-color: #10b981;
   --home-success-light: rgba(16, 185, 129, 0.1);
@@ -57,11 +57,10 @@
 }
 
 .header-icon {
-  background: linear-gradient(135deg, var(--home-primary-color), var(--home-primary-hover));
-  color: white;
-  padding: 12px;
-  border-radius: var(--home-border-radius);
-  box-shadow: var(--home-shadow-md);
+  padding: 5px;
+  border-radius: 12px;
+  width: 40px;
+  height: 40px;
 }
 
 .dashboard-title {
@@ -128,11 +127,7 @@
   gap: 24px;
 }
 
-.content-grid-one {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 24px;
-}
+
 
 .content-grid-two {
   display: grid;
@@ -170,7 +165,7 @@
 }
 
 .title-icon {
-  color: var(--home-primary-color);
+  color: var(--primary-color);
 }
 
 /* Tarjeta de estadísticas rápidas */
@@ -209,7 +204,7 @@
 }
 
 .stat-icon-wrapper.primary {
-  background: linear-gradient(135deg, var(--home-primary-color), var(--home-primary-hover));
+  background: linear-gradient(135deg, var(--primary-color), var(--home-primary-hover));
 }
 
 .stat-icon-wrapper.success {
