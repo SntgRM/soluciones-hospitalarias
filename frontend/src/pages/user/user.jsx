@@ -59,9 +59,22 @@ function User() {
   }, [users, searchTerm, filterRole])
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
-  }
+    const { name, value } = e.target;
+
+    let formattedValue = value;
+
+    if (name === "first_name") {
+      formattedValue = value.toUpperCase();
+    } else if (name === "username") {
+      formattedValue = value.toLowerCase();
+    }
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: formattedValue,
+    }));
+};
+
 
   const resetForm = () => {
     setFormData({
