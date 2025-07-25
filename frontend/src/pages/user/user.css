@@ -1,4 +1,16 @@
-/* Variables CSS específicas para User */
+/* Oculta el botón de mostrar contraseña nativo en Chrome y Edge */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear,
+input[type="password"]::-webkit-credentials-auto-fill-button,
+input[type="password"]::-webkit-inner-spin-button,
+input[type="password"]::-webkit-clear-button,
+input[type="password"]::-webkit-textfield-decoration-container {
+  display: none !important;
+}
+
+input::-ms-reveal {
+  display: none !important;
+}
 .user-management-container {
   --user-primary-color: #0db30d;
   --user-primary-hover: #0cb40c;
@@ -276,8 +288,6 @@
   margin-bottom: 16px;
 }
 
-
-
 .user-basic-info {
   flex: 1;
 }
@@ -551,9 +561,71 @@
   gap: 24px;
 }
 
-.user-form-grid {
+/* Contenedor de imagen centrada */
+.user-img-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* Imagen del usuario */
+.user-img-mod {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #e0e0e0;
+  transition: border-color 0.2s ease;
+}
+
+.user-img-mod:hover {
+  border-color: var(--user-primary-color);
+}
+
+/* Botón de editar imagen */
+.user-img-edit-btn {
+  position: absolute;
+  bottom: 2px;
+  right: calc(50% - 35px - 8px); /* Centrado respecto a la imagen */
+  width: 24px;
+  height: 24px;
+  background-color: var(--user-primary-color);
+  border: 2px solid white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.user-img-edit-btn:hover {
+  background-color: var(--user-primary-hover);
+  transform: scale(1.1);
+}
+
+.user-img-edit-btn:active {
+  transform: scale(0.95);
+}
+
+.user-img-edit-btn svg {
+  color: white;
+}
+
+/* Grid personalizado del formulario */
+.user-form-grid-custom {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.user-form-column-left,
+.user-form-column-right {
+  display: flex;
+  flex-direction: column;
   gap: 20px;
 }
 
@@ -561,10 +633,6 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-}
-
-.user-form-full-width {
-  grid-column: 1 / -1;
 }
 
 .user-form-label {
@@ -596,23 +664,38 @@
   box-shadow: 0 0 0 3px var(--user-primary-light);
 }
 
+
+
+
+
 .user-password-input {
   position: relative;
+  width: 100%;
+}
+
+
+
+.password-input {
+  width: 100%;
+  height: 48px;
+  font-size: 16px;
+  padding: 10px 40px 10px 12px; /* espacio a la derecha para el ícono */
+  box-sizing: border-box;
+}
+
+/* Ícono tipo ojo dentro del input */
+.user-password-icon {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--clr-dark-gray);
+  z-index: 2;
   display: flex;
   align-items: center;
 }
 
-.user-password-toggle {
-  position: absolute;
-  right: 12px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: var(--user-gray-400);
-  padding: 4px;
-  border-radius: 4px;
-  transition: var(--user-transition);
-}
 
 .user-password-toggle:hover {
   color: var(--user-gray-600);
@@ -743,7 +826,7 @@
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   }
 
-  .user-form-grid {
+  .user-form-grid-custom {
     grid-template-columns: 1fr;
   }
 
@@ -809,6 +892,22 @@
 
   .user-delete-modal-actions {
     flex-direction: column;
+  }
+
+  .user-img-mod {
+    width: 60px;
+    height: 60px;
+  }
+
+  .user-img-edit-btn {
+    right: calc(50% - 30px - 6px);
+    width: 20px;
+    height: 20px;
+  }
+
+  .user-img-edit-btn svg {
+    width: 12px;
+    height: 12px;
   }
 }
 

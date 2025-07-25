@@ -137,7 +137,7 @@ function RegistroPedido() {
   return (
     <div className="registro-container">
       <div className="form-header">
-        <div className="header-icon">
+        <div className="header-icon-reg">
           <Package size={32} />
         </div>
         <div className="header-content">

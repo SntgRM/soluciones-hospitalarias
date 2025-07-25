@@ -70,51 +70,6 @@ const Home = () => {
       <div className="main-content-holder">
         <div className="content-grid-one">
           <ProductSummaryCards />
-
-          <div className="quick-stats-card grid-common">
-            <div className="grid-c-title">
-              <h3 className="grid-c-title-text">Estadísticas Rápidas</h3>
-              <BarChart3 size={20} className="title-icon" />
-            </div>
-            <div className="stats-grid">
-              <div className="stat-item">
-                <div className="stat-icon-wrapper primary">
-                  <Package size={24} />
-                </div>
-                <div className="stat-content">
-                  <span className="stat-number">247</span>
-                  <span className="stat-text">Pedidos</span>
-                </div>
-              </div>
-              <div className="stat-item">
-                <div className="stat-icon-wrapper success">
-                  <ShoppingCart size={24} />
-                </div>
-                <div className="stat-content">
-                  <span className="stat-number">89</span>
-                  <span className="stat-text">Entregados hoy</span>
-                </div>
-              </div>
-              <div className="stat-item">
-                <div className="stat-icon-wrapper info">
-                  <Users size={24} />
-                </div>
-                <div className="stat-content">
-                  <span className="stat-number">43</span>
-                  <span className="stat-text">Clientes</span>
-                </div>
-              </div>
-              <div className="stat-item">
-                <div className="stat-icon-wrapper warning">
-                  <CheckCircle size={24} />
-                </div>
-                <div className="stat-content">
-                  <span className="stat-number">98%</span>
-                  <span className="stat-text">Satisfacción</span>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>

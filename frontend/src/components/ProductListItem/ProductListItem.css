@@ -2,13 +2,13 @@
   --pli-primary-color: #0d9624;
   --pli-primary-hover: #0a7a1d;
   --pli-white: #ffffff;
-  --pli-gray-100: #f3f4f6;
+  /* --pli-gray-100: #f3f4f6;
   --pli-gray-200: #e5e7eb;
   --pli-gray-300: #d1d5db;
   --pli-gray-400: #9ca3af;
   --pli-gray-600: #4b5563;
   --pli-gray-700: #374151;
-  --pli-gray-800: #1f2937;
+  --pli-gray-800: #1f2937; */
   --pli-border-color: #e0e0e0;
   --pli-shadow-light: 0 4px 12px rgba(0, 0, 0, 0.08);
   --pli-shadow-hover: 0 8px 20px rgba(0, 0, 0, 0.12);
@@ -392,18 +392,6 @@
 
   .pli-edit-button {
     border: 2px solid var(--pli-gray-600);
-  }
-}
-
-/* Modo oscuro (si se implementa) */
-@media (prefers-color-scheme: dark) {
-  .pli-product-list-item {
-    --pli-white: #1f2937;
-    --pli-gray-100: #374151;
-    --pli-gray-200: #4b5563;
-    --pli-gray-600: #d1d5db;
-    --pli-gray-800: #f9fafb;
-    --pli-border-color: #4b5563;
   }
 }
 

@@ -13,6 +13,7 @@ import Products from "./pages/products/products.jsx";
 import Login from "./pages/login/login.jsx";
 import NotFound from "./pages/NotFound/NotFound.jsx";
 import User from "./pages/user/user.jsx";
+import Transportadora from "./pages/transportadora/transportadora.jsx"
 
 // Componente para rutas protegidas
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
@@ -40,6 +41,7 @@ function App() {
                 <Route path="ayuda" element={<Ayuda />} />
                 <Route path="historial" element={<Historial />} />
                 <Route path="registro" element={<Registro />} />
+                <Route path="transportadora" element={<Transportadora />} />
                 <Route path="productos" element={<Products />} />
                 <Route path="usuario" element={<User />} />
               </Route>
