@@ -1,9 +1,9 @@
 from rest_framework import serializers
-from .models import Facturas
+from .models import Pedidos
 
-class FacturaSerializer(serializers.ModelSerializer):
+class PedidoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Facturas
+        model = Pedidos
         fields = '__all__'
         
         
