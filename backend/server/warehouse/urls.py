@@ -11,5 +11,4 @@ urlpatterns = [
     path('por_estado/<int:id_estado>/', PedidosPorEstado.as_view(), name='pedido-por-estado'),
     path('por_transportadora/<int:id_transportadora>/', PedidosPorTransportadora.as_view(), name='pedido-por-transportadora'),
 
-
 ]
