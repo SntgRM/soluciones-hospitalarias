@@ -22,26 +22,28 @@ function User() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   const [userToDelete, setUserToDelete] = useState(null)
+  const [selectedImage, setSelectedImage] = useState(null)
 
   const [formData, setFormData] = useState({
     username: "",
     first_name: "",
     role: "ventas",
     password: "",
+    image: null,
   })
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const data = await getUsers();
-        setUsers(data);
-        setFilteredUsers(data);
+        const data = await getUsers()
+        setUsers(data)
+        setFilteredUsers(data)
       } catch (error) {
-        console.error("Error fetching users:", error);
+        console.error("Error fetching users:", error)
       }
-    };
-    fetchUsers();
-  }, []);
+    }
+    fetchUsers()
+  }, [])
 
   // Filtrar usuarios
   useEffect(() => {
@@ -75,6 +77,23 @@ function User() {
     }));
 };
 
+  const handleImageChange = () => {
+    const input = document.createElement("input")
+    input.type = "file"
+    input.accept = "image/*"
+    input.onchange = (e) => {
+      const file = e.target.files[0]
+      if (file) {
+        const reader = new FileReader()
+        reader.onload = (e) => {
+          setSelectedImage(e.target.result)
+          setFormData((prev) => ({ ...prev, image: e.target.result }))
+        }
+        reader.readAsDataURL(file)
+      }
+    }
+    input.click()
+  }
 
   const resetForm = () => {
     setFormData({
@@ -82,7 +101,9 @@ function User() {
       first_name: "",
       role: "bodega",
       password: "",
+      image: null,
     })
+    setSelectedImage(null)
   }
 
   const openModal = (mode, user = null) => {
@@ -92,10 +113,12 @@ function User() {
 
     if (mode === "edit" && user) {
       setFormData({
+        username: user.username || "",
         first_name: user.first_name,
         role: user.role,
-        username: user.username,
+        image: user.image || null,
       })
+      setSelectedImage(user.image || null)
     } else if (mode === "create") {
       resetForm()
     }
@@ -108,7 +131,7 @@ function User() {
     setShowPassword(false)
   }
 
-  const handleSubmit = async (e) => {
+   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsSubmitting(true)
 
@@ -143,10 +166,10 @@ function User() {
     setIsSubmitting(true)
 
     try {
-      await deleteUser(userToDelete.id);
-      setUsers((prev) => prev.filter((user) => user.id !== userToDelete.id));
+      await deleteUser(userToDelete.id)
+      setUsers((prev) => prev.filter((user) => user.id !== userToDelete.id))
     } catch (error) {
-      console.error("Error deleting user:", error);
+      console.error("Error deleting user:", error)
     } finally {
       setShowDeleteConfirm(false)
       setUserToDelete(null)
@@ -222,7 +245,7 @@ function User() {
             <span className="user-stat-number">{users.length}</span>
             <span className="user-stat-label">Total Usuarios</span>
           </div>
-        </div>  
+        </div>
 
         <div className="user-stat-card">
           <div className="user-stat-icon user-stat-admins">
@@ -267,7 +290,6 @@ function User() {
               <div key={user.id} className="user-card">
                 <div className="user-card-header">
                   <div className="user-avatar">
-                    <UserIcon size={24} />
                   </div>
                   <div className="user-basic-info">
                     <h4 className="user-name">{`${user.first_name}`}</h4>
@@ -367,69 +389,93 @@ function User() {
                       <div className="user-detail-item">
                         <Calendar size={16} />
                         <span className="user-detail-label">Fecha de creación:</span>
-                        <span className="user-detail-value">{new Date(selectedUser.date_joined).toLocaleDateString()}</span>
+                        <span className="user-detail-value">
+                          {new Date(selectedUser.date_joined).toLocaleDateString()}
+                        </span>
                       </div>
                     </div>
                   </div>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="user-form">
-                  <div className="user-form-grid">
-                    <div className="user-form-group">
-                      <label className="user-form-label">
-                        <UserIcon size={16} />
-                        Nombre Completo *
-                      </label>
-                      <input
-                        type="text"
-                        name="first_name"
-                        value={formData.first_name}
-                        onChange={handleInputChange}
-                        required
-                        className="user-form-input"
-                        placeholder="Ingrese el nombre completo"
-                      />
+                  {/* Imagen del usuario centrada */}
+                  <div className="user-img-container">
+                    <img
+                      className="user-img-mod"
+                      src={selectedImage || personsImgs.ISOTIPO || "/placeholder.svg?height=70&width=70"}
+                      alt="Usuario"
+                    />
+                    <button
+                      type="button"
+                      className="user-img-edit-btn"
+                      onClick={handleImageChange}
+                      title="Cambiar imagen"
+                    >
+                      <Edit3 size={14} />
+                    </button>
+                  </div>
+
+                  {/* Grid del formulario reorganizado */}
+                  <div className="user-form-grid-custom">
+                    {/* Columna Izquierda */}
+                    <div className="user-form-column-left">
+                      <div className="user-form-group">
+                        <label className="user-form-label">
+                          <UserIcon size={16} />
+                          Nombre Completo *
+                        </label>
+                        <input
+                          type="text"
+                          name="first_name"
+                          value={formData.first_name}
+                          onChange={handleInputChange}
+                          required
+                          className="user-form-input"
+                          placeholder="Ingrese el nombre completo"
+                        />
+                      </div>
+
+                      <div className="user-form-group">
+                        <label className="user-form-label">
+                          <Shield size={16} />
+                          Rol *
+                        </label>
+                        <select
+                          name="role"
+                          value={formData.role}
+                          onChange={handleInputChange}
+                          required
+                          className="user-form-select"
+                        >
+                          {roles.map((role) => (
+                            <option key={role.value} value={role.value}>
+                              {role.label}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
                     </div>
 
-                    <div className="user-form-group">
-                      <label className="user-form-label">
-                        <AtSign size={16} />
-                        Nombre de Usuario *
-                      </label>
-                      <input
-                        type="text"
-                        name="username"
-                        value={formData.username}
-                        onChange={handleInputChange}
-                        required
-                        className="user-form-input"
-                        placeholder="Ingrese un nombre de usuario"
-                      />
-                    </div>
+                    {/* Columna Derecha */}
+                    <div className="user-form-column-right">
+                      <div className="user-form-group">
+                        <label className="user-form-label">
+                          <AtSign size={16} />
+                          Nombre de Usuario *
+                        </label>
+                        <input
+                          type="text"
+                          name="username"
+                          value={formData.username}
+                          onChange={handleInputChange}
+                          required
+                          className="user-form-input"
+                          placeholder="Ingrese un nombre de usuario"
+                        />
+                      </div>
 
-                    <div className="user-form-group">
-                      <label className="user-form-label">
-                        <Shield size={16} />
-                        Rol *
-                      </label>
-                      <select
-                        name="role"
-                        value={formData.role}
-                        onChange={handleInputChange}
-                        required
-                        className="user-form-select"
-                      >
-                        {roles.map((role) => (
-                          <option key={role.value} value={role.value}>
-                            {role.label}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-
-                    {modalMode === "create" && (
-                      <div className="user-form-group user-form-full-width">
+                      {modalMode === "create" && (
+                      <div className="user-form-group">
                         <label className="user-form-label">
                           <Hash size={16} />
                           Contraseña temporal *
@@ -441,19 +487,20 @@ function User() {
                             value={formData.password}
                             onChange={handleInputChange}
                             required
-                            className="user-form-input"
+                            className="user-form-input password-input"
                             placeholder="Contraseña temporal"
                           />
-                          <button
-                            type="button"
-                            className="user-password-toggle"
+                          <span
+                            className="user-password-icon"
                             onClick={() => setShowPassword(!showPassword)}
                           >
-                            {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                          </button>
+                            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                          </span>
                         </div>
                       </div>
-                    )}
+
+                      )}
+                    </div>
                   </div>
 
                   <div className="user-form-actions">

@@ -1,7 +1,7 @@
 /* Variables CSS específicas para Cards */
 :root {
-  --cards-primary-color: #3b82f6;
-  --cards-primary-hover: #2563eb;
+  --cards-primary-color: #0db30d;
+  --cards-primary-hover: #0cb40c;
   --cards-primary-light: rgba(59, 130, 246, 0.1);
   --cards-success-color: #10b981;
   --cards-warning-color: #f59e0b;
@@ -57,8 +57,6 @@
 }
 
 .grid-c-title-icon {
-  background: var(--cards-primary-light);
-  border: 1px solid var(--cards-success-color);
   border-radius: var(--cards-border-radius);
   padding: 8px;
   cursor: pointer;
@@ -70,7 +68,7 @@
 }
 
 .grid-c-title-icon:hover {
-  background: var(--cards-success-color);
+  background: var(--cards-gray-700);
   transform: translateY(-1px);
   box-shadow: var(--cards-shadow-md);
 }

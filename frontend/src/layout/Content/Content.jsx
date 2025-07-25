@@ -4,13 +4,9 @@ import ContentTop from '../../components/ContentTop/ContentTop'; // Ruta correct
 import "./Content.css"; // CSS para el layout Content
 
 const Content = () => {
-  const location = useLocation(); // Hook para obtener la ubicación actual
+  const location = useLocation();
 
-  // Función para obtener el título de la página basado en la ruta
   const getPageTitle = () => {
-    // Obtenemos la última parte de la ruta para que funcione con rutas anidadas
-    // Por ejemplo, si location.pathname es '/dashboard/ayuda', pagePath será 'ayuda'
-    // Si es '/dashboard', pagePath será 'dashboard' o una cadena vacía si solo es '/'
     const pathSegments = location.pathname.split('/').filter(segment => segment !== '');
     const lastSegment = pathSegments[pathSegments.length - 1]; // Obtiene la última parte de la URL
 

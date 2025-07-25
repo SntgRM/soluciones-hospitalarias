@@ -76,21 +76,8 @@ const ContentTop = ({ pageTitle }) => {
             <div className="content-top-btns">
                 <form className="search-bar-container" onSubmit={handleSearchSubmit}>
                     <div className="search_container">
-                        <input 
-                            type="text" 
-                            name="text" 
-                            className="input_search" 
-                            placeholder={isMobile ? "Buscar..." : "Search"} 
-                            value={searchTerm}
-                            onChange={handleSearchChange}
-                        />
-                        <button 
-                            type="submit"
-                            className="search__btn"
-                            aria-label="Search"
-                        >
-                            <img src={iconsImgs.search} alt="Search" />
-                        </button>
+                        <p>Nombre de usuario</p>
+                        <img src={iconsImgs.user} alt="" className='user_img' />
                     </div>
                 </form>
                 
