@@ -30,7 +30,6 @@ def login(request):
                 'id': user.id,
                 'username': user.username,
                 'first_name': user.first_name,
-                'last_name': user.last_name
             },
             'token': token.key
         }, status=status.HTTP_200_OK)
@@ -54,6 +53,5 @@ def profile(request):
             'id': request.user.id,
             'username': request.user.username,
             'first_name': request.user.first_name,
-            'last_name': request.user.last_name
         }
     })
