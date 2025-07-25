@@ -6,7 +6,6 @@ import "./Sidebar.css";
 import { SidebarContext } from "../../context/sidebarContext";
 import Swal from "sweetalert2";
 
-
 const Sidebar = () => {
   const [sidebarClass, setSidebarClass] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -52,131 +51,138 @@ const Sidebar = () => {
   };
 
   return (
-    <div className={`sidebar ${sidebarClass}`}>
-      {/* Header del usuario */}
-      <div className="user-info">
-        <img
-          src={personsImgs.ISOTIPO}
-          className="user-avatar"
-          alt="Avatar de usuario"
-        />
-        <span className="info-name">NOMBRE DE USUARIO</span>
+    <>
+      {/* Placeholder invisible que ocupa el espacio del sidebar */}
+      <div className={`sidebar-placeholder ${sidebarClass}`}></div>
+      
+      {/* Sidebar fijo */}
+      <div className={`sidebar ${sidebarClass}`}>
+        <div className="sidebar-inner">
+          {/* Header del usuario */}
+          <div className="user-info">
+            <img
+              src={personsImgs.ISOTIPO}
+              className="user-avatar"
+              alt="Avatar de usuario"
+            />
+            <span className="info-name">Soluciones Hospitalarias S.A.S</span>
+          </div>
+
+          {/* Navegación con dropdowns */}
+          <nav className="navigation">
+            {/* Dropdown de Bodega */}
+            <div className="dropdown-container">
+              <button
+                className={`dropdown-toggle ${isDropdownOpen ? "active" : ""}`}
+                onClick={toggleDropdown}
+              >
+                <span className="dropdown-toggle-text">Bodega</span>
+                <span className={`dropdown-arrow ${isDropdownOpen ? "rotated" : ""}`}>
+                  ▼
+                </span>
+              </button>
+
+              <div className={`dropdown-menu ${isDropdownOpen ? "open" : ""}`}>
+                <ul className="nav-list">
+                  {navigationLinks_bodega
+                    .filter((navigationLink) => navigationLink.title !== "Salir")
+                    .map((navigationLink) => (
+                      <li className="nav-item" key={navigationLink.id}>
+                        <NavLink
+                          to={navigationLink.path}
+                          className={({ isActive }) =>
+                            `nav-link ${isActive ? "active" : ""}`
+                          }
+                          onClick={() => setIsDropdownOpen(false)}
+                        >
+                          <img
+                            src={navigationLink.image}
+                            className="nav-link-icon"
+                            alt={navigationLink.title}
+                          />
+                          <span className="nav-link-text">{navigationLink.title}</span>
+                        </NavLink>
+                      </li>
+                    ))}
+                </ul>
+              </div>
+            </div>
+
+            {/* Dropdown de Ventas */}
+            <div className="dropdown-container">
+              <button
+                className={`dropdown-toggle ${isVentasDropdownOpen ? "active" : ""}`}
+                onClick={toggleVentasDropdown}
+              >
+                <span className="dropdown-toggle-text">Ventas</span>
+                <span className={`dropdown-arrow ${isVentasDropdownOpen ? "rotated" : ""}`}>
+                  ▼
+                </span>
+              </button>
+              <div className={`dropdown-menu ${isVentasDropdownOpen ? "open" : ""}`}>
+                <ul className="nav-list">
+                  {navigationLinks_ventas
+                    .filter((navigationLink) => navigationLink.title !== "Salir")
+                    .map((navigationLink) => (
+                      <li className="nav-item" key={navigationLink.id}>
+                        <NavLink
+                          to={navigationLink.path}
+                          className={({ isActive }) =>
+                            `nav-link ${isActive ? "active" : ""}`
+                          }
+                          onClick={() => setIsVentasDropdownOpen(false)}
+                        >
+                          <img
+                            src={navigationLink.image}
+                            className="nav-link-icon"
+                            alt={navigationLink.title}
+                          />
+                          <span className="nav-link-text">{navigationLink.title}</span>
+                        </NavLink>
+                        </li>
+                    ))}
+                </ul>
+              </div>
+            </div>
+
+            <ul className="nav-list">
+              {navigationLinks_admin.map((navigationLink) => (
+                <li className="nav-item" key={navigationLink.id}>
+                  {navigationLink.title === "Salir" ? (
+                    <a
+                      href="/login"
+                      onClick={handleLogoutClick}
+                      className="nav-link"
+                    >
+                      <img
+                        src={navigationLink.image}
+                        className="nav-link-icon"
+                        alt={navigationLink.title}
+                      />
+                      <span className="nav-link-text">{navigationLink.title}</span>
+                    </a>
+                  ) : (
+                    <NavLink
+                      to={navigationLink.path}
+                      className={({ isActive }) =>
+                        `nav-link ${isActive ? "active" : ""}`
+                      }
+                    >
+                      <img
+                        src={navigationLink.image}
+                        className="nav-link-icon"
+                        alt={navigationLink.title}
+                      />
+                      <span className="nav-link-text">{navigationLink.title}</span>
+                    </NavLink>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
       </div>
-
-      {/* Navegación con dropdowns */}
-      <nav className="navigation">
-        {/* Dropdown de Bodega */}
-        <div className="dropdown-container">
-          <button
-            className={`dropdown-toggle ${isDropdownOpen ? "active" : ""}`}
-            onClick={toggleDropdown}
-          >
-            <span className="dropdown-toggle-text">Bodega</span>
-            <span className={`dropdown-arrow ${isDropdownOpen ? "rotated" : ""}`}>
-              ▼
-            </span>
-          </button>
-
-          <div className={`dropdown-menu ${isDropdownOpen ? "open" : ""}`}>
-            <ul className="nav-list">
-              {navigationLinks_bodega
-                .filter((navigationLink) => navigationLink.title !== "Salir")
-                .map((navigationLink) => (
-                  <li className="nav-item" key={navigationLink.id}>
-                    <NavLink
-                      to={navigationLink.path}
-                      className={({ isActive }) =>
-                        `nav-link ${isActive ? "active" : ""}`
-                      }
-                      onClick={() => setIsDropdownOpen(false)}
-                    >
-                      <img
-                        src={navigationLink.image}
-                        className="nav-link-icon"
-                        alt={navigationLink.title}
-                      />
-                      <span className="nav-link-text">{navigationLink.title}</span>
-                    </NavLink>
-                  </li>
-                ))}
-            </ul>
-
-          </div>
-        </div>
-
-        {/* Dropdown de Ventas */}
-        <div className="dropdown-container">
-          <button
-            className={`dropdown-toggle ${isVentasDropdownOpen ? "active" : ""}`}
-            onClick={toggleVentasDropdown}
-          >
-            <span className="dropdown-toggle-text">Ventas</span>
-            <span className={`dropdown-arrow ${isVentasDropdownOpen ? "rotated" : ""}`}>
-              ▼
-            </span>
-          </button>
-          <div className={`dropdown-menu ${isVentasDropdownOpen ? "open" : ""}`}>
-            <ul className="nav-list">
-              {navigationLinks_ventas
-                .filter((navigationLink) => navigationLink.title !== "Salir")
-                .map((navigationLink) => (
-                  <li className="nav-item" key={navigationLink.id}>
-                    <NavLink
-                      to={navigationLink.path}
-                      className={({ isActive }) =>
-                        `nav-link ${isActive ? "active" : ""}`
-                      }
-                      onClick={() => setIsDropdownOpen(false)}
-                    >
-                      <img
-                        src={navigationLink.image}
-                        className="nav-link-icon"
-                        alt={navigationLink.title}
-                      />
-                      <span className="nav-link-text">{navigationLink.title}</span>
-                    </NavLink>
-                  </li>
-                ))}
-            </ul>
-          </div>
-        </div>
-
-        <ul className="nav-list">
-        {navigationLinks_admin.map((navigationLink) => (
-          <li className="nav-item" key={navigationLink.id}>
-            {navigationLink.title === "Salir" ? (
-              <a
-                href="/login"
-                onClick={handleLogoutClick}
-                className="nav-link"
-              >
-                <img
-                  src={navigationLink.image}
-                  className="nav-link-icon"
-                  alt={navigationLink.title}
-                />
-                <span className="nav-link-text">{navigationLink.title}</span>
-              </a>
-            ) : (
-              <NavLink
-                to={navigationLink.path}
-                className={({ isActive }) =>
-                  `nav-link ${isActive ? "active" : ""}`
-                }
-              >
-                <img
-                  src={navigationLink.image}
-                  className="nav-link-icon"
-                  alt={navigationLink.title}
-                />
-                <span className="nav-link-text">{navigationLink.title}</span>
-              </NavLink>
-            )}
-          </li>
-        ))}
-      </ul>
-      </nav>
-    </div>
+    </>
   );
 };
 
