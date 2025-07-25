@@ -1,9 +1,12 @@
+"use client"
+
 import { useState, useEffect } from "react"
 import "./User.css"
-import { Users, Search, Edit, Trash2, Eye, EyeOff, Save, X, Filter, UserPlus, BadgeDollarSign, Calendar, Shield, Warehouse, Crown, UserIcon, Hash, AtSign } from "lucide-react";
+import { personsImgs } from "../../utils/images"
+import { AtSign, BadgeDollarSign, Calendar, Crown, Edit, Edit3, Eye, EyeOff, Filter, Hash, Save, Search, Shield, Trash2, UserIcon, UserPlus, Users, Warehouse, X } from "lucide-react";
 
 const roles = [
-{ value: "administrador", label: "Administrador", color: "#f59e0b" },
+  { value: "administrador", label: "Administrador", color: "#f59e0b" },
   { value: "bodega", label: "Bodega", color: "#3b82f6" },
   { value: "ventas", label: "Ventas", color: "#ef4444" },
 ]
@@ -49,8 +52,7 @@ function User() {
   useEffect(() => {
     const filtered = users.filter((user) => {
       const matchesSearch =
-        user.first_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.id.toString().includes(searchTerm)
+        user.first_name.toLowerCase().includes(searchTerm.toLowerCase()) || user.id.toString().includes(searchTerm)
 
       const matchesRole = filterRole === "todos" || user.role === filterRole
 
@@ -131,26 +133,22 @@ function User() {
     setShowPassword(false)
   }
 
-   const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setIsSubmitting(true)
 
     try {
       if (modalMode === "create") {
-        const newUser = await createUser(formData);
-        setUsers((prev) => [...prev, newUser]);
-        window.location.reload();
+        const newUser = await createUser(formData)
+        setUsers((prev) => [...prev, newUser])
+        window.location.reload()
       } else if (modalMode === "edit") {
-        const updatedUser = await updateUser(selectedUser.id, formData);
-        setUsers((prev) =>
-          prev.map((user) =>
-            user.id === selectedUser.id ? updatedUser : user
-          )
-        );
-        window.location.reload();
+        const updatedUser = await updateUser(selectedUser.id, formData)
+        setUsers((prev) => prev.map((user) => (user.id === selectedUser.id ? updatedUser : user)))
+        window.location.reload()
       }
     } catch (error) {
-      console.error("Error submitting form:", error);
+      console.error("Error submitting form:", error)
     } finally {
       setIsSubmitting(false)
       closeModal()
