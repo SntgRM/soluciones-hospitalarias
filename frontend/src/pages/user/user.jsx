@@ -8,8 +8,6 @@ const roles = [
   { value: "ventas", label: "Ventas", color: "#ef4444" },
 ]
 
-const departamentos = ["Administración", "Farmacia", "Ventas", "Inventario", "Recursos Humanos", "Contabilidad"]
-
 import { getUsers, createUser, updateUser, deleteUser } from "../../services/api"
 
 function User() {
@@ -67,6 +65,7 @@ function User() {
 
   const resetForm = () => {
     setFormData({
+      username: "",
       first_name: "",
       role: "bodega",
       password: "",
@@ -82,6 +81,7 @@ function User() {
       setFormData({
         first_name: user.first_name,
         role: user.role,
+        username: user.username,
       })
     } else if (mode === "create") {
       resetForm()
