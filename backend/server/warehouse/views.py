@@ -1,12 +1,15 @@
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from .models import Pedidos, EstadosPedidos
 from django.db.models import Count
 from .serializers import PedidoSerializer
 
 # Mostrar todas los pedidos
 class PedidoViewAll(APIView):
+    permission_classes = [IsAuthenticated]
+
     def get(self, request):
         try:
             pedidos = Pedidos.objects.all()
@@ -29,6 +32,9 @@ class PedidoViewAll(APIView):
             )
 # Mostrar los detalles de un pedido específico
 class PedidoDetail(APIView):
+
+    permission_classes = [IsAuthenticated]
+
     def get(self, request, pk):
         try:
             pedido = Pedidos.objects.get(pk=pk)
@@ -51,6 +57,8 @@ class PedidoDetail(APIView):
 
 # Crear un nuevo pedido
 class PedidoCreate(APIView):
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
         try:
             serializer = PedidoSerializer(data=request.data)
@@ -70,6 +78,7 @@ class PedidoCreate(APIView):
 
 # Actualizar un pedido según su ID
 class PedidoUpdate(APIView):
+    permission_classes = [IsAuthenticated]
     def put(self, request, pk):
         try:
             pedido = Pedidos.objects.get(pk=pk)
@@ -97,6 +106,7 @@ class PedidoUpdate(APIView):
 
 # Eliminar un pedido según su ID
 class PedidoDelete(APIView):
+    permission_classes = [IsAuthenticated]
     def delete(self, request, pk):
         try:
             pedido = Pedidos.objects.get(pk=pk)
@@ -122,6 +132,7 @@ class PedidoDelete(APIView):
 
 # Mostrar el total de pedidos por estado
 class PedidoResumenEstados(APIView):
+    permission_classes = [IsAuthenticated]
     def get(self, request):
         try:
             # Agrupar pedidos por estado
@@ -163,6 +174,7 @@ class PedidoResumenEstados(APIView):
 
 # Mostrar un pedido por su estado 
 class PedidosPorEstado(APIView):
+    permission_classes = [IsAuthenticated]
     def get(self, request, id_estado):
         try:
             # Validar que el estado exista
@@ -192,6 +204,7 @@ class PedidosPorEstado(APIView):
 
 # Mostrar los pedidos de cada transportador asignado
 class PedidosPorTransportadora(APIView):
+    permission_classes = [IsAuthenticated]
     def get(self, request, id_transportadora):
         try:
             pedidos = Pedidos.objects.filter(id_transportadora=id_transportadora)
