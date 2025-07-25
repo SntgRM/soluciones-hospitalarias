@@ -3,13 +3,14 @@ import { iconsImgs } from "../../utils/images";
 import "./ContentTop.css";
 import { SidebarContext } from "../../context/sidebarContext";
 import { useNavigate } from 'react-router-dom';
+import { authAPI } from '../../services/api';
 
 const ContentTop = ({ pageTitle }) => {
     const { toggleSidebar } = useContext(SidebarContext);
     const [searchTerm, setSearchTerm] = useState('');
     const [isMobile, setIsMobile] = useState(false);
+    const [userName, setUserName] = useState('');
 
-    // Detectar si estamos en móvil para ajustar el comportamiento
     useEffect(() => {
         const checkScreenSize = () => {
             setIsMobile(window.innerWidth <= 768);
@@ -23,6 +24,22 @@ const ContentTop = ({ pageTitle }) => {
         };
     }, []);
 
+    useEffect(() => {
+        const fetchUserProfile = async () => {
+            try {
+                const profile = await authAPI.getProfile();
+                console.log("Perfil recibido:", profile);
+                setUserName(
+                    profile.user.first_name?.trim() || profile.user.username?.trim() || "Usuario"
+                );
+            } catch (error) {
+                console.error("Error obteniendo el perfil:", error);
+            }
+        };
+
+        fetchUserProfile();
+    }, []);
+
     const handleSearchSubmit = (e) => {
         e.preventDefault();
         if (searchTerm.trim()) {
@@ -30,25 +47,10 @@ const ContentTop = ({ pageTitle }) => {
         }
     };
 
-    const handleSearchChange = (e) => {
-        setSearchTerm(e.target.value);
-    };
-
-    const clearSearch = () => {
-        setSearchTerm('');
-    };
-
     const navigate = useNavigate();
 
-    const handleLogout = () => {
-        // Aquí podrías borrar algún token o limpiar estado si usas autenticación
-        navigate('/login'); // Redirige al login
-    };
-
-    // Función para truncar el título en pantallas pequeñas
     const getTruncatedTitle = (title) => {
         if (!title) return '';
-        
         if (isMobile && title.length > 10) {
             return title.substring(0, 8) + '...';
         }
@@ -68,7 +70,7 @@ const ContentTop = ({ pageTitle }) => {
                 </button>
                 <h3 
                     className="content-top-title"
-                    title={pageTitle} // Muestra el título completo en hover
+                    title={pageTitle}
                 >
                     {getTruncatedTitle(pageTitle)}
                 </h3>
@@ -76,12 +78,10 @@ const ContentTop = ({ pageTitle }) => {
             <div className="content-top-btns">
                 <form className="search-bar-container" onSubmit={handleSearchSubmit}>
                     <div className="search_container">
-                        <p>Nombre de usuario</p>
-                        <img src={iconsImgs.user} alt="" className='user_img' />
+                        <p className="user-greeting">Hola, {userName}</p>
+                        <img src={iconsImgs.user} alt="Usuario" className='user_img' />
                     </div>
                 </form>
-                
-                {/* Opcional: Botón de salir - solo mostrar si hay espacio suficiente */}
             </div>
         </div>
     );
