@@ -36,6 +36,13 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         model = User
         fields = ['username', 'password', 'first_name', 'role']
 
+    def validate(self, data):
+        if 'username' in data:
+            data['username'] = data['username'].lower()
+        if 'first_name' in data:
+            data['first_name'] = data['first_name'].upper()
+        return data
+
     def create(self, validated_data):
         password = validated_data.pop('password')
         user = User.objects.create_user(**validated_data)
@@ -44,6 +51,13 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         return user
 
 class UserUpdateSerializer(serializers.ModelSerializer):
+
+    def validate(self, data):
+        if 'username' in data:
+            data['username'] = data['username'].lower()
+        if 'first_name' in data:
+            data['first_name'] = data['first_name'].upper()
+        return data
     class Meta:
         model = User
         fields = ['username', 'first_name', 'role']
