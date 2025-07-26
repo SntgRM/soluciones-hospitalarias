@@ -7,7 +7,7 @@ from django.db.models import Count
 from .serializers import PedidoSerializer
 
 # Mostrar todas los pedidos
-class PedidoViewAll(APIView):
+class PedidoViewAll(APIView):   
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -30,6 +30,7 @@ class PedidoViewAll(APIView):
                 },
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
 # Mostrar los detalles de un pedido específico
 class PedidoDetail(APIView):
 
