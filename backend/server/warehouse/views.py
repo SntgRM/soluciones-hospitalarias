@@ -2,28 +2,33 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.pagination import PageNumberPagination
 from .models import Pedidos, EstadosPedidos, HistorialEstados
 from django.db.models import Count
 from django.utils import timezone
 from .serializers import PedidoSerializer
 
 # Mostrar todas los pedidos
-class PedidoViewAll(APIView):  
-
+class PedidoViewAll(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
         try:
-            pedidos = Pedidos.objects.all()
+            pedidos = Pedidos.objects.all().order_by('id_factura')
 
             if not pedidos.exists():
                 return Response(
-                    {"mensaje": "No hay pedidos registradas."},
+                    {"mensaje": "No hay pedidos registrados."},
                     status=status.HTTP_204_NO_CONTENT
                 )
 
-            serializer = PedidoSerializer(pedidos, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            # Configuracion de paginación
+            paginator = PageNumberPagination()
+            paginator.page_size = 10 
+            result_page = paginator.paginate_queryset(pedidos, request)
+
+            serializer = PedidoSerializer(result_page, many=True)
+            return paginator.get_paginated_response(serializer.data)
 
         except Exception as e:
             return Response(
@@ -204,15 +209,19 @@ class PedidosPorEstado(APIView):
                 )
 
             # Buscar pedidos con ese estado
-            pedidos = Pedidos.objects.filter(id_estado=id_estado)
+            pedidos = Pedidos.objects.filter(id_estado=id_estado).order_by('id_factura')
             if not pedidos.exists():
                 return Response(
                     {'mensaje': f'No hay pedidos en el estado: {estado.nombre_estado}'},
                     status=status.HTTP_204_NO_CONTENT
                 )
+    
+            paginator = PageNumberPagination()
+            paginator.page_size = 10  
+            result_page = paginator.paginate_queryset(pedidos, request)
 
-            serializer = PedidoSerializer(pedidos, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            serializer = PedidoSerializer(result_page, many=True)
+            return paginator.get_paginated_response(serializer.data)
 
         except Exception as e:
             return Response(
@@ -227,15 +236,19 @@ class PedidosPorTransportadora(APIView):
 
     def get(self, request, id_transportadora):
         try:
-            pedidos = Pedidos.objects.filter(id_transportadora=id_transportadora)
+            pedidos = Pedidos.objects.filter(id_transportadora=id_transportadora).order_by('id_factura')
             if not pedidos.exists():
                 return Response(
                     {'mensaje': 'No hay pedidos para esta transportadora.'},
                     status=status.HTTP_204_NO_CONTENT
                 )
 
-            serializer = PedidoSerializer(pedidos, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            paginator = PageNumberPagination()
+            paginator.page_size = 10  
+            result_page = paginator.paginate_queryset(pedidos, request)
+
+            serializer = PedidoSerializer(result_page, many=True)
+            return paginator.get_paginated_response(serializer.data)
 
         except Exception as e:
             return Response(
@@ -282,3 +295,41 @@ class HistorialPedidoView(APIView):
                 {'error': 'Error al obtener el historial de estados del pedido.'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+        
+class LimpiarPedido(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        try:
+            pedido = Pedidos.objects.filter(id_factura=pk).first()
+            if not pedido:
+                return Response({'error': 'Pedido no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
+
+            pedido.valor = None
+            pedido.tipo_recaudo = None
+            pedido.recaudo_efectivo = None
+            pedido.recaudo_transferencia = None
+            pedido.no_caja = None
+            pedido.fecha_enrutamiento = None
+            pedido.fecha_entrega = None
+            pedido.fecha_recibido = None
+            pedido.ubicacion = None
+            pedido.observacion = None
+            pedido.id_cliente = None
+            pedido.id_vendedor = None
+            pedido.id_transportadora = None
+            pedido.id_estado = None
+            pedido.id_enrutador = None
+            pedido.id_alistador = None
+            pedido.id_empacador = None
+
+            pedido.save()
+
+            return Response({'mensaje': 'Pedido limpiado exitosamente.'}, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({'error': 'Ocurrió un error al limpiar el pedido.', 'detalle': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+    
