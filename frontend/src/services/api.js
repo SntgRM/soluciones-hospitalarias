@@ -22,6 +22,54 @@ api.interceptors.request.use(
     }
 );
 
+// Funciones para los endpoints de Pedidos
+export const getPedidosAll = async () => {
+    // CORREGIDO: Eliminado el 'api/' redundante
+    const response = await api.get('bodega/showall/');
+    return response.data.results;
+};
+
+export const getPedidoDetail = async (pk) => {
+    // CORREGIDO: Eliminado el 'api/' redundante
+    const response = await api.get(`bodega/show/${pk}/`);
+    return response.data.results;
+};
+
+export const createPedido = async (pedidoData) => {
+    // CORREGIDO: Eliminado el 'api/' redundante
+    const response = await api.post('bodega/create/', pedidoData);
+    return response.data.results;
+};
+
+export const updatePedido = async (pk, pedidoData) => {
+    // CORREGIDO: Eliminado el 'api/' redundante
+    const response = await api.put(`bodega/update/${pk}/`, pedidoData);
+    return response.data.results;
+};
+
+export const deletePedido = async (pk) => {
+    // CORREGIDO: Eliminado el 'api/' redundante
+    await api.delete(`bodega/delete/${pk}/`);
+};
+
+export const getResumenPedidos = async () => {
+    // CORREGIDO: Eliminado el 'api/' redundante
+    const response = await api.get('bodega/resumenestados/');
+    return response.data.results;
+};
+
+export const getPedidosPorEstado = async (id_estado) => {
+    const response = await api.get(`bodega/por_estado/${id_estado}/`);
+    return response.data.results;
+};
+
+export const getPedidosPorTransportadora = async (id_transportadora) => {
+    // CORREGIDO: Eliminado el 'api/' redundante
+    const response = await api.get(`bodega/por_transportadora/${id_transportadora}/`);
+    return response.data.results;
+};
+
+
 // Interceptor para manejar respuestas y errores
 api.interceptors.response.use(
     (response) => response,
@@ -48,29 +96,33 @@ const fileToBase64 = (file) => {
 // Funciones de autenticación
 export const authAPI = {
     login: async (credentials) => {
-        const response = await api.post('/auth/login/', credentials);
-        return response.data;
+
+        const response = await api.post('auth/login/', credentials); 
+        return response.data.results;
     },
     
     logout: async () => {
-        const response = await api.post('/auth/logout/');
-        return response.data;
+
+        const response = await api.post('auth/logout/');
+        return response.data.results;
     },
     
     getProfile: async () => {
-        const response = await api.get('/auth/profile/');
+
+        const response = await api.get('auth/profile/');
         return response.data;
     },
     
     register: async (userData) => {
-        const response = await api.post('/auth/register/', userData);
-        return response.data;
+
+        const response = await api.post('auth/register/', userData);
+        return response.data.results;
     }
 };
 
 export const getUsers = async () => {
-    const response = await api.get('/auth/users/');
-    return response.data;
+    const response = await api.get('auth/users/');
+    return response.data.results;
 };
 
 export const createUser = async (userData) => {
@@ -82,7 +134,7 @@ export const createUser = async (userData) => {
     };
 
     const response = await api.post('/auth/users/', dataToSend);
-    return response.data;
+    return response.data.results;
 };
 
 export const updateUser = async (userId, userData) => {
@@ -93,7 +145,7 @@ export const updateUser = async (userId, userData) => {
     };
 
     const response = await api.patch(`/auth/users/${userId}/`, dataToSend);
-    return response.data;
+    return response.data.results;
 };
 
 // Nuevas funciones para datos con archivos
@@ -103,7 +155,7 @@ export const createUserWithFile = async (formData) => {
             'Content-Type': 'multipart/form-data',
         }
     });
-    return response.data;
+    return response.data.results;
 };
 
 export const updateUserWithFile = async (userId, formData) => {
@@ -112,11 +164,11 @@ export const updateUserWithFile = async (userId, formData) => {
             'Content-Type': 'multipart/form-data',
         }
     });
-    return response.data;
+    return response.data.results;
 };
 
 export const deleteUser = async (userId) => {
-    await api.delete(`/auth/users/${userId}/`);
+    await api.delete(`auth/users/${userId}/`);
 };
 
 export const processImageFile = async (file) => {
