@@ -58,8 +58,17 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         image_data = validated_data.pop('image', None)
         password = validated_data.pop('password')
+        role = validated_data.get('role')
         user = User.objects.create_user(**validated_data)
         user.set_password(password)
+
+        if role == 'administrador':
+            user.is_staff = True
+            user.is_superuser = True
+        else:
+            user.is_staff = False
+            user.is_superuser = False
+
         if image_data:
             self._process_image(user, image_data)
         user.save()
@@ -91,10 +100,18 @@ class UserUpdateSerializer(serializers.ModelSerializer):
     
     def update(self, instance, validated_data):
         image_data = validated_data.pop('image', None)
+        role = validated_data.get('role', instance.role)
 
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         
+        if role == 'administrador':
+            instance.is_staff = True
+            instance.is_superuser = True
+        else:
+            instance.is_staff = False
+            instance.is_superuser = False
+
         if image_data:
             self._process_image(instance, image_data)
         
