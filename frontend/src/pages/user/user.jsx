@@ -162,12 +162,14 @@ function User() {
     }
 
     if (modalMode === "create") {
-      const newUser = await createUserWithFile(form); // <-- Usar la nueva función
+      const newUser = await createUserWithFile(form);
+      window.location.reload();
       const updatedUsers = await getUsers();
       setUsers(updatedUsers);
       setFilteredUsers(updatedUsers);
     } else if (modalMode === "edit") {
-      const updatedUser = await updateUserWithFile(selectedUser.id, form); // <-- Usar la nueva función
+      const updatedUser = await updateUserWithFile(selectedUser.id, form);
+      window.location.reload();
       const updatedUsers = await getUsers();
       setUsers(updatedUsers);
       setFilteredUsers(updatedUsers);
