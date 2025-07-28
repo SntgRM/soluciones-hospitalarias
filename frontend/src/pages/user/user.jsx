@@ -11,7 +11,7 @@ const roles = [
   { value: "ventas", label: "Ventas", color: "#ef4444" },
 ]
 
-import { getUsers, createUser, updateUser, deleteUser } from "../../services/api"
+import { getUsers, createUser, updateUser, deleteUser, createUserWithFile, updateUserWithFile } from "../../services/api"
 
 function User() {
   const [users, setUsers] = useState([])
@@ -86,10 +86,24 @@ function User() {
     input.onchange = (e) => {
       const file = e.target.files[0]
       if (file) {
+        if (!file.type.startsWith("image/")) {
+          alert("Por favor selecciona un archivo de imagen válido");
+          return;
+        }
+        
+        if (file.size > 5 * 1024 * 1024) {
+          alert("La imagen debe ser menor a 5MB");
+          return;
+        }
+
         const reader = new FileReader()
         reader.onload = (e) => {
-          setSelectedImage(e.target.result)
-          setFormData((prev) => ({ ...prev, image: e.target.result }))
+          const imageDataURL = e.target.result;
+          setSelectedImage(imageDataURL)
+          setFormData((prev) => ({ 
+            ...prev, 
+            image: imageDataURL 
+          }))
         }
         reader.readAsDataURL(file)
       }
@@ -118,11 +132,13 @@ function User() {
         username: user.username || "",
         first_name: user.first_name,
         role: user.role,
-        image: user.image || null,
+        image: null,
       })
-      setSelectedImage(user.image || null)
+      setSelectedImage(user.profile_image_url || null)
     } else if (mode === "create") {
       resetForm()
+    } else if (mode === "view" && user) {
+      setSelectedUser(user)
     }
   }
 
@@ -134,26 +150,37 @@ function User() {
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setIsSubmitting(true)
+  e.preventDefault();
+  setIsSubmitting(true);
 
-    try {
-      if (modalMode === "create") {
-        const newUser = await createUser(formData)
-        setUsers((prev) => [...prev, newUser])
-        window.location.reload()
-      } else if (modalMode === "edit") {
-        const updatedUser = await updateUser(selectedUser.id, formData)
-        setUsers((prev) => prev.map((user) => (user.id === selectedUser.id ? updatedUser : user)))
-        window.location.reload()
+  try {
+    const form = new FormData();
+    for (const key in formData) {
+      if (formData[key] !== null && formData[key] !== undefined) {
+        form.append(key, formData[key]);
       }
-    } catch (error) {
-      console.error("Error submitting form:", error)
-    } finally {
-      setIsSubmitting(false)
-      closeModal()
     }
+
+    if (modalMode === "create") {
+      const newUser = await createUserWithFile(form); // <-- Usar la nueva función
+      const updatedUsers = await getUsers();
+      setUsers(updatedUsers);
+      setFilteredUsers(updatedUsers);
+    } else if (modalMode === "edit") {
+      const updatedUser = await updateUserWithFile(selectedUser.id, form); // <-- Usar la nueva función
+      const updatedUsers = await getUsers();
+      setUsers(updatedUsers);
+      setFilteredUsers(updatedUsers);
+    }
+  } catch (error) {
+    console.error("Error submitting form:", error);
+    console.error("Error details:", error.response?.data);
+    alert("Error al procesar la solicitud. Por favor intenta de nuevo.");
+  } finally {
+    setIsSubmitting(false);
+    closeModal();
   }
+};
 
   const handleDelete = (user) => {
     setUserToDelete(user)
@@ -183,6 +210,10 @@ function User() {
   const getRoleLabel = (role) => {
     const roleObj = roles.find((r) => r.value === role)
     return roleObj ? roleObj.label : role
+  }
+
+  const handleImageError = (e) => {
+    e.target.src = personsImgs.ISOTIPO;
   }
 
   return (
@@ -288,6 +319,17 @@ function User() {
               <div key={user.id} className="user-card">
                 <div className="user-card-header">
                   <div className="user-avatar">
+                    <img 
+                      src={user.profile_image_url || personsImgs.ISOTIPO} 
+                      alt={user.first_name}
+                      onError={handleImageError}
+                      style={{
+                        width: '50px',
+                        height: '50px',
+                        borderRadius: '50%',
+                        objectFit: 'cover'
+                      }}
+                    />
                   </div>
                   <div className="user-basic-info">
                     <h4 className="user-name">{`${user.first_name}`}</h4>
@@ -367,6 +409,21 @@ function User() {
               {modalMode === "view" ? (
                 <div className="user-details">
                   <div className="user-detail-section">
+                    {/* Imagen del usuario en vista */}
+                    <div className="user-img-container" style={{ marginBottom: '20px' }}>
+                      <img
+                        className="user-img-mod"
+                        src={selectedUser?.profile_image_url || personsImgs.ISOTIPO}
+                        alt="Usuario"
+                        onError={handleImageError}
+                        style={{
+                          width: '80px',
+                          height: '80px',
+                          borderRadius: '50%',
+                          objectFit: 'cover'
+                        }}
+                      />
+                    </div>
                     <h4>Información Personal</h4>
                     <div className="user-detail-grid">
                       <div className="user-detail-item">
@@ -402,6 +459,7 @@ function User() {
                       className="user-img-mod"
                       src={selectedImage || personsImgs.ISOTIPO || "/placeholder.svg?height=70&width=70"}
                       alt="Usuario"
+                      onError={handleImageError}
                     />
                     <button
                       type="button"
