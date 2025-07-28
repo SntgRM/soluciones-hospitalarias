@@ -26,26 +26,32 @@ const ContentTop = ({ pageTitle }) => {
     }, []);
 
     useEffect(() => {
-        const fetchUserProfile = async () => {
-            try {
-                const profile = await authAPI.getProfile();
-                console.log("Perfil recibido:", profile);
-                setUserName(
-                    profile.user.first_name?.trim() || profile.user.username?.trim() || "Usuario"
-                );
+    const fetchUserProfile = async () => {
+        try {
+            const profile = await authAPI.getProfile();
+            console.log("Perfil recibido:", profile);
 
-                if (profile.user.profile_image_url) {
-                    setUserProfileImage(profile.user.profile_image_url);
-                } else {
-                    setUserProfileImage(iconsImgs.user);
-                }
-            } catch (error) {
-                console.error("Error obteniendo el perfil:", error);
+            if (!profile || !profile.user) {
+                console.warn("Estructura de perfil inesperada", profile);
+                setUserName("Usuario");
+                setUserProfileImage(iconsImgs.user);
+                return;
             }
-        };
 
-        fetchUserProfile();
-    }, []);
+            const name = profile.user.first_name?.trim() || profile.user.username?.trim() || "Usuario";
+            const image = profile.user.profile_image_url || iconsImgs.user;
+
+            setUserName(name);
+            setUserProfileImage(image);
+        } catch (error) {
+            console.error("Error obteniendo el perfil:", error);
+            setUserName("Usuario");
+            setUserProfileImage(iconsImgs.user);
+        }
+    };
+
+    fetchUserProfile();
+}, []);
 
     const handleSearchSubmit = (e) => {
         e.preventDefault();
