@@ -1,8 +1,11 @@
 .main-content {
-    background-color: var(--clr-secondary);
-    flex: 1;
-    padding: 32px;
-  }
+  background-color: var(--clr-secondary);
+  height: 100%; /* This is good if its parent (e.g., <body> or <div id="root">) has a height */
+  flex: 1; /* This is likely for a flexbox layout where main-content grows */
+  padding: 32px;
+  /* Make sure the parent of .main-content (and thus .main-content-body) also has a height */
+  /* Example: html, body { height: 100%; } */
+}
 
   @media screen and (max-width: 1400px) {
     .main-content {
