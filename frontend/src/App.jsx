@@ -9,7 +9,7 @@ import Ayuda from "./pages/ayuda/ayuda.jsx";
 import Historial from "./pages/historial/historial.jsx";
 import Home from "./pages/home/home.jsx";
 import Registro from "./pages/registro/registro.jsx";
-import Products from "./pages/products/products.jsx";
+import Pedidos from "./pages/pedidos/pedidos.jsx";
 import Login from "./pages/login/login.jsx";
 import NotFound from "./pages/NotFound/NotFound.jsx";
 import User from "./pages/user/user.jsx";
@@ -42,7 +42,7 @@ function App() {
                 <Route path="historial" element={<Historial />} />
                 <Route path="registro" element={<Registro />} />
                 <Route path="transportadora" element={<Transportadora />} />
-                <Route path="productos" element={<Products />} />
+                <Route path="pedidos" element={<Pedidos />} />
                 <Route path="usuario" element={<User />} />
               </Route>
 

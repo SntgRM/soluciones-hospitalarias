@@ -29,7 +29,9 @@
   --transition-default: all 300ms ease-in-out;
 }
 
-body {
+html, body {
+  min-height: 100vh;
+  height: 100vh;
   font-family: var(--font-family-main);
 }
 
