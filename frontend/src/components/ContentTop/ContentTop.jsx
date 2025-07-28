@@ -10,6 +10,7 @@ const ContentTop = ({ pageTitle }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [isMobile, setIsMobile] = useState(false);
     const [userName, setUserName] = useState('');
+    const [userProfileImage, setUserProfileImage] = useState(null);
 
     useEffect(() => {
         const checkScreenSize = () => {
@@ -32,6 +33,12 @@ const ContentTop = ({ pageTitle }) => {
                 setUserName(
                     profile.user.first_name?.trim() || profile.user.username?.trim() || "Usuario"
                 );
+
+                if (profile.user.profile_image_url) {
+                    setUserProfileImage(profile.user.profile_image_url);
+                } else {
+                    setUserProfileImage(iconsImgs.user);
+                }
             } catch (error) {
                 console.error("Error obteniendo el perfil:", error);
             }
@@ -57,6 +64,11 @@ const ContentTop = ({ pageTitle }) => {
         return title;
     };
 
+    const handleImageError = (e) => {
+        e.target.src = iconsImgs.user;
+        setUserProfileImage(null);
+    };
+
     return (
         <div className="main-content-top">
             <div className="content-top-left">
@@ -79,7 +91,7 @@ const ContentTop = ({ pageTitle }) => {
                 <form className="search-bar-container" onSubmit={handleSearchSubmit}>
                     <div className="search_container">
                         <p className="user-greeting">Hola, {userName}</p>
-                        <img src={iconsImgs.user} alt="Usuario" className='user_img' />
+                        <img src={userProfileImage} alt="Usuario" className='user_img' onError={handleImageError} />
                     </div>
                 </form>
             </div>
