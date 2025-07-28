@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import PedidoViewAll, PedidoDetail, PedidoCreate, PedidoUpdate, PedidoDelete, PedidoResumenEstados, PedidosPorEstado, PedidosPorTransportadora, HistorialPedidoView
+from .views import PedidoViewAll, PedidoDetail, PedidoCreate, PedidoUpdate, PedidoDelete, PedidoResumenEstados, PedidosPorEstado, PedidosPorTransportadora, HistorialPedidoView, LimpiarPedido
 
 urlpatterns = [
     path('showall/', PedidoViewAll.as_view(), name='pedido-view-all'),
@@ -11,5 +11,5 @@ urlpatterns = [
     path('por_estado/<int:id_estado>/', PedidosPorEstado.as_view(), name='pedido-por-estado'),
     path('por_transportadora/<int:id_transportadora>/', PedidosPorTransportadora.as_view(), name='pedido-por-transportadora'),
     path('historial_estados/<int:pk>/', HistorialPedidoView.as_view(), name='pedido-historial-estados'),
-    
+    path('limpiar_pedido/<int:pk>/', LimpiarPedido.as_view(), name='pedido-limpiar'),
 ]
