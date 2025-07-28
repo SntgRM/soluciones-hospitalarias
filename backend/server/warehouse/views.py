@@ -2,12 +2,14 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from .models import Pedidos, EstadosPedidos
+from .models import Pedidos, EstadosPedidos, HistorialEstados
 from django.db.models import Count
+from django.utils import timezone
 from .serializers import PedidoSerializer
 
 # Mostrar todas los pedidos
-class PedidoViewAll(APIView):   
+class PedidoViewAll(APIView):  
+
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -58,11 +60,18 @@ class PedidoDetail(APIView):
 
 # Crear un nuevo pedido
 class PedidoCreate(APIView):
+
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
         try:
-            serializer = PedidoSerializer(data=request.data)
+            data = request.data.copy()
+
+            # Si el estado es ALISTAMIENTO (id_estado = 1), se agrega la fecha actual
+            if int(data.get("id_estado", 0)) == 6:
+                data["fecha_recibido"] = timezone.now()
+
+            serializer = PedidoSerializer(data=data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -79,7 +88,9 @@ class PedidoCreate(APIView):
 
 # Actualizar un pedido según su ID
 class PedidoUpdate(APIView):
+
     permission_classes = [IsAuthenticated]
+
     def put(self, request, pk):
         try:
             pedido = Pedidos.objects.get(pk=pk)
@@ -107,7 +118,9 @@ class PedidoUpdate(APIView):
 
 # Eliminar un pedido según su ID
 class PedidoDelete(APIView):
+
     permission_classes = [IsAuthenticated]
+
     def delete(self, request, pk):
         try:
             pedido = Pedidos.objects.get(pk=pk)
@@ -133,7 +146,9 @@ class PedidoDelete(APIView):
 
 # Mostrar el total de pedidos por estado
 class PedidoResumenEstados(APIView):
+
     permission_classes = [IsAuthenticated]
+
     def get(self, request):
         try:
             # Agrupar pedidos por estado
@@ -168,14 +183,16 @@ class PedidoResumenEstados(APIView):
             return Response(
                 {
                     "error": "Ocurrió un error inesperado al obtener el resumen de pedidos.",
-                    "detalle": str(e)
+                    
                 },
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
 # Mostrar un pedido por su estado 
 class PedidosPorEstado(APIView):
+
     permission_classes = [IsAuthenticated]
+
     def get(self, request, id_estado):
         try:
             # Validar que el estado exista
@@ -205,7 +222,9 @@ class PedidosPorEstado(APIView):
 
 # Mostrar los pedidos de cada transportador asignado
 class PedidosPorTransportadora(APIView):
+
     permission_classes = [IsAuthenticated]
+
     def get(self, request, id_transportadora):
         try:
             pedidos = Pedidos.objects.filter(id_transportadora=id_transportadora)
@@ -221,5 +240,45 @@ class PedidosPorTransportadora(APIView):
         except Exception as e:
             return Response(
                 {'error': 'Error al obtener pedidos por transportadora.'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+# Mostrar historial de los estados de un pedido
+class HistorialPedidoView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, pk):
+        try:
+            pedido = Pedidos.objects.get(pk=pk)
+            historial = HistorialEstados.objects.filter(id_factura=pedido).order_by('fecha_cambio')
+
+            if not historial.exists():
+                return Response(
+                    {'mensaje': 'No hay historial de estados para este pedido.'},
+                    status=status.HTTP_204_NO_CONTENT
+                )
+
+            data = []
+            for item in historial:
+                data.append({
+                    'id_historial': item.id_historial,
+                    'id_pedido': item.id_factura.id_factura,
+                    'id_estado': item.id_estado.id_estado,
+                    'nombre_estado': item.id_estado.nombre_estado,
+                    'fecha_cambio': item.fecha_cambio
+                })
+
+            return Response(data, status=status.HTTP_200_OK)
+
+        except Pedidos.DoesNotExist:
+            return Response(
+                {'error': 'Pedido no encontrado.'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        except Exception as e:
+            return Response(
+                {'error': 'Error al obtener el historial de estados del pedido.'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
