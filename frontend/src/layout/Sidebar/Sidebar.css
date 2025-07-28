@@ -1,19 +1,18 @@
-/* Contenedor placeholder invisible que ocupa el espacio del sidebar */
 .sidebar-placeholder {
   width: 260px;
   height: 100vh;
-  flex-shrink: 0; /* Evita que se reduzca */
+  flex-shrink: 0;
   transition: var(--transition-default);
-  pointer-events: none; /* No interfiere con eventos del mouse */
+  pointer-events: none;
 }
 
-/* Cuando el sidebar está oculto, el placeholder también se oculta */
 .sidebar-placeholder.sidebar-change {
   width: 0px;
 }
 
 .sidebar {
-  background: linear-gradient(180deg, #141414 0%, #212121 100%);
+  /* background: linear-gradient(180deg, #141414 0%, #212121 100%); */
+  background: black;
   filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#3E3C3E", endColorstr="#141414", GradientType=1 );
   width: 260px;
   padding: 0px 20px;
@@ -27,7 +26,6 @@
   overflow: hidden;
 }
 
-/* Contenedor interno sin transform */
 .sidebar-inner {
   position: absolute;
   top: 0;
@@ -35,8 +33,7 @@
   width: 100%;
   height: 100%;
   padding: 0px 20px;
-  /* transform removido como mencionaste */
-  overflow-y: auto; /* Permitir scroll interno si es necesario */
+  overflow-y: auto;
 }
 
 .user-info {
@@ -117,6 +114,7 @@
 @media screen and (max-width: 1400px) {
   .sidebar {
     padding: 0px 16px;
+    box-shadow: none;
   }
   .sidebar-inner {
     padding: 0px 16px;
@@ -125,6 +123,7 @@
 
 @media screen and (max-width: 1200px) {
   .sidebar {
+    box-shadow: none;
     width: 72px;
     padding-left: 12px;
     padding-right: 12px;
@@ -173,6 +172,7 @@
 @media screen and (max-width: 420px) {
   .sidebar {
     margin-left: -72px;
+    box-shadow: none;
   }
   .sidebar-change {
     margin-left: 0px;
