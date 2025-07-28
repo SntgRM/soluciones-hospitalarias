@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 from .models import User
+import base64
+from django.core.files.base import ContentFile
 
 class UserLoginSerializer(serializers.Serializer):
     username = serializers.CharField()
@@ -25,16 +27,26 @@ class UserLoginSerializer(serializers.Serializer):
         return data
     
 class UserSerializer(serializers.ModelSerializer):
+    profile_image_url = serializers.SerializerMethodField()
     class Meta:
         model = User
-        fields = ['id', 'username', 'first_name', 'role', 'date_joined']
+        fields = ['id', 'username', 'first_name', 'role', 'date_joined', 'profile_image', 'profile_image_url']
+
+    def get_profile_image_url(self, obj):
+        if obj.profile_image:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.profile_image.url)
+            return obj.profile_image.url
+        return None
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
+    image = serializers.CharField(write_only=True, required=False)
    
     class Meta:
         model = User
-        fields = ['username', 'password', 'first_name', 'role']
+        fields = ['username', 'password', 'first_name', 'role', 'image']
 
     def validate(self, data):
         if 'username' in data:
@@ -44,13 +56,31 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         return data
 
     def create(self, validated_data):
+        image_data = validated_data.pop('image', None)
         password = validated_data.pop('password')
         user = User.objects.create_user(**validated_data)
         user.set_password(password)
+        if image_data:
+            self._process_image(user, image_data)
         user.save()
         return user
+    
+    def _process_image(self, user, image_data):
+        try:
+            if image_data.startswith('data:image'):
+                format_part, data_part = image_data.split(';base64,')
+                ext = format_part.split('/')[-1]
+
+                image_file = ContentFile(
+                    base64.b64decode(data_part),
+                    name=f'user_{user.id}.{ext}'
+                )
+                user.profile_image.save(f'user_{user.id}.{ext}', image_file, save=False)
+        except Exception as e:
+            print(f"Error procesando imagen: {e}")
 
 class UserUpdateSerializer(serializers.ModelSerializer):
+    image = serializers.CharField(write_only=True, required=False)
 
     def validate(self, data):
         if 'username' in data:
@@ -58,6 +88,32 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         if 'first_name' in data:
             data['first_name'] = data['first_name'].upper()
         return data
+    
+    def update(self, instance, validated_data):
+        image_data = validated_data.pop('image', None)
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        
+        if image_data:
+            self._process_image(instance, image_data)
+        
+        instance.save()
+        return instance
+
+    def _process_image(self, user, image_data):
+        try:
+            if image_data.startswith('data:image'):
+                format_part, data_part = image_data.split(';base64,')
+                ext = format_part.split('/')[-1]
+                
+                image_file = ContentFile(
+                    base64.b64decode(data_part), 
+                    name=f'user_{user.id}.{ext}'
+                )
+                user.profile_image.save(f'user_{user.id}.{ext}', image_file, save=False)
+        except Exception as e:
+            print(f"Error procesando imagen: {e}")
     class Meta:
         model = User
-        fields = ['username', 'first_name', 'role']
+        fields = ['username', 'first_name', 'role', 'image']
