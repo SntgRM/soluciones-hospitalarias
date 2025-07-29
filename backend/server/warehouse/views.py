@@ -12,9 +12,9 @@ from .serializers import PedidoSerializer
 class PedidoViewAll(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
+    def get(self, request): 
         try:
-            pedidos = Pedidos.objects.all().order_by('id_factura')
+            pedidos = Pedidos.objects.all().order_by('-id_factura')
 
             if not pedidos.exists():
                 return Response(
@@ -23,8 +23,7 @@ class PedidoViewAll(APIView):
                 )
 
             # Configuracion de paginación
-            paginator = PageNumberPagination()
-            paginator.page_size = 10 
+            paginator = PaginacionPedido()
             result_page = paginator.paginate_queryset(pedidos, request)
 
             serializer = PedidoSerializer(result_page, many=True)
@@ -209,15 +208,14 @@ class PedidosPorEstado(APIView):
                 )
 
             # Buscar pedidos con ese estado
-            pedidos = Pedidos.objects.filter(id_estado=id_estado).order_by('id_factura')
+            pedidos = Pedidos.objects.filter(id_estado=id_estado).order_by('-id_factura')
             if not pedidos.exists():
                 return Response(
                     {'mensaje': f'No hay pedidos en el estado: {estado.nombre_estado}'},
                     status=status.HTTP_204_NO_CONTENT
                 )
     
-            paginator = PageNumberPagination()
-            paginator.page_size = 10  
+            paginator = PaginacionPedido()
             result_page = paginator.paginate_queryset(pedidos, request)
 
             serializer = PedidoSerializer(result_page, many=True)
@@ -236,15 +234,14 @@ class PedidosPorTransportadora(APIView):
 
     def get(self, request, id_transportadora):
         try:
-            pedidos = Pedidos.objects.filter(id_transportadora=id_transportadora).order_by('id_factura')
+            pedidos = Pedidos.objects.filter(id_transportadora=id_transportadora).order_by('-id_factura')
             if not pedidos.exists():
                 return Response(
                     {'mensaje': 'No hay pedidos para esta transportadora.'},
                     status=status.HTTP_204_NO_CONTENT
                 )
 
-            paginator = PageNumberPagination()
-            paginator.page_size = 10  
+            paginator = PaginacionPedido()
             result_page = paginator.paginate_queryset(pedidos, request)
 
             serializer = PedidoSerializer(result_page, many=True)
@@ -331,5 +328,16 @@ class LimpiarPedido(APIView):
         except Exception as e:
             return Response({'error': 'Ocurrió un error al limpiar el pedido.', 'detalle': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+class PaginacionPedido(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
 
+
+    def get_paginated_response(self, data):
+        return Response({
+            'count': self.page.paginator.count,
+            'next': self.get_next_link(),
+            'previous': self.get_previous_link(),
+            'results': data
+        })
     
