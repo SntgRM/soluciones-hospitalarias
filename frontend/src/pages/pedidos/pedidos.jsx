@@ -1,23 +1,20 @@
-"use client"
-
-import { useState, useEffect, useCallback, useMemo } from "react" // Agregué useMemo
+import { useState, useEffect, useCallback, useMemo } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
-import { Building2, User, Package, Truck, CheckCircle, XCircle, Clock, AlertCircle, MapPin, DollarSign, Calendar, Users, Search } from "lucide-react" // Agregué Search icon
-import "./pedidos.css"
-import { getPedidosAll, getPedidosPorEstado, getResumenPedidos } from '../../services/api.js';
-
+import { Building2, User, Package, Truck, CheckCircle, XCircle, Clock, AlertCircle, MapPin, DollarSign, Calendar, Users, Search } from "lucide-react"
+import "./pedidos.css";
+import { getPedidosAll, getPedidosPorEstado, getResumenPedidos } from "../../services/api.js"
 
 const statusToIdMap = {
   "ENTREGADO AL CLIENTE": 1,
   "ENVIADO EN TRANSPORTADORA": 2,
-  "ANULADO": 3,
+  ANULADO: 3,
   "SIN REGISTRO": 4,
   "PEDIDO NO RECIBIDO": 5,
   "EN ALISTAMIENTO": 6,
   "EN REPARTO": 7,
   "EN PREPARACION": 8,
-  "EMPACADO": 9,
-}
+  EMPACADO: 9,
+};
 
 const statusConfig = {
   "ENTREGADO AL CLIENTE": {
@@ -28,7 +25,7 @@ const statusConfig = {
     color: "blue",
     icon: Truck,
   },
-  "ANULADO": {
+  ANULADO: {
     color: "red",
     icon: XCircle,
   },
@@ -48,161 +45,218 @@ const statusConfig = {
     color: "orange",
     icon: Clock,
   },
-}
-
-const findMatchingStatusKey = (rawStatus, map) => {
-    if (!rawStatus) return '';
-    const trimmedLowerRawStatus = rawStatus.trim().toLowerCase();
-    for (const key in map) {
-        if (key.toLowerCase() === trimmedLowerRawStatus) {
-            return key;
-        }
-    }
-    return '';
 };
 
+const findMatchingStatusKey = (rawStatus, map) => {
+  if (!rawStatus) return "";
+  const trimmedLowerRawStatus = rawStatus.trim().toLowerCase();
+  for (const key in map) {
+    if (key.toLowerCase() === trimmedLowerRawStatus) {
+      return key;
+    }
+  }
+  return "";
+};
 
 const PedidosPage = () => {
-  const location = useLocation()
-  const navigate = useNavigate()
-  const [filterStatus, setFilterStatus] = useState("")
-  const [selectedPedido, setSelectedPedido] = useState(null)
-  
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [filterStatus, setFilterStatus] = useState("");
+  const [selectedPedido, setSelectedPedido] = useState(null);
+
   const [pedidos, setPedidos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [statusCounts, setStatusCounts] = useState({});
+  const [totalPedidos, setTotalPedidos] = useState(0);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
-  const pageRangeDisplayed = 10;
 
   // Nuevo estado para el término de búsqueda
   const [searchTerm, setSearchTerm] = useState("");
 
+  const paginate = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      const params = new URLSearchParams(location.search);
+      params.set("page", pageNumber);
+      navigate(`?${params.toString()}`);
+    }
+  };
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search)
-    const statusFromUrl = params.get("status")
-    const searchTermFromUrl = params.get("search"); // Obtener término de búsqueda de la URL
+    const params = new URLSearchParams(location.search);
+    const statusFromUrl = params.get("status");
+    const pageFromUrl = params.get("page");
 
+    // Decodifica correctamente el status
     if (statusFromUrl) {
-      const decodedAndMatchedStatus = findMatchingStatusKey(decodeURIComponent(statusFromUrl), statusToIdMap);
-      setFilterStatus(decodedAndMatchedStatus);
+      const decodedStatus = decodeURIComponent(statusFromUrl);
+      const matchedStatus = findMatchingStatusKey(decodedStatus, statusToIdMap);
+      setFilterStatus(matchedStatus || "");
     } else {
       setFilterStatus("");
     }
-    setSearchTerm(searchTermFromUrl || ""); // Establecer el término de búsqueda
-    setCurrentPage(1);
-  }, [location.search]);
 
+    // Maneja el número de página
+    const pageNumber = pageFromUrl ? parseInt(pageFromUrl) : 1;
+    setCurrentPage(isNaN(pageNumber) ? 1 : Math.max(1, pageNumber));
+  }, [location.search]);
 
   useEffect(() => {
     const fetchStatusCounts = async () => {
       try {
         const data = await getResumenPedidos();
+
+        if (!data || data.length === 0) {
+          console.warn("No hay datos de resumen de pedidos");
+          setStatusCounts({});
+          return;
+        }
+
+        // Procesamiento que mantiene exactamente los nombres de tu statusToIdMap
         const counts = {};
-        data.forEach(item => {
-          const normalizedKey = findMatchingStatusKey(item.nombre_estado, statusToIdMap);
-          if (normalizedKey) {
-            counts[normalizedKey] = item.total;
+        let total = 0;
+
+        data.forEach((item) => {
+          const estadoNombre = item.nombre_estado.trim(); // Limpia los \r
+          if (statusToIdMap[estadoNombre] !== undefined) {
+            counts[estadoNombre] = item.total;
+            total += item.total;
           }
         });
+
+        console.log("Resumen de estados:", counts);
         setStatusCounts(counts);
-      } catch (err) {
-        console.error("Error fetching status counts:", err);
+        setTotalPedidos(total);
+      } catch (error) {
+        console.error("Error al obtener resumen de pedidos:", error);
       }
     };
     fetchStatusCounts();
   }, []);
-
 
   useEffect(() => {
     const fetchPedidos = async () => {
       setLoading(true);
       setError(null);
       try {
-        let data;
+        let response;
+
+        // Obtener pedidos según filtro
         if (filterStatus) {
           const statusId = statusToIdMap[filterStatus];
-          if (statusId !== undefined) {
-            data = await getPedidosPorEstado(statusId);
-          } else {
-            console.warn(`Estado '${filterStatus}' no encontrado en el mapeo. Mostrando todos los pedidos.`);
-            data = await getPedidosAll();
+          response =
+            statusId !== undefined
+              ? await getPedidosPorEstado(statusId, currentPage)
+              : await getPedidosAll(currentPage);
+          if (response.count !== undefined) {
           }
         } else {
-          data = await getPedidosAll();
+          response = await getPedidosAll(currentPage);
         }
-        setPedidos(data);
-        console.log("Pedidos recibidos del backend:", data);
+
+        // Manejar diferentes formatos de respuesta
+        if (response.results) {
+          setPedidos(response.results || []);
+          // Actualizar el total solo si no hay filtro aplicado
+          if (!filterStatus) {
+            setTotalPedidos(response.count || 0);
+          }
+        } else if (Array.isArray(response)) {
+          setPedidos(response);
+          // Actualizar el total solo si no hay filtro aplicado
+          if (!filterStatus) {
+            setTotalPedidos(response.length);
+          }
+        } else {
+          setPedidos([]);
+          console.error("Formato de respuesta inesperado:", response);
+        }
       } catch (err) {
         console.error("Error fetching pedidos:", err);
-        setError("No se pudieron cargar los pedidos. Inténtelo de nuevo más tarde.");
+        setError(
+          "No se pudieron cargar los pedidos. Inténtelo de nuevo más tarde."
+        );
         setPedidos([]);
+        setTotalPedidos(0); // Resetear el contador en caso de error
       } finally {
         setLoading(false);
       }
     };
-    
+
     fetchPedidos();
-    
-  }, [filterStatus]); // Ya no depende de searchTerm aquí, el filtrado por búsqueda es local
+  }, [filterStatus, currentPage]); // Dependencias del efecto
 
+  const handleFilterChange = useCallback(
+    (statusKey) => {
+      const params = new URLSearchParams();
 
-  const handleFilterChange = useCallback((statusKey) => {
-    const params = new URLSearchParams()
-    if (statusKey) {
-      params.set("status", encodeURIComponent(statusKey))
-    }
-    if (searchTerm) { // Mantener el término de búsqueda si existe
-      params.set("search", encodeURIComponent(searchTerm));
-    }
-    navigate(`?${params.toString()}`)
-    setSelectedPedido(null)
-  }, [navigate, searchTerm]); // Agregué searchTerm a las dependencias
+      if (statusKey) {
+        // Codifica correctamente el status (solo una vez)
+        params.set("status", encodeURIComponent(statusKey));
+      }
+
+      if (searchTerm) {
+        params.set("search", searchTerm);
+      }
+
+      // Siempre resetear a página 1 al cambiar filtro
+      params.set("page", "1");
+
+      navigate(`?${params.toString()}`);
+      setCurrentPage(1); // Sincroniza el estado interno
+    },
+    [navigate, searchTerm]
+  ); // Agregué searchTerm a las dependencias
 
   // Nueva función para manejar el cambio en la barra de búsqueda
-  const handleSearchChange = useCallback((e) => {
-    const newSearchTerm = e.target.value;
-    setSearchTerm(newSearchTerm);
-    // Actualizar la URL con el término de búsqueda
-    const params = new URLSearchParams();
-    if (filterStatus) {
-      params.set("status", encodeURIComponent(filterStatus));
-    }
-    if (newSearchTerm) {
-      params.set("search", encodeURIComponent(newSearchTerm));
-    }
-    navigate(`?${params.toString()}`);
-    setCurrentPage(1); // Resetear a la primera página al buscar
-  }, [navigate, filterStatus]); // Agregué filterStatus a las dependencias
+  const handleSearchChange = useCallback(
+    (e) => {
+      const newSearchTerm = e.target.value;
+      setSearchTerm(newSearchTerm);
+      // Actualizar la URL con el término de búsqueda
+      const params = new URLSearchParams();
+      if (filterStatus) {
+        params.set("status", encodeURIComponent(filterStatus));
+      }
+      if (newSearchTerm) {
+        params.set("search", encodeURIComponent(newSearchTerm));
+      }
+      navigate(`?${params.toString()}`);
+      setCurrentPage(1); // Resetear a la primera página al buscar
+    },
+    [navigate, filterStatus]
+  ); // Agregué filterStatus a las dependencias
 
   const handlePedidoClick = (pedido) => {
-    setSelectedPedido(pedido)
-  }
-
-  const totalPedidos = Object.values(statusCounts).reduce((sum, count) => sum + count, 0)
+    setSelectedPedido(pedido);
+  };
 
   const formatDate = (dateString) => {
-    if (!dateString || dateString === "2000-01-01T00:00:00Z" || dateString.startsWith("0001-")) return 'N/A';
+    if (
+      !dateString ||
+      dateString === "2000-01-01T00:00:00Z" ||
+      dateString.startsWith("0001-")
+    )
+      return "N/A";
     try {
-        const date = new Date(dateString);
-        if (isNaN(date.getTime())) {
-            return 'Fecha inválida';
-        }
-        return date.toLocaleDateString("es-CO");
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) {
+        return "Fecha inválida";
+      }
+      return date.toLocaleDateString("es-CO");
     } catch (e) {
-        console.error("Error formatting date:", dateString, e);
-        return dateString;
+      console.error("Error formatting date:", dateString, e);
+      return dateString;
     }
-  }
+  };
 
   const formatCurrency = (amount) => {
     const numericAmount = parseFloat(amount);
 
     if (isNaN(numericAmount)) {
-      return '';
+      return "";
     }
 
     return new Intl.NumberFormat("es-CO", {
@@ -218,28 +272,44 @@ const PedidosPage = () => {
       return pedidos;
     }
     const lowerCaseSearchTerm = searchTerm.toLowerCase();
-    return pedidos.filter(pedido => {
+    return pedidos.filter((pedido) => {
       // Buscar en id_factura
-      if (pedido.id_factura && String(pedido.id_factura).includes(lowerCaseSearchTerm)) {
+      if (
+        pedido.id_factura &&
+        String(pedido.id_factura).includes(lowerCaseSearchTerm)
+      ) {
         return true;
       }
       // Buscar en ciudad
-      if (pedido.ciudad && pedido.ciudad.toLowerCase().includes(lowerCaseSearchTerm)) {
+      if (
+        pedido.ciudad &&
+        pedido.ciudad.toLowerCase().includes(lowerCaseSearchTerm)
+      ) {
         return true;
       }
       // Buscar en nombre del cliente
-      if (pedido.cliente_nombre && pedido.cliente_nombre.toLowerCase().includes(lowerCaseSearchTerm)) {
+      if (
+        pedido.cliente_nombre &&
+        pedido.cliente_nombre.toLowerCase().includes(lowerCaseSearchTerm)
+      ) {
         return true;
       }
       // Buscar en productos (si es un array de strings)
       if (Array.isArray(pedido.productos)) {
-        if (pedido.productos.some(product => product.toLowerCase().includes(lowerCaseSearchTerm))) {
+        if (
+          pedido.productos.some((product) =>
+            product.toLowerCase().includes(lowerCaseSearchTerm)
+          )
+        ) {
           return true;
         }
       }
       // Puedes añadir más campos aquí según sea necesario (ej. transportadora, estado, etc.)
       // Para 'estado', necesitarías el texto del estado para comparar
-      const estadoTexto = Object.keys(statusToIdMap).find(key => statusToIdMap[key] === pedido.id_estado) || "";
+      const estadoTexto =
+        Object.keys(statusToIdMap).find(
+          (key) => statusToIdMap[key] === pedido.id_estado
+        ) || "";
       if (estadoTexto.toLowerCase().includes(lowerCaseSearchTerm)) {
         return true;
       }
@@ -248,53 +318,91 @@ const PedidosPage = () => {
     });
   }, [pedidos, searchTerm, statusToIdMap]); // Dependencias para useMemo
 
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredPedidos.slice(indexOfFirstItem, indexOfLastItem); // Usar filteredPedidos
-  const totalPages = Math.ceil(filteredPedidos.length / itemsPerPage); // Calcular totalPages basado en filteredPedidos
+  const totalPages = Math.ceil(
+    searchTerm
+      ? filteredPedidos.length / itemsPerPage
+      : (filterStatus ? statusCounts[filterStatus] || 0 : totalPedidos) /
+          itemsPerPage
+  );
 
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const pageRangeDisplayed = 5;
 
   const renderPageNumbers = () => {
+    if (totalPages <= 1) return null;
+
     const pageItems = [];
-    const startPage = Math.max(1, currentPage - Math.floor(pageRangeDisplayed / 2));
-    const endPage = Math.min(totalPages, currentPage + Math.floor(pageRangeDisplayed / 2));
+    const maxVisiblePages = 5; // Número máximo de páginas visibles
+    const halfRange = Math.floor(maxVisiblePages / 2);
 
+    let startPage = Math.max(1, currentPage - halfRange);
+    let endPage = Math.min(totalPages, currentPage + halfRange);
+
+    // Ajustar si estamos cerca del inicio
+    if (currentPage <= halfRange) {
+      endPage = Math.min(maxVisiblePages, totalPages);
+    }
+    // Ajustar si estamos cerca del final
+    if (currentPage > totalPages - halfRange) {
+      startPage = Math.max(1, totalPages - maxVisiblePages + 1);
+    }
+
+    // Botón para la primera página
     if (startPage > 1) {
-      pageItems.push({ type: 'page', value: 1, key: 'page-1' });
+      pageItems.push(
+        <button
+          key="page-1"
+          onClick={() => paginate(1)}
+          className={`pagination-page ${currentPage === 1 ? "active" : ""}`}
+        >
+          1
+        </button>
+      );
       if (startPage > 2) {
-        pageItems.push({ type: 'ellipsis', key: 'ellipsis-start' });
-      }
-    }
-
-    for (let i = startPage; i <= endPage; i++) {
-      pageItems.push({ type: 'page', value: i, key: `page-${i}` });
-    }
-
-    if (endPage < totalPages) {
-      if (endPage < totalPages - 1) {
-        pageItems.push({ type: 'ellipsis', key: 'ellipsis-end' });
-      }
-      pageItems.push({ type: 'page', value: totalPages, key: `page-${totalPages}` });
-    }
-
-    return pageItems.map(item => {
-      if (item.type === 'ellipsis') {
-        return <span key={item.key} className="ellipsis">...</span>;
-      } else {
-        return (
-          <button
-            key={item.key}
-            onClick={() => paginate(item.value)}
-            className={currentPage === item.value ? 'active' : ''}
-          >
-            {item.value}
-          </button>
+        pageItems.push(
+          <span key="ellipsis-start" className="pagination-ellipsis">
+            ...
+          </span>
         );
       }
-    });
-  };
+    }
 
+    // Páginas intermedias
+    for (let i = startPage; i <= endPage; i++) {
+      pageItems.push(
+        <button
+          key={`page-${i}`}
+          onClick={() => paginate(i)}
+          className={`pagination-page ${currentPage === i ? "active" : ""}`}
+        >
+          {i}
+        </button>
+      );
+    }
+
+    // Botón para la última página
+    if (endPage < totalPages) {
+      if (endPage < totalPages - 1) {
+        pageItems.push(
+          <span key="ellipsis-end" className="pagination-ellipsis">
+            ...
+          </span>
+        );
+      }
+      pageItems.push(
+        <button
+          key={`page-${totalPages}`}
+          onClick={() => paginate(totalPages)}
+          className={`pagination-page ${
+            currentPage === totalPages ? "active" : ""
+          }`}
+        >
+          {totalPages}
+        </button>
+      );
+    }
+
+    return pageItems;
+  };
 
   if (loading) {
     return (
@@ -337,19 +445,23 @@ const PedidosPage = () => {
                 <Package size={20} />
                 <span className="filter-button-text">Todo</span>
               </div>
-              <span className="filter-badge">{totalPedidos.toLocaleString()}</span>
+              <span className="filter-badge">
+                {totalPedidos.toLocaleString()}
+              </span>
             </button>
 
             {Object.entries(statusConfig).map(([status, config]) => {
-              const Icon = config.icon
-              const count = statusCounts[status] || 0
-              const isActive = filterStatus === status
+              const Icon = config.icon;
+              const count = statusCounts[status] || 0;
+              const isActive = filterStatus === status;
 
               return (
                 <button
                   key={status}
                   onClick={() => handleFilterChange(status)}
-                  className={`filter-button ${isActive ? `active ${config.color}` : ""}`}
+                  className={`filter-button ${
+                    isActive ? `active ${config.color}` : ""
+                  }`}
                 >
                   <div className="filter-button-content">
                     <Icon size={20} />
@@ -357,18 +469,31 @@ const PedidosPage = () => {
                   </div>
                   <span className="filter-badge">{count.toLocaleString()}</span>
                 </button>
-              )
+              );
             })}
           </div>
         </div>
       </div>
 
       <div className="main-panel">
-        <div className={`pedidos-list-container ${selectedPedido ? "with-details" : ""}`}>
+        <div
+          className={`pedidos-list-container ${
+            selectedPedido ? "with-details" : ""
+          }`}
+        >
           <div className="pedidos-header">
-            <h1 className="pedidos-title">{filterStatus ? `Pedidos - ${filterStatus}` : "Todos los Pedidos"}</h1>
+            <h1 className="pedidos-title">
+              {filterStatus ? `Pedidos - ${filterStatus}` : "Todos los Pedidos"}
+            </h1>
             <p className="pedidos-subtitle">
-              {filteredPedidos.length} pedido{filteredPedidos.length !== 1 ? "s" : ""} encontrado
+              <p className="pedidos-subtitle">
+                {`Mostrando ${(currentPage - 1) * itemsPerPage + 1}-${Math.min(
+                  currentPage * itemsPerPage,
+                  filterStatus ? statusCounts[filterStatus] || 0 : totalPedidos
+                )} de ${
+                  filterStatus ? statusCounts[filterStatus] || 0 : totalPedidos
+                } pedidos`}
+              </p>
             </p>
             {/* Barra de búsqueda - NUEVO */}
             <div className="search-bar-container">
@@ -385,15 +510,21 @@ const PedidosPage = () => {
 
           <div className="pedidos-content">
             <div className="pedidos-grid">
-              {currentItems.length === 0 && !loading && !error ? (
-                <p className="no-pedidos-message">No hay pedidos disponibles para este filtro.</p>
+              {pedidos.length === 0 && !loading && !error ? (
+                <p className="no-pedidos-message">
+                  No hay pedidos disponibles para este filtro.
+                </p>
               ) : (
-                currentItems.map((pedido) => {
+                pedidos.map((pedido) => {
                   // Asumo que 'estado' ya viene en el objeto pedido, si no, usa el mapeo inverso aquí
-                  const estadoActual = Object.keys(statusToIdMap).find(key => statusToIdMap[key] === pedido.id_estado) || "SIN REGISTRO";
-                  const config = statusConfig[estadoActual]
-                  const Icon = config?.icon || Package
-                  const isSelected = selectedPedido?.id_factura === pedido.id_factura // Comparar por id_factura
+                  const estadoActual =
+                    Object.keys(statusToIdMap).find(
+                      (key) => statusToIdMap[key] === pedido.id_estado
+                    ) || "SIN REGISTRO";
+                  const config = statusConfig[estadoActual];
+                  const Icon = config?.icon || Package;
+                  const isSelected =
+                    selectedPedido?.id_factura === pedido.id_factura; // Comparar por id_factura
 
                   return (
                     <div
@@ -403,21 +534,29 @@ const PedidosPage = () => {
                     >
                       <div className="pedido-card-content">
                         <div className="pedido-card-left">
-                          <div className={`pedido-icon ${config?.color || "gray"}`}>
-                            {typeof pedido.id_cliente === 'number' && pedido.id_cliente % 2 === 0 ? <Building2 size={20} /> : <User size={20} />}
+                          <div
+                            className={`pedido-icon ${config?.color || "gray"}`}
+                          >
+                            {typeof pedido.id_cliente === "number" &&
+                            pedido.id_cliente % 2 === 0 ? (
+                              <Building2 size={20} />
+                            ) : (
+                              <User size={20} />
+                            )}
                           </div>
                           <div className="pedido-info">
                             <h3>
                               {pedido.cliente_nombre} - {pedido.ciudad}
                             </h3>
                             <p>
-                              Fecha: {formatDate(pedido.fecha_recibido)} | Valor: {formatCurrency(pedido.valor)}
+                              Fecha: {formatDate(pedido.fecha_recibido)} |
+                              Valor: {formatCurrency(pedido.valor)}
                             </p>
                           </div>
                         </div>
                       </div>
                     </div>
-                  )
+                  );
                 })
               )}
             </div>
@@ -427,28 +566,75 @@ const PedidosPage = () => {
               <button
                 onClick={() => paginate(currentPage - 1)}
                 disabled={currentPage === 1}
-                className="pagination-arrow"
+                className="page-nav"
               >
                 Anterior
               </button>
-              {renderPageNumbers()}
+
+              {currentPage > 2 && totalPages > 5 && (
+                <button onClick={() => paginate(1)} className="pagination-page">
+                  1
+                </button>
+              )}
+
+              {currentPage > 3 && totalPages > 5 && (
+                <span className="pagination-ellipsis">...</span>
+              )}
+
+              {[currentPage - 1, currentPage, currentPage + 1].map(
+                (page) =>
+                  page >= 1 &&
+                  page <= totalPages && (
+                    <button
+                      key={page}
+                      onClick={() => paginate(page)}
+                      className={`pagination-page ${
+                        currentPage === page ? "active" : ""
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  )
+              )}
+
+              {currentPage < totalPages - 2 && totalPages > 5 && (
+                <span className="pagination-ellipsis">...</span>
+              )}
+
+              {currentPage < totalPages - 1 && totalPages > 5 && (
+                <button
+                  onClick={() => paginate(totalPages)}
+                  className="pagination-page"
+                >
+                  {totalPages}
+                </button>
+              )}
+
               <button
                 onClick={() => paginate(currentPage + 1)}
                 disabled={currentPage === totalPages}
-                className="pagination-arrow"
+                className="page-nav"
               >
                 Siguiente
               </button>
+
+              <div className="page-info">
+                Página {currentPage} de {totalPages}
+              </div>
             </div>
           )}
         </div>
 
-
         {selectedPedido && (
           <div className="details-panel">
             <div className="details-header">
-              <h2 className="details-title">Detalles del Pedido #{selectedPedido.id_factura}</h2>
-              <button className="close-button" onClick={() => setSelectedPedido(null)}>
+              <h2 className="details-title">
+                Detalles del Pedido #{selectedPedido.id_factura}
+              </h2>
+              <button
+                className="close-button"
+                onClick={() => setSelectedPedido(null)}
+              >
                 ✕
               </button>
             </div>
@@ -458,15 +644,21 @@ const PedidosPage = () => {
                 <h3 className="section-title">Estado</h3>
                 <div>
                   {(() => {
-                    const estadoTexto = Object.keys(statusToIdMap).find(key => statusToIdMap[key] === selectedPedido.id_estado) || "SIN REGISTRO";
-                    const config = statusConfig[estadoTexto] || statusConfig["SIN REGISTRO"];
+                    const estadoTexto =
+                      Object.keys(statusToIdMap).find(
+                        (key) => statusToIdMap[key] === selectedPedido.id_estado
+                      ) || "SIN REGISTRO";
+                    const config =
+                      statusConfig[estadoTexto] || statusConfig["SIN REGISTRO"];
                     const Icon = config.icon;
                     return (
-                      <div className={`pedido-badge ${config?.color || "gray"}`}>
+                      <div
+                        className={`pedido-badge ${config?.color || "gray"}`}
+                      >
                         <Icon size={16} />
                         {estadoTexto}
                       </div>
-                    )
+                    );
                   })()}
                 </div>
               </div>
@@ -478,12 +670,11 @@ const PedidosPage = () => {
                   <div className="client-info">
                     <div className="client-name">
                       <User size={16} />
-                      {selectedPedido.cliente_nombre || `Cliente ID: ${selectedPedido.id_cliente}`}
+                      {selectedPedido.cliente_nombre ||
+                        `Cliente ID: ${selectedPedido.id_cliente}`}
                     </div>
                     <div className="client-details">
-                      <p>📞 {selectedPedido.cliente_telefono || 'N/A'}</p>
-                      <p>📍 {selectedPedido.cliente_direccion || 'N/A'}</p>
-                      <p>🏙️ {selectedPedido.ciudad || 'N/A'}</p>
+                      <p>🏙️ {selectedPedido.ciudad || "N/A"}</p>
                     </div>
                   </div>
                 </div>
@@ -495,26 +686,38 @@ const PedidosPage = () => {
                 <div className="section-content">
                   <div className="info-row">
                     <span className="info-label">Fecha recibido:</span>
-                    <span className="info-value">{formatDate(selectedPedido.fecha_recibido)}</span>
+                    <span className="info-value">
+                      {formatDate(selectedPedido.fecha_recibido)}
+                    </span>
                   </div>
                   <div className="info-row">
                     <span className="info-label">Valor total:</span>
-                    <span className="info-value price">{formatCurrency(selectedPedido.valor)}</span>
+                    <span className="info-value price">
+                      {formatCurrency(selectedPedido.valor)}
+                    </span>
                   </div>
                   <div className="info-row">
                     <span className="info-label">Transportadora:</span>
-                    <span className="info-value">{selectedPedido.transportadora || `ID: ${selectedPedido.id_transportadora}`}</span>
+                    <span className="info-value">
+                      {selectedPedido.transportadora_nombre ||
+                        selectedPedido.transportadora || 
+                        `ID: ${selectedPedido.id_transportadora}`}
+                    </span>
                   </div>
                   {selectedPedido.fecha_enrutamiento && (
                     <div className="info-row">
                       <span className="info-label">Fecha enrutamiento:</span>
-                      <span className="info-value">{formatDate(selectedPedido.fecha_enrutamiento)}</span>
+                      <span className="info-value">
+                        {formatDate(selectedPedido.fecha_enrutamiento)}
+                      </span>
                     </div>
                   )}
-                   {selectedPedido.fecha_entrega && (
+                  {selectedPedido.fecha_entrega && (
                     <div className="info-row">
                       <span className="info-label">Fecha entrega:</span>
-                      <span className="info-value">{formatDate(selectedPedido.fecha_entrega)}</span>
+                      <span className="info-value">
+                        {formatDate(selectedPedido.fecha_entrega)}
+                      </span>
                     </div>
                   )}
                 </div>
@@ -522,82 +725,110 @@ const PedidosPage = () => {
 
               {/* Información de Recaudo */}
               <div className="details-section">
-                <h3 className="section-title"><DollarSign size={18} style={{verticalAlign: 'middle', marginRight: '5px'}}/> Información de Recaudo</h3>
+                <h3 className="section-title">
+                  <DollarSign
+                    size={18}
+                    style={{ verticalAlign: "middle", marginRight: "5px" }}
+                  />{" "}
+                  Información de Recaudo
+                </h3>
                 <div className="section-content">
                   <div className="info-row">
                     <span className="info-label">Tipo Recaudo:</span>
-                    <span className="info-value">{selectedPedido.tipo_recaudo || 'N/A'}</span>
+                    <span className="info-value">
+                      {selectedPedido.tipo_recaudo || "N/A"}
+                    </span>
                   </div>
                   <div className="info-row">
                     <span className="info-label">Recaudo Efectivo:</span>
-                    <span className="info-value">{formatCurrency(selectedPedido.recaudo_efectivo)}</span>
+                    <span className="info-value">
+                      {formatCurrency(selectedPedido.recaudo_efectivo)}
+                    </span>
                   </div>
                   <div className="info-row">
                     <span className="info-label">Recaudo Transferencia:</span>
-                    <span className="info-value">{formatCurrency(selectedPedido.recaudo_transferencia)}</span>
+                    <span className="info-value">
+                      {formatCurrency(selectedPedido.recaudo_transferencia)}
+                    </span>
                   </div>
                   <div className="info-row">
                     <span className="info-label">No. Caja:</span>
-                    <span className="info-value">{selectedPedido.no_caja || 'N/A'}</span>
+                    <span className="info-value">
+                      {selectedPedido.no_caja || "N/A"}
+                    </span>
                   </div>
                 </div>
               </div>
 
               {/* Ubicación */}
-              {selectedPedido.ubicacion && selectedPedido.ubicacion !== "0, 0" && (
-                <div className="details-section">
-                  <h3 className="section-title"><MapPin size={18} style={{verticalAlign: 'middle', marginRight: '5px'}}/> Ubicación</h3>
-                  <div className="section-content">
-                    <p>{selectedPedido.ubicacion}</p>
-                    {selectedPedido.ubicacion && (
-                        <a 
-                            // Corrección del enlace de Google Maps. Debe ser https://www.google.com/maps/search/?api=1&query=
-                            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selectedPedido.ubicacion)}`} 
-                            target="_blank" 
-                            rel="noopener noreferrer" 
-                            className="map-link"
-                            style={{fontSize: '0.9em', color: '#007bff', textDecoration: 'none'}}
+              {selectedPedido.ubicacion &&
+                selectedPedido.ubicacion !== "0, 0" && (
+                  <div className="details-section">
+                    <h3 className="section-title">
+                      <MapPin
+                        size={18}
+                        style={{ verticalAlign: "middle", marginRight: "5px" }}
+                      />{" "}
+                      Ubicación
+                    </h3>
+                    <div className="section-content">
+                      <p>{selectedPedido.ubicacion}</p>
+                      {selectedPedido.ubicacion && (
+                        <a
+                          // Corrección del enlace de Google Maps. Debe ser https://www.google.com/maps/search/?api=1&query=
+                          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                            selectedPedido.ubicacion
+                          )}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="map-link"
+                          style={{
+                            fontSize: "0.9em",
+                            color: "#007bff",
+                            textDecoration: "none",
+                          }}
                         >
-                            Ver en Mapa
+                          Ver en Mapa
                         </a>
-                    )}
+                      )}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
               {/* Personal Involucrado */}
               <div className="details-section">
-                <h3 className="section-title"><Users size={18} style={{verticalAlign: 'middle', marginRight: '5px'}}/> Personal Involucrado</h3>
+                <h3 className="section-title">
+                  <Users
+                    size={18}
+                    style={{ verticalAlign: "middle", marginRight: "5px" }}
+                  />{" "}
+                  Personal Involucrado
+                </h3>
                 <div className="section-content">
                   <div className="info-row">
                     <span className="info-label">ID Vendedor:</span>
-                    <span className="info-value">{selectedPedido.id_vendedor || 'N/A'}</span>
+                    <span className="info-value">
+                      {selectedPedido.vendedor_nombre || `ID: ${selectedPedido.id_vendedor}`}
+                    </span>
                   </div>
                   <div className="info-row">
                     <span className="info-label">ID Enrutador:</span>
-                    <span className="info-value">{selectedPedido.id_enrutador || 'N/A'}</span>
+                    <span className="info-value">
+                      {selectedPedido.enrutador_nombre || `ID: ${selectedPedido.id_enrutador}`}
+                    </span>
                   </div>
                   <div className="info-row">
                     <span className="info-label">ID Alistador:</span>
-                    <span className="info-value">{selectedPedido.id_alistador || 'N/A'}</span>
+                    <span className="info-value">
+                      {selectedPedido.alistador_nombre || `ID: ${selectedPedido.id_alistador}`}
+                    </span>
                   </div>
                   <div className="info-row">
                     <span className="info-label">ID Empacador:</span>
-                    <span className="info-value">{selectedPedido.id_empacador || 'N/A'}</span>
+                    <span className="info-value">
+                      {selectedPedido.empacador_nombre || `ID: ${selectedPedido.id_empacador}`}
+                    </span>
                   </div>
-                </div>
-              </div>
-
-              {/* Productos */}
-              <div className="details-section">
-                <h3 className="section-title">Productos</h3>
-                <div className="products-list">
-                  {selectedPedido.productos && selectedPedido.productos.map((producto, index) => (
-                    <div key={index} className="product-item">
-                      <Package size={16} />
-                      <span>{producto}</span>
-                    </div>
-                  ))}
                 </div>
               </div>
 
@@ -624,7 +855,7 @@ const PedidosPage = () => {
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default PedidosPage
+export default PedidosPage;
