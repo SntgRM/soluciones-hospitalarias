@@ -23,10 +23,10 @@ api.interceptors.request.use(
 );
 
 // Funciones para los endpoints de Pedidos
-export const getPedidosAll = async () => {
+export const getPedidosAll = async (page = 1) => {
     // CORREGIDO: Eliminado el 'api/' redundante
-    const response = await api.get('bodega/showall/');
-    return response.data.results;
+    const response = await api.get(`bodega/showall/?page=${page}`);
+    return response.data;
 };
 
 export const getPedidoDetail = async (pk) => {
@@ -53,20 +53,24 @@ export const deletePedido = async (pk) => {
 };
 
 export const getResumenPedidos = async () => {
-    // CORREGIDO: Eliminado el 'api/' redundante
+  try {
     const response = await api.get('bodega/resumenestados/');
-    return response.data.results;
+    return response.data;
+  } catch (error) {
+    console.error("Error en getResumenPedidos:", error);
+    throw error;
+  }
 };
 
-export const getPedidosPorEstado = async (id_estado) => {
-    const response = await api.get(`bodega/por_estado/${id_estado}/`);
-    return response.data.results;
+export const getPedidosPorEstado = async (id_estado, page = 1) => {
+    const response = await api.get(`bodega/por_estado/${id_estado}/?page=${page}`);
+    return response.data;
 };
 
-export const getPedidosPorTransportadora = async (id_transportadora) => {
+export const getPedidosPorTransportadora = async (id_transportadora, page = 1) => {
     // CORREGIDO: Eliminado el 'api/' redundante
-    const response = await api.get(`bodega/por_transportadora/${id_transportadora}/`);
-    return response.data.results;
+    const response = await api.get(`bodega/por_transportadora/${id_transportadora}/?page=${page}`);
+    return response.data;
 };
 
 
