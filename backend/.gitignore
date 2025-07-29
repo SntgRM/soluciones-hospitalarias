@@ -204,3 +204,6 @@ __marimo__/
 
 # Django migrations
 0001_initial.py
+
+# Media files
+media/
