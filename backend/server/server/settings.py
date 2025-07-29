@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+import sys
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -83,22 +84,35 @@ WSGI_APPLICATION = 'server.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sh_usuarios',
-        'USER': 'root',
-        'PASSWORD': 'root',
-        'PORT': '3306',
-    },
-    'bodega': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sh_bodega',
-        'USER': 'root',
-        'PASSWORD': 'root',
-        'PORT': '3306'
+if 'test' in sys.argv:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+        },
+        'bodega': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+        }
     }
-}
+else:
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'sh_usuarios',
+            'USER': 'root',
+            'PASSWORD': 'root',
+            'PORT': '3306',
+        },
+        'bodega': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'sh_bodega',
+            'USER': 'root',
+            'PASSWORD': 'root',
+            'PORT': '3306'
+        }
+    }
 
 
 # Password validation
@@ -172,3 +186,6 @@ AUTHENTICATION_BACKENDS = [
 # Media files settings
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Email settings
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
