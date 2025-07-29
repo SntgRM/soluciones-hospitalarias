@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import {iconsImgs} from '../../utils/images'; // Asegúrate de que esta ruta sea correcta
-import './form.css'; // Asegúrate de que este CSS esté en la misma carpeta o la ruta correcta
-import rightSideImage from '../../assets/images/login.jpeg'; // Asegúrate de que esta ruta sea correcta
+import { iconsImgs } from '../../utils/images'; 
+import './login.css';
+import rightSideImage from '../../assets/images/login.jpeg';
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -26,7 +26,7 @@ const Login = () => {
             console.log('Login exitoso, redirigiendo al dashboard', response.data);
             navigate('/');
         } catch (err) {
-             console.error('Error completo:', err); 
+            console.error('Error completo:', err);
             setError('Credenciales incorrectas.');
         } finally {
             setLoading(false);
@@ -37,10 +37,10 @@ const Login = () => {
         <div className="auth-container">
             <div className="auth-content-wrapper">
                 <form onSubmit={handleSubmit} className="form_main">
-                    <p className="heading">Login</p>
+                    <p className="heading">Inicio de Sesión</p>
                     {error && <p className="error_message">{error}</p>}
                     <div className="inputContainer">
-                        <img src={iconsImgs.user} alt="user" />
+                        <img src={iconsImgs.user || "/placeholder.svg"} alt="user" />
                         <input
                             type="text"
                             className="inputField"
@@ -51,7 +51,7 @@ const Login = () => {
                         />
                     </div>
                     <div className="inputContainer">
-                        <img src={iconsImgs.lock} alt="lock" />
+                        <img src={iconsImgs.lock || "/placeholder.svg"} alt="lock" />
                         <input
                             type="password"
                             className="inputField"
@@ -64,9 +64,10 @@ const Login = () => {
                     <button id="button" type="submit" disabled={loading}>
                         {loading ? 'Entrando...' : 'Entrar'}
                     </button>
+                    <a href="#" className="forgotLink">¿Olvidaste tu contraseña?</a>
                 </form>
                 <div className="right-image-panel">
-                    <img className="right-image-content" src={rightSideImage} alt="Decoración" />
+                    <img className="right-image-content" src={rightSideImage || "/placeholder.svg"} alt="Decoración" />
                 </div>
             </div>
         </div>
