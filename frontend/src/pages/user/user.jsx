@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import "./User.css"
 import { personsImgs } from "../../utils/images"
-import { AtSign, BadgeDollarSign, Calendar, Crown, Edit, Edit3, Eye, EyeOff, Filter, Lock, Save, Search, Shield, Trash2, UserIcon, UserPlus, Users, Warehouse, X } from "lucide-react";
+import { AtSign, BadgeDollarSign, Calendar, Crown, Edit, Edit3, Eye, EyeOff, Filter, Lock, Mail, Save, Search, Shield, Trash2, UserIcon, UserPlus, Users, Warehouse, X } from "lucide-react";
 
 const roles = [
   { value: "administrador", label: "Administrador", color: "#f59e0b" },
@@ -30,6 +30,7 @@ function User() {
   const [formData, setFormData] = useState({
     username: "",
     first_name: "",
+    email: "",
     role: "ventas",
     password: "",
     image: null,
@@ -53,7 +54,8 @@ function User() {
     const filtered = users.filter((user) => {
       const matchesSearch =
         user.first_name.toLowerCase().includes(searchTerm.toLowerCase()) || user.id.toString().includes(searchTerm)
-
+        user.id.toString().includes(searchTerm) ||
+        user.email.toLowerCase().includes(searchTerm.toLowerCase())
       const matchesRole = filterRole === "todos" || user.role === filterRole
 
       return matchesSearch && matchesRole
@@ -115,6 +117,7 @@ function User() {
     setFormData({
       username: "",
       first_name: "",
+      email: "",
       role: "bodega",
       password: "",
       image: null,
@@ -131,6 +134,7 @@ function User() {
       setFormData({
         username: user.username || "",
         first_name: user.first_name,
+        email: user.email || "",
         role: user.role,
         image: null,
       })
@@ -335,7 +339,7 @@ function User() {
                   </div>
                   <div className="user-basic-info">
                     <h4 className="user-name">{`${user.first_name}`}</h4>
-                    <p className="user-email">{user.username}</p>
+                    <p className="user-username">@{user.username}</p>
                   </div>
                   <div className="user-actions">
                     <button
@@ -439,6 +443,11 @@ function User() {
                         <span className="user-detail-value">{selectedUser.username}</span>
                       </div>
                       <div className="user-detail-item">
+                        <Mail size={16} />
+                        <span className="user-detail-label">Email:</span>
+                        <span className="user-detail-value">{selectedUser.email}</span>
+                      </div>
+                      <div className="user-detail-item">
                         <Shield size={16} />
                         <span className="user-detail-label">Rol:</span>
                         <span className="user-detail-value">{getRoleLabel(selectedUser.role)}</span>
@@ -529,6 +538,22 @@ function User() {
                           required
                           className="user-form-input"
                           placeholder="Ingrese un nombre de usuario"
+                        />
+                      </div>
+
+                      <div className="user-form-group">
+                        <label className="user-form-label">
+                          <Mail size={16} />
+                          Email *
+                        </label>
+                        <input
+                          type="email"
+                          name="email"
+                          value={formData.email}
+                          onChange={handleInputChange}
+                          required
+                          className="user-form-input"
+                          placeholder="Ingrese un email"
                         />
                       </div>
 

@@ -299,7 +299,7 @@ input::-ms-reveal {
   line-height: 1.3;
 }
 
-.user-email {
+.user-username {
   font-size: 0.875rem;
   color: var(--user-gray-600);
   margin: 0;
