@@ -335,7 +335,7 @@ function User() {
                   </div>
                   <div className="user-basic-info">
                     <h4 className="user-name">{`${user.first_name}`}</h4>
-                    <p className="user-email">{user.email}</p>
+                    <p className="user-email">{user.username}</p>
                   </div>
                   <div className="user-actions">
                     <button

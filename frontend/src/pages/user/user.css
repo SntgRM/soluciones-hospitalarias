@@ -46,7 +46,7 @@ input::-ms-reveal {
   padding: 24px;
   max-width: 1400px;
   margin: 0 auto;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
+  font-family: var(--font-family-main);
 }
 
 /* Header */
@@ -69,8 +69,7 @@ input::-ms-reveal {
 }
 
 .user-header-icon {
-  background: linear-gradient(135deg, var(--user-primary-color), var(--user-primary-hover));
-  color: white;
+  color: rgb(0, 0, 0);
   padding: 16px;
   border-radius: var(--user-border-radius);
   box-shadow: var(--user-shadow-md);
@@ -129,7 +128,7 @@ input::-ms-reveal {
   color: var(--user-gray-700);
   background: #ffffff;
   transition: var(--user-transition);
-  font-family: inherit;
+  font-family: var(--font-family-main);
 }
 
 .user-search-input:focus {
@@ -161,7 +160,7 @@ input::-ms-reveal {
   cursor: pointer;
   transition: var(--user-transition);
   min-width: 150px;
-  font-family: inherit;
+  font-family: var(--font-family-main);
 }
 
 .user-filter-select:focus {
@@ -430,7 +429,7 @@ input::-ms-reveal {
   border: 2px solid transparent;
   text-decoration: none;
   justify-content: center;
-  font-family: inherit;
+  font-family: var(--font-family-main);
 }
 
 .user-btn-primary {
@@ -654,7 +653,7 @@ input::-ms-reveal {
   color: var(--user-gray-700);
   background: #ffffff;
   transition: var(--user-transition);
-  font-family: inherit;
+  font-family: var(--font-family-main);
 }
 
 .user-form-input:focus,
