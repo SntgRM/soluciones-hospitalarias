@@ -11,6 +11,11 @@ class Alistadores(models.Model):
     id_alistador = models.AutoField(primary_key=True)
     nombre_alistador = models.CharField(max_length=100)
 
+    def save(self, *args, **kwargs):
+        if self.nombre_alistador:
+            self.nombre_alistador = self.nombre_alistador.strip().upper()
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.nombre_alistador
 
@@ -22,6 +27,11 @@ class Alistadores(models.Model):
 class Clientes(models.Model):
     id_cliente = models.AutoField(primary_key=True)
     nombre_cliente = models.CharField(max_length=255)
+
+    def save(self, *args, **kwargs):
+        if self.nombre_cliente:
+            self.nombre_cliente = self.nombre_cliente.strip().upper()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.nombre_cliente
@@ -35,6 +45,12 @@ class Empacadores(models.Model):
     id_empacador = models.AutoField(primary_key=True)
     nombre_empacador = models.CharField(max_length=100)
 
+    def save(self, *args, **kwargs):
+        if self.nombre_empacador:
+            self.nombre_empacador = self.nombre_empacador.strip().upper()
+        super().save(*args, **kwargs)
+
+
     def __str__(self):
         return self.nombre_empacador
 
@@ -47,6 +63,12 @@ class Enrutadores(models.Model):
     id_enrutador = models.AutoField(primary_key=True)
     nombre_enrutador = models.CharField(max_length=100)
 
+    def save(self, *args, **kwargs):
+        if self.nombre_enrutador:
+            self.nombre_enrutador = self.nombre_enrutador.strip().upper()
+        super().save(*args, **kwargs)
+
+
     def __str__(self):
         return self.nombre_enrutador
 
@@ -58,6 +80,12 @@ class Enrutadores(models.Model):
 class Transportadoras(models.Model):
     id_transportadora = models.AutoField(primary_key=True)
     nombre_transportadora = models.CharField(max_length=255)
+
+    def save(self, *args, **kwargs):
+        if self.nombre_transportadora:
+            self.nombre_transportadora = self.nombre_transportadora.strip().upper()
+        super().save(*args, **kwargs)
+
 
     def __str__(self):
         return self.nombre_transportadora
@@ -72,6 +100,11 @@ class Vendedores(models.Model):
     id_vendedor = models.AutoField(primary_key=True)
     nombre_vendedor = models.CharField(max_length=255)
 
+    def save(self, *args, **kwargs):
+        if self.nombre_vendedor:
+            self.nombre_vendedor = self.nombre_vendedor.strip().upper()
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.nombre_vendedor
 
@@ -83,6 +116,11 @@ class Vendedores(models.Model):
 class EstadosPedidos(models.Model):
     id_estado = models.AutoField(primary_key=True)
     nombre_estado = models.CharField(max_length=100)
+
+    def save(self, *args, **kwargs):
+        if self.nombre_estado:
+            self.nombre_estado = self.nombre_estado.strip().upper()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.nombre_estado
