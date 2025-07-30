@@ -161,7 +161,7 @@
 }
 
 .dropdown-arrow {
-  color: white;
+  color: #fff !important;
   transition: transform 0.3s ease;
   flex-shrink: 0;
 }
@@ -178,7 +178,6 @@
   opacity: 0;
   margin-left: 16px;
   margin-bottom: 8px;
-  background: rgba(0, 0, 0, 0.2);
   border-radius: var(--sidebar-border-radius);
   backdrop-filter: blur(10px);
 }
