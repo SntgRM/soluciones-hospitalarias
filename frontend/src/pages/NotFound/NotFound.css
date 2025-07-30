@@ -68,7 +68,6 @@
   font-family: var(--p404-font-family);
   position: relative;
   overflow: hidden;
-  animation: pharmacy-404-page-fadein 0.8s ease-in-out;
   margin: 0;
   padding: 0;
 }
