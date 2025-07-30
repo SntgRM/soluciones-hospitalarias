@@ -16,6 +16,7 @@ import PasswordResetConfirm from "./pages/forms/password-reset-confirm.jsx"
 import NotFound from "./pages/NotFound/NotFound.jsx";
 import User from "./pages/user/user.jsx";
 import Transportadora from "./pages/transportadora/transportadora.jsx"
+import { useResizeAnimationStopper } from './utils/hooks';
 
 // Componente para rutas protegidas
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
@@ -23,6 +24,7 @@ import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 
 function App() {
+  useResizeAnimationStopper();
   return (
     
       <AuthProvider>

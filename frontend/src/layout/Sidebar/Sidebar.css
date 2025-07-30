@@ -25,10 +25,14 @@
   background: var(--sidebar-bg-gradient);
   box-shadow: var(--sidebar-shadow);
   z-index: 1000;
-  transition: transform var(--sidebar-transition), width var(--sidebar-transition);
+  /* ANIMACIONES MEJORADAS PARA TODAS LAS PANTALLAS */
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              box-shadow 0.3s ease,
+              width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   transform: translateX(0); /* Visible por defecto en desktop */
   overflow-y: auto;
   overflow-x: hidden;
+  will-change: transform;
 }
 
 /* Placeholder invisible que ocupa el espacio del sidebar en desktop */
@@ -36,7 +40,8 @@
   width: 260px; /* Ocupa el espacio del sidebar en desktop */
   height: 100vh;
   flex-shrink: 0;
-  transition: width var(--sidebar-transition);
+  /* ANIMACIÓN MEJORADA PARA EL PLACEHOLDER */
+  transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   pointer-events: none;
 }
 
@@ -49,6 +54,10 @@
   height: 100%;
   padding: 0px 20px;
   overflow-y: auto;
+  /* ANIMACIÓN DEL CONTENIDO INTERNO PARA TODAS LAS PANTALLAS */
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 /* Scrollbar personalizado */
@@ -258,50 +267,195 @@
 /* Desktop y pantallas grandes (por encima de 768px) */
 @media screen and (min-width: 769px) {
   .sidebar.sidebar-change {
-    /* En desktop, sidebar-change significa que está colapsado a 0px */
+    /* ANIMACIÓN MEJORADA PARA DESKTOP - Se desliza hacia la izquierda */
     transform: translateX(-100%);
+    /* Efecto de rebote sutil similar al móvil */
+    animation: sidebarSlideOutDesktop 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
+
+  /* Cuando se abre en desktop (vuelve a la posición normal) */
+  .sidebar:not(.sidebar-change) {
+    animation: sidebarSlideInDesktop 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
   .sidebar-placeholder.sidebar-change {
-    width: 0px; /* El placeholder también se colapsa */
+    width: 0px; /* El placeholder también se colapsa con animación */
+  }
+
+  /* Animaciones escalonadas para elementos del menú en desktop */
+  .sidebar:not(.sidebar-change) .user-info {
+    animation: slideInFromLeft 0.4s ease 0.1s both;
+  }
+
+  .sidebar:not(.sidebar-change) .dropdown-container {
+    animation: slideInFromLeft 0.4s ease 0.2s both;
+  }
+
+  .sidebar:not(.sidebar-change) .dropdown-container:nth-child(2) {
+    animation-delay: 0.25s;
+  }
+
+  .sidebar:not(.sidebar-change) .extra-links {
+    animation: slideInFromLeft 0.4s ease 0.3s both;
+  }
+
+  /* Animación del contenido interno en desktop */
+  .sidebar.sidebar-change .sidebar-inner {
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .sidebar:not(.sidebar-change) .sidebar-inner {
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 0.3s ease 0.1s, transform 0.3s ease 0.1s;
   }
 }
 
+/* MÓVILES - Animaciones y efectos mejorados */
 @media screen and (max-width: 768px) {
-.sidebar {
+  .sidebar {
     position: absolute;
     top: 0;
     left: 0;
     height: 100vh;
     width: 280px;
     background: var(--sidebar-bg-gradient);
-    box-shadow: var(--sidebar-shadow-lg);
+    /* QUITAR BOX SHADOW EN MÓVILES */
+    box-shadow: none;
     z-index: 1000;
     transform: translateX(-100%); /* Oculto por defecto */
     overflow-y: auto;
     overflow-x: hidden;
-    transition: transform var(--sidebar-transition);
-  }
-}
-@media screen and (max-width: 768px) {
-  .sidebar {
-    width: 280px; /* Ancho completo para móvil */
-    transform: translateX(-100%); /* Oculto por defecto */
-    box-shadow: var(--sidebar-shadow-lg);
+    /* ANIMACIONES MEJORADAS */
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform;
   }
 
   .sidebar.sidebar-change {
     transform: translateX(0); /* Se abre completamente */
-    box-shadow: none;
+    /* Efecto de rebote sutil al abrir */
+    animation: sidebarBounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  /* Overlay con animación suave para difuminar el contenido */
+  .sidebar.sidebar-change::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: -1;
+    backdrop-filter: blur(4px);
+    /* ANIMACIÓN DEL OVERLAY */
+    animation: overlayFadeIn 0.3s ease-out;
+    opacity: 1;
   }
 
   .sidebar-placeholder {
     width: 0px; /* El placeholder no ocupa espacio en móvil */
+    display: none; /* Ocultar completamente en móvil */
   }
 
   .sidebar-placeholder.sidebar-change {
     width: 0px; /* Sigue sin ocupar espacio */
+    display: none;
   }
 
+  /* Animaciones del contenido interno del sidebar */
+  .sidebar-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 0px 20px;
+    overflow-y: auto;
+    /* Animación sutil del contenido interno */
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.3s ease 0.1s, transform 0.3s ease 0.1s;
+  }
+
+  .sidebar.sidebar-change .sidebar-inner {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* Animaciones escalonadas para los elementos del menú */
+  .sidebar.sidebar-change .user-info {
+    animation: slideInFromLeft 0.4s ease 0.2s both;
+  }
+
+  .sidebar.sidebar-change .dropdown-container {
+    animation: slideInFromLeft 0.4s ease 0.3s both;
+  }
+
+  .sidebar.sidebar-change .dropdown-container:nth-child(2) {
+    animation-delay: 0.35s;
+  }
+
+  .sidebar.sidebar-change .extra-links {
+    animation: slideInFromLeft 0.4s ease 0.4s both;
+  }
+
+  /* Animación del botón de cierre */
+  .sidebar-close-btn {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.3s ease 0.25s, transform 0.3s ease 0.25s;
+    display: block; /* Mostrar en móvil */
+  }
+
+  .sidebar.sidebar-change .sidebar-close-btn {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* Animaciones hover mejoradas para móviles */
+  .nav-link {
+    transition: all 0.2s ease, transform 0.15s ease;
+  }
+
+  .nav-link:active {
+    transform: translateX(4px);
+  }
+
+  .dropdown-toggle {
+    transition: all 0.2s ease, transform 0.15s ease;
+  }
+
+  .dropdown-toggle:active {
+    transform: scale(0.98);
+  }
+
+  /* Animación suave para los dropdowns */
+  .dropdown-menu {
+    margin-left: 0;
+    position: relative;
+    left: auto;
+    top: auto;
+    width: auto;
+    background: rgba(0, 0, 0, 0.2);
+    border: none;
+    box-shadow: none;
+    transition: max-height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                opacity 0.3s ease,
+                transform 0.3s ease;
+    transform: translateY(-10px);
+  }
+
+  .dropdown-menu.open {
+    transform: translateY(0);
+    animation: dropdownSlideIn 0.4s ease-out;
+  }
+
+  .dropdown-menu .nav-item {
+    padding: 0;
+  }
+
+  /* Estilos responsivos adicionales */
   .user-info {
     padding: 20px;
   }
@@ -338,47 +492,26 @@
     width: 16px;
     height: 16px;
   }
-
-  /* Mostrar botón de cierre en móvil */
-  .sidebar-close-btn {
-    display: block;
-  }
-
-  /* Overlay para móviles cuando el sidebar está abierto */
-  .sidebar.sidebar-change::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: -1; /* Detrás del sidebar */
-    backdrop-filter: blur(2px);
-  }
-
-  /* Ajustes para dropdowns en móvil para que no se salgan */
-  .dropdown-menu {
-    margin-left: 0; /* Eliminar margen izquierdo */
-    position: relative; /* Volver a posicionamiento normal */
-    left: auto;
-    top: auto;
-    width: auto; /* Ancho automático */
-    background: rgba(0, 0, 0, 0.2); /* Fondo más transparente */
-    border: none;
-    box-shadow: none;
-  }
-
-  .dropdown-menu .nav-item {
-    padding: 0; /* Eliminar padding extra */
-  }
 }
 
 /* Móviles pequeños */
 @media screen and (max-width: 480px) {
   .sidebar {
     width: 100%;
-    max-width: 280px; /* Limitar ancho máximo en móviles muy pequeños */
+    max-width: 280px;
+    /* Animación más rápida en pantallas muy pequeñas */
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    /* SIN BOX SHADOW */
+    box-shadow: none;
+  }
+
+  .sidebar.sidebar-change {
+    animation: sidebarSlideIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .sidebar.sidebar-change::before {
+    backdrop-filter: blur(3px);
+    background: rgba(0, 0, 0, 0.7);
   }
 
   .user-info {
@@ -435,6 +568,8 @@
 @media screen and (max-width: 360px) {
   .sidebar {
     max-width: 260px;
+    /* SIN BOX SHADOW */
+    box-shadow: none;
   }
 
   .user-info {
@@ -484,7 +619,86 @@
   }
 }
 
-/* Animaciones mejoradas */
+/* ANIMACIONES Y KEYFRAMES */
+
+/* Animación de entrada del overlay */
+@keyframes overlayFadeIn {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+  }
+  to {
+    opacity: 1;
+    backdrop-filter: blur(4px);
+  }
+}
+
+/* Animación de deslizamiento desde la izquierda */
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Efecto de rebote sutil al abrir el sidebar */
+@keyframes sidebarBounceIn {
+  0% {
+    transform: translateX(-100%);
+  }
+  70% {
+    transform: translateX(10px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* NUEVAS ANIMACIONES PARA DESKTOP */
+@keyframes sidebarSlideInDesktop {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes sidebarSlideOutDesktop {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+/* Animación simple para pantallas pequeñas */
+@keyframes sidebarSlideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes dropdownSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-15px) scaleY(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scaleY(1);
+  }
+}
+
+/* Animaciones mejoradas para dropdowns */
 .dropdown-menu {
   transform-origin: top;
 }
@@ -505,18 +719,28 @@
 }
 
 
+/* Prevenir animaciones durante el redimensionamiento de ventana */
+.resize-animation-stopper * {
+  animation-duration: 0s !important;
+  animation-delay: 0s !important;
+  transition-duration: 0s !important;
+  transition-delay: 0s !important;
+}
 
-/* Mejoras de rendimiento */
-.sidebar,
-.dropdown-menu,
-.nav-link {
-  will-change: transform, opacity;
+/* Optimización para dispositivos táctiles */
+@media (hover: none) and (pointer: coarse) {
+  .nav-link:active,
+  .dropdown-toggle:active {
+    background: var(--sidebar-overlay-active);
+  }
 }
 
 /* Soporte para modo landscape en móviles */
 @media screen and (max-height: 500px) and (orientation: landscape) and (max-width: 768px) {
   .sidebar {
     width: 240px;
+    /* SIN BOX SHADOW EN LANDSCAPE MÓVIL */
+    box-shadow: none;
   }
 
   .user-info {

@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import ContentTop from '../../components/ContentTop/ContentTop';
+import { SidebarContext } from '../../context/sidebarContext';
 import "./Content.css";
 
 const Content = () => {
   const location = useLocation();
+  const { isSidebarOpen } = useContext(SidebarContext);
 
   const getPageTitle = () => {
     const pathSegments = location.pathname.split('/').filter(segment => segment !== '');
@@ -35,7 +37,7 @@ const Content = () => {
   };
 
   return (
-    <div className='main-content'>
+    <div className={`main-content ${isSidebarOpen ? 'sidebar-open' : ''}`}>
       {/* Renderiza ContentTop y le pasa el título dinámico */}
       <ContentTop pageTitle={getPageTitle()} /> 
 
