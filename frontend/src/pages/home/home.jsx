@@ -53,18 +53,6 @@ const Home = () => {
             <p className="dashboard-subtitle">Panel de control y gestión integral</p>
           </div>
         </div>
-        <div className="header-stats">
-          <div className="quick-stat">
-            <TrendingUp size={20} className="stat-icon success" />
-            <span className="stat-value">+12%</span>
-            <span className="stat-label">Ventas del mes</span>
-          </div>
-          <div className="quick-stat">
-            <AlertTriangle size={20} className="stat-icon warning" />
-            <span className="stat-value">5</span>
-            <span className="stat-label">Stock bajo</span>
-          </div>
-        </div>
       </div>
 
       <div className="main-content-holder">
