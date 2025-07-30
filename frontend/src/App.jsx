@@ -10,8 +10,8 @@ import Historial from "./pages/historial/historial.jsx";
 import Home from "./pages/home/home.jsx";
 import Registro from "./pages/registro/registro.jsx";
 import Pedidos from "./pages/pedidos/pedidos.jsx";
-import Login from "./pages/login/login.jsx";
-import PasswordResetRequest from "./pages/login/password-reset-request.jsx"
+import Login from "./pages/forms/forms.jsx";
+import PasswordResetRequest from "./pages/forms/password-reset-request.jsx"
 import NotFound from "./pages/NotFound/NotFound.jsx";
 import User from "./pages/user/user.jsx";
 import Transportadora from "./pages/transportadora/transportadora.jsx"
