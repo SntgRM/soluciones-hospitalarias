@@ -1,7 +1,7 @@
 /* Variables CSS */
 :root {
-  --primary-color: #0db30d;
-  --primary-hover: #0cb40c;
+  --primary-color: #3b82f6;
+  --primary-hover: #2563eb;
   --primary-light: rgba(59, 130, 246, 0.1);
   --success-color: #10b981;
   --success-hover: #059669;
@@ -31,11 +31,13 @@
 .registro-container {
   max-width: 900px;
   margin: 0 auto;
-  padding: 24px;
+  padding: 16px;
   background: #ffffff;
   border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-xl);
   border: 1px solid var(--gray-200);
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 /* Header del formulario */
@@ -43,15 +45,15 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  margin-bottom: 32px;
-  padding-bottom: 24px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
   border-bottom: 2px solid var(--gray-100);
 }
 
-.header-icon-reg {
+.header-icon {
   background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
   color: white;
-  padding: 16px;
+  padding: 8px;
   border-radius: var(--border-radius);
   box-shadow: var(--shadow-md);
 }
@@ -61,15 +63,15 @@
 }
 
 .form-title {
-  font-size: 2rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: var(--gray-900);
-  margin: 0 0 4px 0;
+  margin: 0 0 2px 0;
   line-height: 1.2;
 }
 
 .form-subtitle {
-  font-size: 1rem;
+  font-size: 0.875rem;
   color: var(--gray-600);
   margin: 0;
   font-weight: 500;
@@ -79,7 +81,7 @@
 .form-grid {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 16px;
 }
 
 /* Secciones del formulario */
@@ -87,11 +89,24 @@
   background: var(--gray-50);
   border: 1px solid var(--gray-200);
   border-radius: var(--border-radius);
-  padding: 24px;
+  padding: 16px;
   transition: var(--transition);
 }
 
 .form-section:hover {
+  border-color: var(--gray-300);
+  box-shadow: var(--shadow-sm);
+}
+
+.form-section-unified {
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--border-radius);
+  padding: 16px;
+  transition: var(--transition);
+}
+
+.form-section-unified:hover {
   border-color: var(--gray-300);
   box-shadow: var(--shadow-sm);
 }
@@ -113,14 +128,23 @@
   }
 }
 
+.conditional-row {
+  background: linear-gradient(135deg, var(--primary-light), rgba(255, 255, 255, 0.3));
+  border-radius: var(--border-radius);
+  padding: 12px;
+  margin-top: 8px;
+  animation: slideIn 0.3s ease-out;
+  border: 1px solid var(--primary-color);
+}
+
 .section-title {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 1.125rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--gray-800);
-  margin: 0 0 20px 0;
+  margin: 0 0 12px 0;
   padding-bottom: 8px;
   border-bottom: 1px solid var(--gray-200);
 }
@@ -132,15 +156,16 @@
 /* Filas del formulario */
 .form-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 
 /* Grupos de input */
 .input-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .input-label {
@@ -173,14 +198,14 @@
 .input-icon,
 .textarea-icon {
   position: absolute;
-  left: 12px;
+  left: 8px;
   color: var(--gray-400);
   z-index: 1;
   pointer-events: none;
 }
 
 .textarea-icon {
-  top: 12px;
+  top: 8px;
 }
 
 /* Inputs */
@@ -188,7 +213,7 @@
 .form-select,
 .form-textarea {
   width: 100%;
-  padding: 12px 16px 12px 44px;
+  padding: 6px 10px 6px 28px;
   border: 2px solid var(--gray-200);
   border-radius: var(--border-radius);
   font-size: 0.875rem;
@@ -233,11 +258,11 @@
 
 /* Textarea específico */
 .form-textarea {
-  padding-left: 44px;
-  padding-top: 12px;
+  padding-left: 28px;
+  padding-top: 6px;
   resize: vertical;
-  min-height: 100px;
-  line-height: 1.5;
+  min-height: 50px;
+  line-height: 1.4;
 }
 
 /* Botones de acción */
@@ -245,17 +270,17 @@
   display: flex;
   gap: 16px;
   justify-content: flex-end;
-  padding-top: 24px;
+  padding-top: 16px;
   border-top: 2px solid var(--gray-100);
-  margin-top: 32px;
+  margin-top: 16px;
 }
 
 .btn-primary,
-.btn-secondary-registro {
+.btn-secondary {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 12px 24px;
+  padding: 8px 16px;
   border-radius: var(--border-radius);
   font-weight: 600;
   font-size: 0.875rem;
@@ -263,7 +288,7 @@
   transition: var(--transition);
   border: 2px solid transparent;
   text-decoration: none;
-  min-width: 160px;
+  min-width: 140px;
   justify-content: center;
 }
 
@@ -288,19 +313,19 @@
   transform: none;
 }
 
-.btn-secondary-registro {
+.btn-secondary {
   background: #ffffff;
   color: var(--gray-700);
   border-color: var(--gray-300);
 }
 
-.btn-secondary-registro:hover:not(:disabled) {
+.btn-secondary:hover:not(:disabled) {
   background: var(--gray-50);
   border-color: var(--gray-400);
   transform: translateY(-1px);
 }
 
-.btn-secondary-registro:disabled {
+.btn-secondary:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
@@ -415,7 +440,7 @@
   }
 
   .btn-primary,
-  .btn-secondary-registro {
+  .btn-secondary {
     width: 100%;
   }
 }
@@ -466,4 +491,8 @@
   .textarea-icon {
     top: 10px;
   }
+}
+
+.full-width {
+  grid-column: 1 / -1;
 }
