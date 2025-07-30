@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'corsheaders',
 ]
 
+FRONTEND_URL = 'http://localhost:5173'
+
 AUTH_USER_MODEL = 'authentication.User'
 
 MIDDLEWARE = [

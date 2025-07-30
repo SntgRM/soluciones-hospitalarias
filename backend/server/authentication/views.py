@@ -30,12 +30,11 @@ class PasswordResetRequestView(APIView):
         if user:
             uid = urlsafe_base64_encode(force_bytes(user.pk))
             token = default_token_generator.make_token(user)
-            reset_link = f"{request.scheme}://{request.get_host()}/api/auth/password-reset-confirm/{uid}/{token}/"
-            
+            frontend_reset_link = f"{settings.FRONTEND_URL}/password-reset-confirm/{uid}/{token}/"
             email_subject = 'Password Reset Request'
             email_body = render_to_string('password_reset_email.html', {
                 'user': user,
-                'reset_link': reset_link,
+                'frontend_reset_link': frontend_reset_link,
             })
 
             send_mail(email_subject, email_body, settings.DEFAULT_FROM_EMAIL, [user.email])

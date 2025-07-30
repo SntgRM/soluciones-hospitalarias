@@ -3,10 +3,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.pagination import PageNumberPagination
-from .models import Pedidos, EstadosPedidos, HistorialEstados
+from .models import Pedidos, EstadosPedidos, HistorialEstados, Clientes, Alistadores, Empacadores, Enrutadores, Transportadoras, Vendedores
 from django.db.models import Count
 from django.utils import timezone
-from .serializers import PedidoSerializer
+from .serializers import PedidoSerializer, ClienteSerializer, AlistadorSerializer, EmpacadorSerializer, EnrutadorSerializer, TransportadoraSerializer, VendedorSerializer, EstadoPedidoSerializer
 
 # Mostrar todas los pedidos
 class PedidoViewAll(APIView):
@@ -340,4 +340,276 @@ class PaginacionPedido(PageNumberPagination):
             'previous': self.get_previous_link(),
             'results': data
         })
-    
+
+# --------------------------------------------------------------------------------------------------------
+
+class ClientesView(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        try:
+            clientes = Clientes.objects.all().order_by('id_cliente')
+            if not clientes.exists():
+                return Response(
+                    {"mensaje": "No hay clientes registrados."},
+                    status=status.HTTP_204_NO_CONTENT
+                )
+        
+            serializer = ClienteSerializer(clientes, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response(
+                {
+                    "error": "Ocurrió un error al obtener los clientes.",
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+class ClienteCreate(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            serializer = ClienteSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as e:
+            return Response(
+                {
+                    'error': 'Ocurrió un error al crear el cliente.',
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+# --------------------------------------------------------------------------------------------------------
+
+class AlistadoresView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            alistadores = Alistadores.objects.all().order_by('id_alistador')
+            if not alistadores.exists():
+                return Response(
+                    {"mensaje": "No hay alistadores registrados."},
+                    status=status.HTTP_204_NO_CONTENT
+                )
+        
+            serializer = AlistadorSerializer(alistadores, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response(
+                {
+                    "error": "Ocurrió un error al obtener los alistadores.",
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+class AlistadorCreate(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            serializer = AlistadorSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as e:
+            return Response(
+                {
+                    'error': 'Ocurrió un error al crear el alistador.',
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+# --------------------------------------------------------------------------------------------------------
+
+class EmpacadoresView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            empacadores = Empacadores.objects.all().order_by('id_empacador')
+            if not empacadores.exists():
+                return Response(
+                    {"mensaje": "No hay empacadores registrados."},
+                    status=status.HTTP_204_NO_CONTENT
+                )
+        
+            serializer = EmpacadorSerializer(empacadores, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response(
+                {
+                    "error": "Ocurrió un error al obtener los empacadores.",
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+class EmpacadorCreate(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            serializer = EmpacadorSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as e:
+            return Response(
+                {
+                    'error': 'Ocurrió un error al crear el empacador.',
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+# --------------------------------------------------------------------------------------------------------
+
+class EnrutadoresView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            enrutadores = Enrutadores.objects.all().order_by('id_enrutador')
+            if not enrutadores.exists():
+                return Response(
+                    {"mensaje": "No hay enrutadores registrados."},
+                    status=status.HTTP_204_NO_CONTENT
+                )
+        
+            serializer = EnrutadorSerializer(enrutadores, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response(
+                {
+                    "error": "Ocurrió un error al obtener los enrutadores.",
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+class EnrutadorCreate(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            serializer = EnrutadorSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as e:
+            return Response(
+                {
+                    'error': 'Ocurrió un error al crear el enrutador.',
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+# --------------------------------------------------------------------------------------------------------
+
+class TransportadorasView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            transportadoras = Transportadoras.objects.all().order_by('id_transportadora')
+            if not transportadoras.exists():
+                return Response(
+                    {"mensaje": "No hay transportadoras registradas."},
+                    status=status.HTTP_204_NO_CONTENT
+                )
+        
+            serializer = TransportadoraSerializer(transportadoras, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response(
+                {
+                    "error": "Ocurrió un error al obtener las transportadoras.",
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+        
+class TransportadoraCreate(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            serializer = TransportadoraSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as e:
+            return Response(
+                {
+                    'error': 'Ocurrió un error al crear el enrutador.',
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+# --------------------------------------------------------------------------------------------------------
+
+class VendedoresView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            vendedores = Vendedores.objects.all().order_by('id_vendedor')
+            if not vendedores.exists():
+                return Response(
+                    {"mensaje": "No hay vendedores registrados."},
+                    status=status.HTTP_204_NO_CONTENT
+                )
+        
+            serializer = VendedorSerializer(vendedores, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response(
+                {
+                    "error": "Ocurrió un error al obtener los vendedores.",
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+class VendedorCreate(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            serializer = VendedorSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as e:
+            return Response(
+                {
+                    'error': 'Ocurrió un error al crear el vendedor.',
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+# --------------------------------------------------------------------------------------------------------

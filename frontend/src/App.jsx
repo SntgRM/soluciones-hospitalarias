@@ -50,6 +50,7 @@ function App() {
               {/* Rutas públicas sin sidebar */}
               <Route path="/login" element={<Login />} />
               <Route path="/password-reset-request" element={<PasswordResetRequest />} />
+              <Route path="/password-reset-confirm/:uidb64/:token" element={<PasswordResetConfirm />} />
               {/* Ruta 404 */}
               <Route path="*" element={<NotFound />} />
             </Routes>
