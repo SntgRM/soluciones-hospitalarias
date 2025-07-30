@@ -1,48 +1,45 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { iconsImgs } from "../../utils/images";
-import "./login.css";
-import rightSideImage from "../../assets/images/login.jpeg";
+"use client"
+
+import { useState } from "react"
+import { useNavigate } from "react-router-dom"
+import axios from "axios"
+import { iconsImgs } from "../../utils/images"
+import "./login.css"
+import rightSideImage from "../../assets/images/login.jpeg"
 
 const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const [error, setError] = useState("")
+  const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
+    e.preventDefault()
+    setError("")
+    setLoading(true)
 
     try {
-      const response = await axios.post(
-        "http://localhost:8000/api/auth/login/",
-        {
-          username,
-          password,
-        }
-      );
-      localStorage.setItem("authToken", response.data.token);
-      console.log("Login exitoso, redirigiendo al dashboard", response.data);
-      navigate("/");
+      const response = await axios.post("http://localhost:8000/api/auth/login/", {
+        username,
+        password,
+      })
+      localStorage.setItem("authToken", response.data.token)
+      console.log("Login exitoso, redirigiendo al dashboard", response.data)
+      navigate("/")
     } catch (err) {
-      console.error("Error completo:", err);
-      setError("Credenciales incorrectas.");
+      console.error("Error completo:", err)
+      setError("Credenciales incorrectas.")
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <div className="auth-container">
       <div className="auth-content-wrapper">
         <form onSubmit={handleSubmit} className="form_main">
-          <div className="error-container">
-            {error && <p className="error_message">{error}</p>}
-          </div>
+          <div className="error-container">{error && <p className="error_message">{error}</p>}</div>
           <p className="heading">Inicio de Sesión</p>
           <div className="inputContainer">
             <img src={iconsImgs.user || "/placeholder.svg"} alt="user" />
@@ -74,15 +71,11 @@ const Login = () => {
           </a>
         </form>
         <div className="right-image-panel">
-          <img
-            className="right-image-content"
-            src={rightSideImage || "/placeholder.svg"}
-            alt="Decoración"
-          />
+          <img className="right-image-content" src={rightSideImage || "/placeholder.svg"} alt="Decoración" />
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login
