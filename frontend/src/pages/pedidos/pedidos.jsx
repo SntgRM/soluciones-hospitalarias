@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
-import { Building2, User, Package, Truck, CheckCircle, XCircle, Clock, AlertCircle, MapPin, DollarSign, Calendar, Users, Search } from "lucide-react"
+import { Building2, User, Package, Truck, CheckCircle, XCircle, Clock, AlertCircle, MapPin, DollarSign, Calendar, Users } from "lucide-react"
 import "./pedidos.css";
 import { getPedidosAll, getPedidosPorEstado, getResumenPedidos } from "../../services/api.js"
 
@@ -497,7 +497,6 @@ const PedidosPage = () => {
             </p>
             {/* Barra de búsqueda - NUEVO */}
             <div className="search-bar-container">
-              <Search size={20} className="search-icon" />
               <input
                 type="text"
                 placeholder="Buscar por ID, ciudad, cliente, productos..."
@@ -516,7 +515,6 @@ const PedidosPage = () => {
                 </p>
               ) : (
                 pedidos.map((pedido) => {
-                  // Asumo que 'estado' ya viene en el objeto pedido, si no, usa el mapeo inverso aquí
                   const estadoActual =
                     Object.keys(statusToIdMap).find(
                       (key) => statusToIdMap[key] === pedido.id_estado
@@ -535,7 +533,6 @@ const PedidosPage = () => {
                       <div className="pedido-card-content">
                         <div className="pedido-card-left">
                           <div
-                            className={`pedido-icon ${config?.color || "gray"}`}
                           >
                             {typeof pedido.id_cliente === "number" &&
                             pedido.id_cliente % 2 === 0 ? (
