@@ -12,6 +12,7 @@ import Registro from "./pages/registro/registro.jsx";
 import Pedidos from "./pages/pedidos/pedidos.jsx";
 import Login from "./pages/forms/forms.jsx";
 import PasswordResetRequest from "./pages/forms/password-reset-request.jsx"
+import PasswordResetConfirm from "./pages/forms/password-reset-confirm.jsx"
 import NotFound from "./pages/NotFound/NotFound.jsx";
 import User from "./pages/user/user.jsx";
 import Transportadora from "./pages/transportadora/transportadora.jsx"
