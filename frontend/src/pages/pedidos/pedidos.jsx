@@ -618,9 +618,6 @@ const PedidosPage = () => {
                 Siguiente
               </button>
 
-              <div className="page-info">
-                Página {currentPage} de {totalPages}
-              </div>
             </div>
           )}
         </div>

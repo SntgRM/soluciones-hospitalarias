@@ -197,7 +197,7 @@
 
 .pedidos-subtitle {
   color: var(--gray-600);
-  margin: 0;
+  margin: 5px;
 }
 
 .pedidos-content {
@@ -563,17 +563,17 @@
   }
 }
 .pagination {
-  display: flex; /* Arranges buttons in a row */
-  justify-content: center; /* Centers the pagination block */
-  align-items: center; /* Vertically aligns items */
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 0;
   margin-top: 5px;
-  font-family: 'Segoe UI', Arial, sans-serif;
+  font-family: var(--font-family-main);
 }
 
 .pagination button {
-  padding: 10px 15px; /* Comfortable padding for clickability */
-  margin: 0 5px; /* Space between buttons */
+  padding: 6px 12px;
+  margin: 0 5px;
   border: 1px solid #ccc; /* Light gray border */
   border-radius: 5px; /* Slightly rounded corners */
   background-color: #f0f0f0; /* Light background */
@@ -585,9 +585,11 @@
 }
 
 .pagination button:hover:not([disabled]) {
-  background-color: #e0e0e0; /* Darker background on hover */
+  background-color: #00920c6c; /* Color base */
   border-color: #bbb;
-  color: #000;
+  color: rgb(0, 0, 0);
+  filter: brightness(1.1);
+  transition: all 0.3s ease;
 }
 
 .pagination button:disabled {
@@ -595,33 +597,18 @@
   cursor: not-allowed; /* Shows that the button is not interactive */
 }
 
-/* Styles for the current page number button */
-.pagination button.active-page {
-  background-color: #007bff; /* Vibrant blue for the active page */
-  color: white; /* White text for active page */
-  border-color: #007bff;
+.pagination button.active {
+  background-color: #0be228; 
+  color: white;
   font-weight: bold;
-  cursor: default; /* No pointer for the active page */
+  cursor: default;
 }
 
-.pagination button.active-page:hover {
-  background-color: #007bff; /* Keep the same blue on hover for active */
+.pagination button.active:hover {
+  background-color: #007bff; 
   color: white;
-  border-color: #007bff;
 }
 
-/* Styles for the "Anterior" and "Siguiente" arrow buttons */
-.pagination .pagination-arrow {
-  background-color: #6c757d; /* Muted gray for arrows */
-  color: white;
-  border-color: #6c757d;
-  padding: 10px 18px; /* Slightly more padding for arrow buttons */
-}
-
-.pagination .pagination-arrow:hover:not([disabled]) {
-  background-color: #5a6268; /* Darker gray on hover for arrows */
-  border-color: #5a6268;
-}
 
 .loading-message {
   text-align: center;
