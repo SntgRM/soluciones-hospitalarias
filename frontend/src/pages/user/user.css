@@ -68,11 +68,11 @@ input::-ms-reveal {
   gap: 16px;
 }
 
-.user-header-icon {
+.header-icons {
   color: rgb(0, 0, 0);
-  padding: 16px;
   border-radius: var(--user-border-radius);
-  box-shadow: var(--user-shadow-md);
+  display: flex;
+  gap: 10px;
 }
 
 .user-page-title {

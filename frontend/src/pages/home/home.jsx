@@ -47,7 +47,7 @@ const Home = () => {
     <div className={getMainContentClass()}>
       <div className="dashboard-header">
         <div className="header-title-section">
-          <Activity size={32} className="header-icon" />
+          <Activity size={32} className="header-icons" />
           <div>
             <h1 className="dashboard-title">Gestión de Bodega</h1>
             <p className="dashboard-subtitle">Panel de control y gestión integral</p>

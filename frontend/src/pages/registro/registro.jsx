@@ -219,7 +219,7 @@ function RegistroPedido() {
   return (
     <div className="registro-container">
       <div className="form-header" style={{ marginBottom: "8px" }}>
-        <div className="header-icon" style={{ padding: "8px" }}>
+        <div className="header-icons" style={{ padding: "8px" }}>
           <Package size={24} />
         </div>
         <div className="header-content">

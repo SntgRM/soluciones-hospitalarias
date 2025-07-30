@@ -50,12 +50,11 @@
   border-bottom: 2px solid var(--gray-100);
 }
 
-.header-icon {
-  background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
-  color: white;
-  padding: 8px;
-  border-radius: var(--border-radius);
-  box-shadow: var(--shadow-md);
+.header-icons {
+  color: rgb(0, 0, 0);
+  border-radius: var(--user-border-radius);
+  display: flex;
+  gap: 10px;
 }
 
 .header-content {

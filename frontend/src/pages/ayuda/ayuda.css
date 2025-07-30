@@ -50,13 +50,12 @@
   margin-bottom: 24px;
 }
 
-.faq-header-icon {
+.header-icons {
   color: rgb(0, 0, 0);
-  padding: 12px;
-  border-radius: var(--faq-border-radius);
-  box-shadow: var(--faq-shadow-md);
+  border-radius: var(--user-border-radius);
+  display: flex;
+  gap: 10px;
 }
-
 .faq-title {
   font-size: 2rem;
   font-weight: 700;

@@ -20,6 +20,8 @@
 }
 
 .header-icons {
+  color: rgb(0, 0, 0);
+  border-radius: var(--user-border-radius);
   display: flex;
   gap: 10px;
 }
