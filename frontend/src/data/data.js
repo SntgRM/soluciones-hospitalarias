@@ -22,10 +22,10 @@ export const navigationLinks_bodega = [
     {
         id: 4,
         title: 'Transportadora',
-        image: iconsImgs.folder,
+        image: iconsImgs.truck,
         path: '/transportadora'
     },
-    // ... otros enlaces de navegación
+    
 ];
 
 export const navigationLinks_ventas = [
