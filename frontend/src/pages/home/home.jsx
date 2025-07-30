@@ -1,7 +1,7 @@
 "use client"
 
 import { useContext } from "react"
-import ProductSummaryCards from "../../components/Cards/cards.jsx"
+import ProductSummaryCards from "../../components/cards/cards.jsx"
 import ProductCard from "../../components/ProductCard/productCard.jsx"
 import "./home.css"
 import { SidebarContext } from "../../context/sidebarContext"
