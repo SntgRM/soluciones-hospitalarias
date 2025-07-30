@@ -12,6 +12,7 @@ import Registro from "./pages/registro/registro.jsx";
 import Pedidos from "./pages/pedidos/pedidos.jsx";
 import Login from "./pages/login/login.jsx";
 import PasswordResetRequest from "./pages/login/password-reset-request.jsx"
+import PasswordResetConfirm from "./pages/login/password-reset-confirm.jsx";
 import NotFound from "./pages/NotFound/NotFound.jsx";
 import User from "./pages/user/user.jsx";
 import Transportadora from "./pages/transportadora/transportadora.jsx"
@@ -50,6 +51,7 @@ function App() {
               {/* Rutas públicas sin sidebar */}
               <Route path="/login" element={<Login />} />
               <Route path="/password-reset-request" element={<PasswordResetRequest />} />
+              <Route path="/password-reset-confirm/:uidb64/:token" element={<PasswordResetConfirm />} />
               {/* Ruta 404 */}
               <Route path="*" element={<NotFound />} />
             </Routes>
