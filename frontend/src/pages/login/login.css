@@ -12,9 +12,14 @@
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
   border-radius: 12px;
   overflow: hidden;
-  max-width: 700px;
+  max-width: 900px;
   background-color: #ffffff;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.right-image-panel {
+  flex: 1;
+  min-width: 400px;
 }
 
 .right-image-content {
@@ -25,7 +30,12 @@
 }
 
 .backLink {
-  z-index: 2;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-size: 0.9em;
   font-weight: 500;
   color: #4caf50;
@@ -33,7 +43,7 @@
   padding: 8px 15px;
   border-radius: 20px;
   transition: all 0.3s ease;
-  margin-top: 5px;
+  z-index: 3;
 }
 
 .backLink:hover {
@@ -49,18 +59,18 @@
 
   .auth-content-wrapper {
     flex-direction: column;
-    max-width: 400px;
+    max-width: 450px;
   }
 }
 
 .form_main {
-  width: 360px;
+  width: 450px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   background-color: rgb(255, 255, 255);
-  padding: 40px 30px;
+  padding: 50px 40px;
   box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.062);
   position: relative;
   overflow: hidden;
@@ -71,11 +81,7 @@
   content: "";
   width: 300px;
   height: 300px;
-  background: linear-gradient(
-    135deg,
-    rgba(118, 211, 109, 0.6),
-    rgba(76, 175, 80, 0.4)
-  );
+  background: linear-gradient(135deg, rgba(118, 211, 109, 0.6), rgba(76, 175, 80, 0.4));
   transform: rotate(45deg);
   left: -180px;
   bottom: 30px;
@@ -92,6 +98,15 @@
   margin: 5px 0 20px 0;
   z-index: 2;
   transition: color 0.3s ease;
+}
+
+.subheading {
+  font-size: 0.95em;
+  color: #666;
+  text-align: center;
+  margin-bottom: 25px;
+  line-height: 1.5;
+  z-index: 2;
 }
 
 .inputContainer {
@@ -116,12 +131,12 @@
 
 .inputField {
   width: 100%;
-  height: 25px;
+  height: 30px;
   background-color: transparent !important;
   border: none;
-  margin: 10px 0;
+  margin: 12px 0;
   color: black;
-  font-size: 0.9em;
+  font-size: 0.95em;
   font-weight: 500;
   box-sizing: border-box;
   padding-left: 35px;
@@ -177,12 +192,12 @@
   width: 100%;
   border: none;
   background: linear-gradient(135deg, #4caf50, #45a049);
-  height: 40px;
+  height: 45px;
   color: white;
-  font-size: 0.9em;
+  font-size: 0.95em;
   font-weight: 600;
   letter-spacing: 0.5px;
-  margin: 20px 0 10px 0;
+  margin: 25px 0 15px 0;
   cursor: pointer;
   border-radius: 6px;
   transition: all 0.3s ease;
@@ -207,7 +222,7 @@
 
 .forgotLink {
   z-index: 2;
-  font-size: 0.8em;
+  font-size: 0.9em;
   font-weight: 500;
   color: #4caf50;
   text-decoration: none;
@@ -225,7 +240,7 @@
 
 .error-container {
   width: 100%;
-  height: 45px;
+  min-height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -237,15 +252,75 @@
   z-index: 2;
   background-color: rgba(244, 67, 54, 0.1);
   color: #d32f2f;
-  padding: 10px 15px;
+  padding: 12px 18px;
   border-radius: 6px;
-  font-size: 0.8em;
+  font-size: 0.85em;
   font-weight: 500;
   border: 1px solid rgba(244, 67, 54, 0.2);
   width: 100%;
   text-align: center;
   animation: slideIn 0.3s ease;
   margin: 0;
+}
+
+.success_message {
+  z-index: 2;
+  background-color: rgba(76, 175, 80, 0.1);
+  color: #2e7d32;
+  padding: 7px 18px; 
+  border-radius: 6px;
+  font-size: 0.85em;
+  font-weight: 500;
+  border: 1px solid rgba(76, 175, 80, 0.2);
+  width: 100%;
+  text-align: center;
+  animation: slideIn 0.3s ease;
+  margin: 0;
+}
+
+.email-sent-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  z-index: 2;
+  padding: 20px 0;
+}
+
+.success-icon {
+  margin-bottom: 20px;
+  animation: scaleIn 0.5s ease;
+}
+
+.email-sent-message {
+  font-size: 0.95em;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 25px;
+  z-index: 2;
+}
+
+.secondary-button {
+  z-index: 2;
+  position: relative;
+  width: 100%;
+  border: 2px solid #4caf50;
+  background: transparent;
+  height: 45px;
+  color: #4caf50;
+  font-size: 0.95em;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.secondary-button:hover {
+  background: #4caf50;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
 }
 
 @keyframes slideIn {
@@ -256,6 +331,17 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 
@@ -293,19 +379,20 @@
 @media (max-width: 480px) {
   .form_main {
     width: 100%;
-    padding: 30px 20px;
+    padding: 40px 25px;
   }
 
   .heading {
-    font-size: 1.8em;
+    font-size: 1.9em;
   }
 
   .inputField {
-    font-size: 0.85em;
+    font-size: 0.9em;
+    height: 28px;
   }
 
   #button {
     height: 45px;
-    font-size: 0.9em;
+    font-size: 0.95em;
   }
 }
