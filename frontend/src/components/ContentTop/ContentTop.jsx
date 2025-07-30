@@ -2,12 +2,10 @@ import React, { useContext, useState, useEffect } from 'react';
 import { iconsImgs } from "../../utils/images";
 import "./ContentTop.css";
 import { SidebarContext } from "../../context/sidebarContext";
-import { useNavigate } from 'react-router-dom';
 import { authAPI } from '../../services/api';
 
 const ContentTop = ({ pageTitle }) => {
     const { toggleSidebar } = useContext(SidebarContext);
-    const [searchTerm, setSearchTerm] = useState('');
     const [isMobile, setIsMobile] = useState(false);
     const [userName, setUserName] = useState('');
     const [userProfileImage, setUserProfileImage] = useState(null);
@@ -60,8 +58,6 @@ const ContentTop = ({ pageTitle }) => {
         }
     };
 
-    const navigate = useNavigate();
-
     const getTruncatedTitle = (title) => {
         if (!title) return '';
         if (isMobile && title.length > 10) {
@@ -95,7 +91,7 @@ const ContentTop = ({ pageTitle }) => {
             </div>
             <div className="content-top-btns">
                 <form className="search-bar-container" onSubmit={handleSearchSubmit}>
-                    <div className="search_container">
+                    <div className="profile_container">
                         <p className="user-greeting">Hola, {userName}</p>
                         <img src={userProfileImage} alt="Usuario" className='user_img' onError={handleImageError} />
                     </div>
