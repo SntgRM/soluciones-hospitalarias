@@ -30,7 +30,7 @@ class UserSerializer(serializers.ModelSerializer):
     profile_image_url = serializers.SerializerMethodField()
     class Meta:
         model = User
-        fields = ['id', 'username', 'first_name', 'role', 'date_joined', 'profile_image', 'profile_image_url']
+        fields = ['id', 'username', 'first_name', 'email', 'role', 'date_joined', 'profile_image', 'profile_image_url']
 
     def get_profile_image_url(self, obj):
         if obj.profile_image:
@@ -46,7 +46,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
    
     class Meta:
         model = User
-        fields = ['username', 'password', 'first_name', 'role', 'image']
+        fields = ['username', 'password', 'first_name', 'email', 'role', 'image']
 
     def validate(self, data):
         if 'username' in data:
@@ -133,7 +133,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
             print(f"Error procesando imagen: {e}")
     class Meta:
         model = User
-        fields = ['username', 'first_name', 'role', 'image']
+        fields = ['username', 'first_name', 'email', 'role', 'image']
 
 # Password reset serializers
 class PasswordResetRequestSerializer(serializers.Serializer):
