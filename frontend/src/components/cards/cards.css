@@ -1,9 +1,4 @@
-/* ========================================
-   ESTILOS INDEPENDIENTES PARA CARDS DASHBOARD
-   Namespace: .cards-dashboard-
-   ======================================== */
 
-/* Variables CSS específicas para Cards Dashboard */
 .cards-dashboard-wrapper {
   --cards-dashboard-primary: #3b82f6;
   --cards-dashboard-primary-hover: #2563eb;
@@ -658,18 +653,6 @@
 
   .cards-dashboard-two-column {
     grid-template-columns: 1fr;
-  }
-}
-
-/* Modo oscuro (preparado para futuras implementaciones) */
-@media (prefers-color-scheme: dark) {
-  .cards-dashboard-wrapper {
-    --cards-dashboard-white: #1f2937;
-    --cards-dashboard-gray-50: #374151;
-    --cards-dashboard-gray-100: #4b5563;
-    --cards-dashboard-gray-200: #6b7280;
-    --cards-dashboard-gray-800: #f9fafb;
-    --cards-dashboard-gray-900: #ffffff;
   }
 }
 
