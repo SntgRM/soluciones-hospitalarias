@@ -27,7 +27,7 @@
     background: #29292c; /* Fondo oscuro de la notificación */
     border-radius: 1rem; /* Borde redondeado de la notificación */
     overflow: hidden;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fuente más común */
+    font-family: var(--font-family-main);
     font-size: 16px;
     
     /* Las variables --gradient y --color serán pasadas directamente desde JSX */

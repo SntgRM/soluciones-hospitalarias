@@ -30,7 +30,7 @@
   max-width: 1000px;
   margin: 0 auto;
   padding: 24px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
+  font-family: var(--font-family-main);
 }
 
 /* Header del FAQ */
@@ -51,8 +51,7 @@
 }
 
 .faq-header-icon {
-  background: linear-gradient(135deg, var(--faq-primary-color), var(--faq-primary-hover));
-  color: white;
+  color: rgb(0, 0, 0);
   padding: 12px;
   border-radius: var(--faq-border-radius);
   box-shadow: var(--faq-shadow-md);
@@ -98,7 +97,7 @@
   color: var(--faq-gray-700);
   background: #ffffff;
   transition: var(--faq-transition);
-  font-family: inherit;
+  font-family: var(--font-family-main);
 }
 
 .search-input:focus {
@@ -381,7 +380,7 @@
   cursor: pointer;
   transition: var(--faq-transition);
   box-shadow: var(--faq-shadow-sm);
-  font-family: inherit;
+  font-family: var(--font-family-main);
 }
 
 .clear-search:hover {

@@ -1,5 +1,5 @@
 .transportadora-container {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--font-family-main);
   background-color: #f5f5f5;
   min-height: 100vh;
   padding: 20px;

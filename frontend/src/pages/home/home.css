@@ -34,7 +34,7 @@
   padding: 24px;
   max-width: 1400px;
   margin: 0 auto;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
+  font-family: var(--font-family-main);
 }
 
 /* Header del Dashboard */

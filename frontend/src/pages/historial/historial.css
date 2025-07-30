@@ -105,7 +105,7 @@
   color: var(--clr-pumpkin, #ff6b35);
   padding: 4px 8px;
   border-radius: 6px;
-  font-family: "Courier New", monospace;
+  font-family: var(--font-family-main);
   font-size: 12px;
   font-weight: 700;
   border: 1px solid rgba(255, 107, 53, 0.2);
