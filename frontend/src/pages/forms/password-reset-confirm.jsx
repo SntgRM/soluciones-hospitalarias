@@ -5,7 +5,7 @@ import { Link, useParams, useNavigate } from "react-router-dom"
 import { ArrowLeft } from "lucide-react"
 import axios from "axios"
 import { iconsImgs } from "../../utils/images"
-import "./login.css"
+import "./forms.css"
 import rightSideImage from "../../assets/images/login.jpeg"
 
 const PasswordResetConfirm = () => {
