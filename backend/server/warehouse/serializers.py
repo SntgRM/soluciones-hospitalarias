@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Pedidos
+from .models import Pedidos, EstadosPedidos, Clientes, Alistadores, Empacadores, Enrutadores, Transportadoras, Vendedores
 
 class PedidoSerializer(serializers.ModelSerializer):
     cliente_nombre = serializers.StringRelatedField(source='id_cliente', read_only=True)
@@ -13,5 +13,42 @@ class PedidoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pedidos
         fields = '__all__'
+
+class ClienteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Clientes
+        fields = '__all__'
+
+
+class AlistadorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Alistadores
+        fields = '__all__'
+
+class EmpacadorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Empacadores
+        fields = '__all__'
+
+class EnrutadorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Enrutadores
+        fields = '__all__'
+
+class TransportadoraSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Transportadoras
+        fields = '__all__'
+
+class VendedorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Vendedores
+        fields = '__all__'
+
+class EstadoPedidoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EstadosPedidos
+        fields = '__all__'
+
         
         
