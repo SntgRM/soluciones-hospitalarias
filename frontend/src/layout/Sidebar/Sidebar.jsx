@@ -113,7 +113,7 @@ const Sidebar = () => {
           {/* Header del usuario */}
           <div className="user-info">
             <img src={personsImgs.ISOTIPO || "/placeholder.svg"} className="user-avatar" alt="Avatar de usuario" />
-            <span className="info-name">Soluciones Hospitalarias S.A.S</span>
+            <span className="info-name">Soluciones Hospitalarias de la costa S.A.S</span>
           </div>
 
           {/* Navegación con dropdowns */}

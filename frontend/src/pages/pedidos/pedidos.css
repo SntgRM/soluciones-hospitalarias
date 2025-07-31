@@ -32,15 +32,13 @@
   --transition: all 0.2s ease;
 }
 
-/* Layout principal */
 .pedidos-container {
   display: flex;
-  min-height: 100%; /* <--- permite crecer más allá de la altura visible */
 }
 
 
 .filters-panel {
-  width: 320px;
+  width: 250px;
   background-color: rgb(255, 255, 255);
   border-right: 1px solid var(--gray-200);
   display: flex;
@@ -64,7 +62,6 @@
 }
 
 .filters-content {
-  flex: 1;
   padding: 16px;
   overflow-y: auto;
 }
@@ -82,7 +79,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px;
+  padding: 8px;
   border: 1px solid var(--gray-200);
   border-radius: var(--border-radius-lg);
   background-color: white;
@@ -168,6 +165,7 @@
 
 /* Panel principal */
 .main-panel {
+  width: 100%;
   flex: 1;
   display: flex;
   transition: var(--transition);
@@ -176,11 +174,12 @@
 .pedidos-list-container {
   flex: 1;
   transition: var(--transition);
+  width: 100%;
 }
 
-.pedidos-list-container.with-details {
-  width: 50%;
-}
+/* .pedidos-list-container.with-details {
+  width: 100%;
+} */
 
 .pedidos-header {
   padding: 24px;
@@ -204,7 +203,11 @@
   flex: 1;
   overflow-y: auto;
   padding: 24px;
+  height: 100%;
+  max-height: 100vh;
 }
+
+
 
 .pedidos-grid {
   display: flex;
@@ -345,14 +348,23 @@
   color: var(--gray-color);
 }
 
-/* Panel de detalles */
 .details-panel {
+  position: fixed; /* Clave para que no empuje nada */
+  top: 0;
+  right: 0;
+  height: 100vh;
   width: 50%;
+  max-width: 600px;
   background-color: white;
   border-left: 1px solid var(--gray-200);
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
+  z-index: 1001; /* Asegúrate que esté encima */
+  animation: slideIn 0.3s ease-out;
+  box-shadow: -6px 0 12px rgba(0, 0, 0, 0.2);
 }
+
 
 .details-header {
   padding: 24px;
@@ -562,6 +574,7 @@
     height: 50vh;
   }
 }
+
 .pagination {
   display: flex;
   justify-content: center;
@@ -640,17 +653,6 @@
 
 @media (max-width: 440px) {
 
-    /* .filters-content{
-      background-color: pink;
-    }
-
-    .filter-button {
-      background-color: #007bff;
-    } */
-
-    /* .pedidos-content{
-    } */
-
     .pedido-info h3 {
       font-size: 10px;
       color: #007bff;
@@ -664,15 +666,7 @@
   }
 }
 
-.pedidos-content {
-  flex: 1;
-  overflow-y: auto;
-  padding: 24px;
-  /* Asegurar que el contenedor tenga una altura definida */
-  height: 100%;
-  max-height: 100vh; /* Limitar la altura máxima */
-  box-sizing: border-box; /* Incluir padding en el cálculo de altura */
-}
+
 
 .pedidos-grid {
   display: flex;
@@ -711,22 +705,6 @@
   overflow: hidden;
 }
 
-.pedido-info h3 {
-  /* Evitar que el texto largo desborde */
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin: 0 0 4px 0;
-}
-
-.pedido-info p {
-  /* Permitir que el texto se ajuste en pantallas pequeñas */
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  margin: 0;
-  font-size: 0.9rem;
-}
-
 .no-pedidos-message {
   text-align: center;
   padding: 40px 20px;
@@ -738,7 +716,6 @@
 @media (max-width: 768px) {
   .pedidos-content {
     padding: 16px;
-    /* En móviles, usar toda la altura disponible */
     height: calc(100vh - 120px); /* Ajustar según tu header/footer */
   }
   
@@ -783,3 +760,4 @@
     flex-shrink: 0; /* El ícono no se debe contraer */
   }
 }
+
