@@ -8,7 +8,6 @@ import { Routes, Route } from "react-router-dom";
 import Ayuda from "./pages/ayuda/ayuda.jsx";
 import Historial from "./pages/historial/historial.jsx";
 import Home from "./pages/home/home.jsx";
-import Registro from "./pages/registro/registro.jsx";
 import Pedidos from "./pages/pedidos/pedidos.jsx";
 import Login from "./pages/forms/forms.jsx";
 import PasswordResetRequest from "./pages/forms/password-reset-request.jsx"
@@ -44,7 +43,6 @@ function App() {
                 <Route index element={<Home />} />
                 <Route path="ayuda" element={<Ayuda />} />
                 <Route path="historial" element={<Historial />} />
-                <Route path="registro" element={<Registro />} />
                 <Route path="transportadora" element={<Transportadora />} />
                 <Route path="pedidos" element={<Pedidos />} />
                 <Route path="usuarios" element={<User />} />

@@ -7,20 +7,20 @@ export const navigationLinks_bodega = [
         image: iconsImgs.house, 
         path: '/'
     },
+    // {
+    //     id: 2,
+    //     title: 'Registro',
+    //     image: iconsImgs.bookText,
+    //     path: '/registro'
+    // },
     {
         id: 2,
-        title: 'Registro',
-        image: iconsImgs.bookText,
-        path: '/registro'
-    },
-    {
-        id: 3,
         title: 'Historial',
         image: iconsImgs.folder,
         path: '/historial'
     },
     {
-        id: 4,
+        id: 3,
         title: 'Transportadora',
         image: iconsImgs.truck,
         path: '/transportadora'
