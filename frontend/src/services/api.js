@@ -24,31 +24,26 @@ api.interceptors.request.use(
 
 // Funciones para los endpoints de Pedidos
 export const getPedidosAll = async (page = 1) => {
-    // CORREGIDO: Eliminado el 'api/' redundante
     const response = await api.get(`bodega/showall/?page=${page}`);
     return response.data;
 };
 
 export const getPedidoDetail = async (pk) => {
-    // CORREGIDO: Eliminado el 'api/' redundante
     const response = await api.get(`bodega/show/${pk}/`);
     return response.data.results;
 };
 
 export const createPedido = async (pedidoData) => {
-    // CORREGIDO: Eliminado el 'api/' redundante
     const response = await api.post('bodega/create/', pedidoData);
     return response.data.results;
 };
 
 export const updatePedido = async (pk, pedidoData) => {
-    // CORREGIDO: Eliminado el 'api/' redundante
     const response = await api.put(`bodega/update/${pk}/`, pedidoData);
     return response.data.results;
 };
 
 export const deletePedido = async (pk) => {
-    // CORREGIDO: Eliminado el 'api/' redundante
     await api.delete(`bodega/delete/${pk}/`);
 };
 
@@ -68,11 +63,69 @@ export const getPedidosPorEstado = async (id_estado, page = 1) => {
 };
 
 export const getPedidosPorTransportadora = async (id_transportadora, page = 1) => {
-    // CORREGIDO: Eliminado el 'api/' redundante
     const response = await api.get(`bodega/por_transportadora/${id_transportadora}/?page=${page}`);
     return response.data;
 };
 
+export const getClientes = async (search = "") => {
+    const response = await api.get(`bodega/clientesall/?search=${encodeURIComponent(search)}`);
+    return response.data;
+};
+
+export const createCliente = async (clienteData) => {
+    const response = await api.post('bodega/clientecreate/', clienteData);
+    return response.data.results;
+};
+
+export const getAlistadores = async () => {
+    const response = await api.get('bodega/alistadoresview/');
+    return response.data.results;
+};
+
+export const alistadorescreate = async (alistadordata) => {
+    const response = await api.post('bodega/alistadorescreate/', alistadordata);
+    return response.data.results;
+}
+
+export const getEmpacadores = async () => {
+    const response = await api.get('bodega/empacadoresview/');
+    return response.data.results;
+}
+
+export const empacadoresCreate = async (empacadordata) => {
+    const response = await api.post('bodega/empacadorescreate/', empacadordata);
+    return response.data.results;
+}
+
+export const getEnrutadores = async () => {
+    const response = await api.get('bodega/enrutadoresview/');
+    return response.data.results;
+}
+
+export const enrutadoresCreate = async (enrutadordata) => {
+    const response = await api.post('bodega/enrutadorescreate/', enrutadordata);
+    return response.data.results;
+}
+
+export const getTransportadoras = async () => {
+    const response = await api.get('bodega/transportadorasview/');
+    return response.data.results;
+}
+
+export const transportadorasCreate = async (transportadoradata) => {
+    const response = await api.post('bodega/transportadorascreate/', transportadoradata);
+    return response.data.results;
+}
+
+export const getVendedores= async () => {
+    const response = await api.get('bodega/vendedoresview/');
+    return response.data.results;
+}
+
+export const vendedoresCreate = async (vendedordata) => {
+    const response = await api.post('bodega/vendedorescreate/', vendedordata);
+    return response.data.results;
+}
 
 // Interceptor para manejar respuestas y errores
 api.interceptors.response.use(
