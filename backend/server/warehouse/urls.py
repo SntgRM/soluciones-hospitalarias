@@ -21,8 +21,8 @@ urlpatterns = [
     path('limpiar_pedido/<int:pk>/', LimpiarPedido.as_view(), name='pedido-limpiar'),
 
     # Clientes URLs
-    path('clienteall/', ClientesView.as_view(), name='clientes-view'),
-    path('clientecreate/', ClienteCreate.as_view(), name='cliente-create'),
+    path('clientesall/', ClientesView.as_view(), name='clientes-view'),
+    path('clientescreate/', ClienteCreate.as_view(), name='cliente-create'),
 
     # Alistadores URLs
     path('alistadoresview/', AlistadoresView.as_view(), name='alistadores-view'),
