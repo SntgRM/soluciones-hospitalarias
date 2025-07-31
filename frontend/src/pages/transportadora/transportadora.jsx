@@ -185,7 +185,7 @@ export default function Transportadora() {
         </div>
 
         {/* Columna Derecha */}
-        <div className="details-section">
+        <div className="detalles-transportadora">
           <div className="section-header">
             <h2>DETALLES</h2>
           </div>
