@@ -46,9 +46,9 @@ export const navigationLinks_ventas = [
 export const navigationLinks_admin = [
     {
         id: 1,
-        title: 'Usuario',
+        title: 'Usuarios',
         image: iconsImgs.user, 
-        path: './usuario'
+        path: './usuarios'
     },
     {
         id: 2,

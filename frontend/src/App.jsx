@@ -47,7 +47,7 @@ function App() {
                 <Route path="registro" element={<Registro />} />
                 <Route path="transportadora" element={<Transportadora />} />
                 <Route path="pedidos" element={<Pedidos />} />
-                <Route path="usuario" element={<User />} />
+                <Route path="usuarios" element={<User />} />
               </Route>
 
               {/* Rutas públicas sin sidebar */}
