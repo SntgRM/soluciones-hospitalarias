@@ -69,7 +69,7 @@ input::-ms-reveal {
   gap: 16px;
 }
 
-.header-icons {
+.header-icons-user {
   color: rgb(0, 0, 0);
   border-radius: var(--user-border-radius);
   display: flex;
@@ -833,7 +833,6 @@ input::-ms-reveal {
   }
 }
 
-/* Media queries */
 @media screen and (max-width: 1024px) {
   .user-grid {
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -849,24 +848,36 @@ input::-ms-reveal {
 }
 
 @media screen and (max-width: 768px) {
+
+  .header-icons-user {
+    color: rgb(0, 0, 0);
+    border-radius: var(--user-border-radius);
+    display: flex;
+    gap: 10px;
+  }
+
+  .user-btn-primary{
+    padding: 15px 14px;
+    border-radius: var(--user-border-radius);
+    font-weight: 600;
+    font-size: 0.5rem;
+  }
+
   .user-management-container {
     padding: 16px;
   }
 
   .user-management-header {
-    flex-direction: column;
+    flex-direction: row;
     gap: 16px;
-    text-align: center;
+  }
+
+  .lucide-user-plus{
+    display: none;
   }
 
   .user-page-title {
     font-size: 1.5rem;
-  }
-
-  .user-filters-section {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 16px;
   }
 
   .user-filters-group {
@@ -879,16 +890,29 @@ input::-ms-reveal {
   }
 
   .user-grid {
+    display: grid; /* asegúrate de tener display:grid */
     grid-template-columns: 1fr;
     gap: 16px;
+    justify-items: center;   /* centra el contenido horizontalmente */
+  }
+
+
+  .user-card{
+    width: 70%;
   }
 
   .user-card-header {
+    display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
     gap: 12px;
   }
+
+  .user-card-header > :nth-child(3) {
+    order: 1;
+  }
+
 
   .user-actions {
     order: -1;
@@ -922,9 +946,44 @@ input::-ms-reveal {
     width: 12px;
     height: 12px;
   }
+
+  .user-search-input {
+    width: 100%;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--user-gray-700);
+    background: #ffffff;
+  }
+
+  /* Sección de filtros */
+  .user-filters-section {
+    gap: 3px;
+    align-items: center;
+    font-size: 0.6rem;
+    font-weight: 500;
+    padding: 20px;
+    box-shadow: var(--user-shadow-sm);
+  }
+
+  .lucide-funnel{
+    display: none;
+  }
+
+  .user-stat-content {
+    width: 100%;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+  }
 }
 
 @media screen and (max-width: 480px) {
+
+  .header-icons-user {
+    width: 22px;
+    display: flex;
+  }
+
   .user-management-container {
     padding: 12px;
   }
@@ -934,7 +993,11 @@ input::-ms-reveal {
   }
 
   .user-page-title {
-    font-size: 1.25rem;
+    font-size: 1rem;
+  }
+
+  .user-page-subtitle{
+    font-size: 0.6rem;
   }
 
   .user-modal-content {

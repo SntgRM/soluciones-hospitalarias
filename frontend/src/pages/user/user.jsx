@@ -226,7 +226,7 @@ function User() {
       {/* Header */}
       <div className="user-management-header">
         <div className="user-header-title-section">
-          <div className="header-icons">
+          <div className="header-icons-user">
             <Users size={32} />
           </div>
           <div>
@@ -382,15 +382,6 @@ function User() {
             <Users size={64} />
             <h3>No se encontraron usuarios</h3>
             <p>No hay usuarios que coincidan con los filtros seleccionados.</p>
-            <button
-              className="user-btn-secondary"
-              onClick={() => {
-                setSearchTerm("")
-                setFilterRole("todos")
-              }}
-            >
-              Limpiar filtros
-            </button>
           </div>
         )}
       </div>
