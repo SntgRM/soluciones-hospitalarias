@@ -347,7 +347,12 @@ class ClientesView(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request):
         try:
+            search = request.query_params.get('search', '')
             clientes = Clientes.objects.all().order_by('id_cliente')
+
+            if search:
+                clientes = clientes.filter(nombre_cliente__icontains=search)
+
             if not clientes.exists():
                 return Response(
                     {"mensaje": "No hay clientes registrados."},
