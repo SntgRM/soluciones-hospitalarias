@@ -231,9 +231,6 @@
   transform: translateY(-1px);
 }
 
-.pedido-card.selected {
-  border-color: var(--primary-color);
-}
 
 .pedido-card-content {
   display: flex;
@@ -292,7 +289,6 @@
 
 .pedido-info h3 {
   font-weight: 600;
-  color: var(--gray-900);
   margin: 0 0 4px 0;
 }
 
@@ -661,7 +657,6 @@
 
   .pedido-info h3{
     font-size: 0.875rem;
-    color: var(--gray-600);
     margin: 0;
   }
 }
@@ -677,10 +672,9 @@
 }
 
 .pedido-card {
-  /* Prevenir que las tarjetas se desborden */
   flex-shrink: 0;
-  min-width: 0; /* Permitir que el contenido se contraiga */
-  overflow: hidden; /* Ocultar contenido que se desborde */
+  min-width: 0;
+  overflow: hidden;
 }
 
 .pedido-card-content {

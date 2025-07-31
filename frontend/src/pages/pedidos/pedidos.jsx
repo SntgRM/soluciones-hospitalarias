@@ -16,6 +16,17 @@ const statusToIdMap = {
   EMPACADO: 9,
 };
 
+const colorMap = {
+  green: "#28a745",
+  blue: "#007bff",
+  red: "#dc3545",
+  gray: "#6c757d",
+  yellow: "#ffc107",
+  purple: "#6f42c1",
+  orange: "#fd7e14",
+};
+
+
 const statusConfig = {
   "ENTREGADO AL CLIENTE": {
     color: "green",
@@ -462,6 +473,9 @@ const PedidosPage = () => {
                   className={`filter-button ${
                     isActive ? `active ${config.color}` : ""
                   }`}
+                  style={{
+                    color: colorMap[config?.color] || "#6c757d",
+                  }}
                 >
                   <div className="filter-button-content">
                     <Icon size={20} />
@@ -527,9 +541,13 @@ const PedidosPage = () => {
                   return (
                     <div
                       key={pedido.id_factura}
-                      className={`pedido-card ${isSelected ? "selected" : ""}`}
+                      className={`pedido-card ${isSelected ? "selected" : ""} ${config?.color || "gray"}`}
+                      style={{
+                        color: colorMap[config?.color] || "#6c757d",
+                      }}
                       onClick={() => handlePedidoClick(pedido)}
                     >
+
                       <div className="pedido-card-content">
                         <div className="pedido-card-left">
                           <div
