@@ -22,6 +22,7 @@ input::-ms-reveal {
   --user-danger-color: #ef4444;
   --user-danger-hover: #dc2626;
   --user-danger-light: rgba(239, 68, 68, 0.1);
+  --user-warning-light: rgba(245, 158, 11, 0.1);
   --user-gray-50: #f9fafb;
   --user-gray-100: #f3f4f6;
   --user-gray-200: #e5e7eb;
@@ -705,8 +706,21 @@ input::-ms-reveal {
   display: flex;
   gap: 16px;
   justify-content: flex-end;
+  align-items: center;
   padding-top: 20px;
   border-top: 1px solid var(--user-gray-200);
+}
+
+.user-form-warning {
+  display: inline-block;
+  font-size: 0.675rem;
+  color: var(--user-warning-color);
+  background-color: var(--user-warning-light);
+  border-radius: var(--user-border-radius-lg);
+  padding: 12px;
+  font-weight: 600;
+  text-align: center;
+  margin-right: auto;
 }
 
 /* Detalles del usuario */

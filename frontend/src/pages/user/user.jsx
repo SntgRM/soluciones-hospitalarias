@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import "./User.css"
 import { personsImgs } from "../../utils/images"
-import { AtSign, BadgeDollarSign, Calendar, Crown, Edit, Edit3, Eye, EyeOff, Filter, Lock, Mail, Save, Search, Shield, Trash2, UserIcon, UserPlus, Users, Warehouse, X } from "lucide-react";
+import { AlertTriangle, AtSign, BadgeDollarSign, Calendar, Crown, Edit, Edit3, Eye, EyeOff, Filter, Lock, Mail, Save, Search, Shield, Trash2, UserIcon, UserPlus, Users, Warehouse, X } from "lucide-react";
 
 const roles = [
   { value: "administrador", label: "Administrador", color: "#f59e0b" },
@@ -53,9 +53,7 @@ function User() {
   useEffect(() => {
     const filtered = users.filter((user) => {
       const matchesSearch =
-        user.first_name.toLowerCase().includes(searchTerm.toLowerCase()) || user.id.toString().includes(searchTerm)
-        user.id.toString().includes(searchTerm) ||
-        user.email.toLowerCase().includes(searchTerm.toLowerCase())
+        user.first_name.toLowerCase().includes(searchTerm.toLowerCase())
       const matchesRole = filterRole === "todos" || user.role === filterRole
 
       return matchesSearch && matchesRole
@@ -249,7 +247,7 @@ function User() {
           <Search size={18} className="user-search-icon" />
           <input
             type="text"
-            placeholder="Buscar por nombre o ID..."
+            placeholder="Buscar por nombre..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="user-search-input"
@@ -588,6 +586,19 @@ function User() {
                   </div>
 
                   <div className="user-form-actions">
+                    {modalMode === "edit" && (
+                      <p className="user-form-warning">
+                        <AlertTriangle size={16} style={{ marginRight: "8px", verticalAlign: "middle" }} />
+                        Tenga cuidado con los cambios implementados.
+                      </p>
+                    )}
+                    {modalMode === "create" && (
+                      <p className="user-form-warning">
+                        <AlertTriangle size={16} style={{ marginRight: "8px", verticalAlign: "middle" }} />
+                        Revise bien los datos antes de crear el usuario.
+                      </p>
+
+                    )}
                     <button type="button" className="user-btn-secondary" onClick={closeModal}>
                       Cancelar
                     </button>
