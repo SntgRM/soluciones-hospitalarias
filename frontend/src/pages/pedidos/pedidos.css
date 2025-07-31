@@ -567,7 +567,7 @@
 
   .details-panel {
     width: 100%;
-    height: 50vh;
+    height: 100vh;
   }
 }
 
@@ -727,7 +727,6 @@
   
   .pedido-info p {
     font-size: 0.85rem;
-    /* En móviles, permitir que el texto se divida en líneas */
     white-space: normal;
   }
 }

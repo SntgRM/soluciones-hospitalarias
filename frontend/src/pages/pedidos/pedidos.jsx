@@ -499,7 +499,7 @@ const PedidosPage = () => {
             <h1 className="pedidos-title">
               {filterStatus ? `Pedidos - ${filterStatus}` : "Todos los Pedidos"}
             </h1>
-            <p className="pedidos-subtitle">
+            
               <p className="pedidos-subtitle">
                 {`Mostrando ${(currentPage - 1) * itemsPerPage + 1}-${Math.min(
                   currentPage * itemsPerPage,
@@ -508,7 +508,7 @@ const PedidosPage = () => {
                   filterStatus ? statusCounts[filterStatus] || 0 : totalPedidos
                 } pedidos`}
               </p>
-            </p>
+            
             {/* Barra de búsqueda - NUEVO */}
             <div className="search-bar-container">
               <input
