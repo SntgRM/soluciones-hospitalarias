@@ -709,7 +709,6 @@ const PedidosPage = () => {
                   <div className="client-info">
                     <div className="field-row">
                       <span className="field-label">
-                        <User size={16} style={{ marginRight: 6 }} />
                         Nombre:
                       </span>
                       <span className="field-value">
@@ -719,7 +718,7 @@ const PedidosPage = () => {
                     </div>
 
                     <div className="field-row">
-                      <span className="field-label">🏙️ Ciudad:</span>
+                      <span className="field-label">Ciudad:</span>
                       <span className="field-value">
                         {selectedPedido.ciudad || "N/A"}
                       </span>
