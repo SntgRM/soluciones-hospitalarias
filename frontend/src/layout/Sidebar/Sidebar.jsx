@@ -1,21 +1,19 @@
 "use client"
 
 import { useEffect, useState, useContext, useRef } from "react"
-import { NavLink, useNavigate } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 import { personsImgs } from "../../utils/images"
 import { navigationLinks_bodega, navigationLinks_ventas, navigationLinks_admin } from "../../data/data"
 import "./Sidebar.css"
 import { SidebarContext } from "../../context/sidebarContext"
-import Swal from "sweetalert2"
-import { ChevronDown, X, Warehouse, BadgeDollarSign } from "lucide-react" // Importar iconos de Lucide React
+import { ChevronDown, X, Warehouse, BadgeDollarSign } from "lucide-react"
 
 const Sidebar = () => {
   const [sidebarClass, setSidebarClass] = useState("")
-  const [isBodegaDropdownOpen, setIsBodegaDropdownOpen] = useState(false) // Renombrado para claridad
+  const [isBodegaDropdownOpen, setIsBodegaDropdownOpen] = useState(false)
   const [isVentasDropdownOpen, setIsVentasDropdownOpen] = useState(false)
-  const { isSidebarOpen, toggleSidebar } = useContext(SidebarContext) // Obtener toggleSidebar del contexto
-  const navigate = useNavigate()
-  const sidebarRef = useRef(null) // Ref para el sidebar
+  const { isSidebarOpen, toggleSidebar } = useContext(SidebarContext)
+  const sidebarRef = useRef(null)
 
   useEffect(() => {
     if (isSidebarOpen) {
@@ -25,7 +23,6 @@ const Sidebar = () => {
     }
   }, [isSidebarOpen])
 
-  // Cerrar dropdowns cuando se cierra el sidebar
   useEffect(() => {
     if (!isSidebarOpen) {
       setIsBodegaDropdownOpen(false)
@@ -33,15 +30,13 @@ const Sidebar = () => {
     }
   }, [isSidebarOpen])
 
-  // Lógica para cerrar el sidebar al hacer clic fuera
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (sidebarRef.current && !sidebarRef.current.contains(event.target) && isSidebarOpen) {
-        toggleSidebar() // Cierra el sidebar si el clic es fuera
+        toggleSidebar()
       }
     }
 
-    // Solo añadir el listener si el sidebar está abierto y en móvil
     if (isSidebarOpen && window.innerWidth <= 768) {
       document.addEventListener("mousedown", handleClickOutside)
       document.addEventListener("touchstart", handleClickOutside)
@@ -56,7 +51,6 @@ const Sidebar = () => {
   const toggleBodegaDropdown = () => {
     setIsBodegaDropdownOpen(!isBodegaDropdownOpen)
     if (isVentasDropdownOpen) {
-      // Cerrar el otro dropdown si está abierto
       setIsVentasDropdownOpen(false)
     }
   }
@@ -64,61 +58,32 @@ const Sidebar = () => {
   const toggleVentasDropdown = () => {
     setIsVentasDropdownOpen(!isVentasDropdownOpen)
     if (isBodegaDropdownOpen) {
-      // Cerrar el otro dropdown si está abierto
       setIsBodegaDropdownOpen(false)
     }
   }
 
   const handleLinkClick = () => {
-    // Cierra el sidebar si está abierto y es una pantalla pequeña
     if (window.innerWidth <= 768 && isSidebarOpen) {
       toggleSidebar()
     }
   }
 
-  const handleLogoutClick = (e) => {
-    e.preventDefault()
-
-    Swal.fire({
-      title: "¿Estás seguro que deseas salir?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#667eea",
-      cancelButtonColor: "#ef4444",
-      confirmButtonText: "Sí, salir",
-      cancelButtonText: "Cancelar",
-      background: "#fff",
-      color: "#1A1A1A",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        localStorage.removeItem("authToken")
-        navigate("/login")
-      }
-    })
-  }
-
   return (
     <>
-      {/* Placeholder invisible que ocupa el espacio del sidebar en desktop */}
       <div className={`sidebar-placeholder ${sidebarClass}`}></div>
 
-      {/* Sidebar fijo */}
       <div className={`sidebar ${sidebarClass}`} ref={sidebarRef}>
         <div className="sidebar-inner">
-          {/* Botón de cierre para móvil */}
           <button className="sidebar-close-btn" onClick={toggleSidebar} aria-label="Cerrar menú">
             <X size={24} />
           </button>
 
-          {/* Header del usuario */}
           <div className="user-info">
             <img src={personsImgs.ISOTIPO || "/placeholder.svg"} className="user-avatar" alt="Avatar de usuario" />
             <span className="info-name">Soluciones Hospitalarias de la costa S.A.S</span>
           </div>
 
-          {/* Navegación con dropdowns */}
           <nav className="navigation">
-            {/* Dropdown de Bodega */}
             <div className="dropdown-container">
               <button
                 className={`dropdown-toggle ${isBodegaDropdownOpen ? "active" : ""}`}
@@ -127,7 +92,6 @@ const Sidebar = () => {
                 aria-controls="bodega-menu"
               >
                 <div className="dropdown-toggle-content">
-                  {/* Asumiendo que navigationLinks_bodega[0].image es el icono principal de Bodega */}
                   <Warehouse size={20} />
                   <span className="dropdown-toggle-text">Bodega</span>
                 </div>
@@ -143,7 +107,7 @@ const Sidebar = () => {
                         <NavLink
                           to={navigationLink.path}
                           className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
-                          onClick={handleLinkClick} // Usa la función unificada
+                          onClick={handleLinkClick}
                           role="menuitem"
                         >
                           <img
@@ -169,7 +133,6 @@ const Sidebar = () => {
                 aria-controls="ventas-menu"
               >
                 <div className="dropdown-toggle-content">
-                  {/* Asumiendo que navigationLinks_ventas[0].image es el icono principal de Ventas */}
                   <BadgeDollarSign size={20} />
                   <span className="dropdown-toggle-text">Ventas</span>
                 </div>
@@ -184,7 +147,7 @@ const Sidebar = () => {
                         <NavLink
                           to={navigationLink.path}
                           className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
-                          onClick={handleLinkClick} // Usa la función unificada
+                          onClick={handleLinkClick}
                           role="menuitem"
                         >
                           <img
