@@ -227,7 +227,7 @@
 .pedido-card-content {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  /* justify-content: space-between; */
 }
 
 .pedido-card-left {
@@ -441,7 +441,6 @@
 .client-info {
   display: flex;
   flex-direction: column;
-  gap: 8px;
 }
 
 .client-name {
@@ -824,12 +823,10 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 8px;
-  padding: 4px 0;
 }
 
 .field-label {
-  font-weight: 600;
-  color: #555;
+  color: #4b5563;
 }
 
 .field-value {

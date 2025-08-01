@@ -577,27 +577,32 @@ const PedidosPage = () => {
                       }}
                       onClick={() => handlePedidoClick(pedido)}
                     >
-                      <div className="pedido-card-content">
-                        <div className="pedido-card-left">
-                          <div>
-                            {typeof pedido.id_cliente === "number" &&
-                            pedido.id_cliente % 2 === 0 ? (
-                              <Building2 size={20} />
-                            ) : (
-                              <User size={20} />
-                            )}
-                          </div>
-                          <div className="pedido-info">
-                            <h3>
-                              {pedido.id_factura} - {pedido.ciudad}
-                            </h3>
-                            <p>
-                              Fecha: {formatDate(pedido.fecha_recibido)} |
-                              Valor: {formatCurrency(pedido.valor)}
-                            </p>
+                      
+
+                        <div className="pedido-card-content">
+                          <div className="pedido-card-left">
+                            <div>
+                              {typeof pedido.id_cliente === "number" &&
+                              pedido.id_cliente % 2 === 0 ? (
+                                <Building2 size={20} />
+                              ) : (
+                                <User size={20} />
+                              )}
+                            </div>
+                            <div className="pedido-info">
+                              <h2 className="pedido-id">{pedido.id_factura}</h2>
+                              <h3>
+                                {pedido.cliente_nombre ||
+                                  `Cliente ID: ${pedido.id_cliente}`}
+                              </h3>
+                              <p>{pedido.transportadora_nombre} | {pedido.ciudad}</p>
+                              <p>
+                                Fecha: {formatDate(pedido.fecha_recibido)} |
+                                Valor: {formatCurrency(pedido.valor)}
+                              </p>
+                            </div>
                           </div>
                         </div>
-                      </div>
                     </div>
                   );
                 })
@@ -708,10 +713,22 @@ const PedidosPage = () => {
                 <div className="section-content">
                   <div className="client-info">
                     <div className="field-row">
-                      <span className="field-label">
-                        Nombre:
-                      </span>
-                      <span className="field-value">
+                      <span className="field-label">Nombre:</span>
+                      <span
+                        className="field-value"
+                        style={{
+                          color:
+                            colorMap[
+                              statusConfig[
+                                Object.keys(statusToIdMap).find(
+                                  (key) =>
+                                    statusToIdMap[key] ===
+                                    selectedPedido.id_estado
+                                ) || "SIN REGISTRO"
+                              ]?.color
+                            ] || "#222",
+                        }}
+                      >
                         {selectedPedido.cliente_nombre ||
                           `Cliente ID: ${selectedPedido.id_cliente}`}
                       </span>
@@ -788,13 +805,13 @@ const PedidosPage = () => {
                   </div>
                   <div className="info-row">
                     <span className="info-label">Recaudo Efectivo:</span>
-                    <span className="info-value">
+                    <span className="info-value price">
                       {formatCurrency(selectedPedido.recaudo_efectivo)}
                     </span>
                   </div>
                   <div className="info-row">
                     <span className="info-label">Recaudo Transferencia:</span>
-                    <span className="info-value">
+                    <span className="info-value price">
                       {formatCurrency(selectedPedido.recaudo_transferencia)}
                     </span>
                   </div>
@@ -897,7 +914,12 @@ const PedidosPage = () => {
                 <div className="actions-section">
                   <div className="actions-buttons">
                     <button className="btn btn-primary">Editar Pedido</button>
-                    <button className="btn btn-secondary">Ver Historial</button>
+                    <button
+                      className="btn btn-secondary"
+                      onClick={() => navigate("/historial")}
+                    >
+                      Ver Historial
+                    </button>
                   </div>
                 </div>
               </div>
