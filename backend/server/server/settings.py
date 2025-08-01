@@ -43,8 +43,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'authentication',
-    'warehouse',
+    'warehouse.apps.WarehouseConfig',
     'corsheaders',
+    
 ]
 
 FRONTEND_URL = 'http://localhost:5173'
