@@ -474,7 +474,6 @@ export default function Transportadora() {
             <div className={`pedido-details ${selectedDetailId ? "detail-expanded-mode" : ""}`}>
               <div className="details-header">
                 <span>ENTREGADO AL CLIENTE - {expandedItem}</span>
-                <ChevronDown className="dropdown-arrow" size={14} />
               </div>
               <div className="details-content">
                 {selectedDetailId
