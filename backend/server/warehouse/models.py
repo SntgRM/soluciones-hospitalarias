@@ -130,10 +130,16 @@ class EstadosPedidos(models.Model):
         verbose_name_plural = "Estados de Pedidos"
 
 class Pedidos(models.Model):
+    RECAUDO_CHOICES = [
+        ("Efectivo", "Efectivo"),
+        ("Transferencia", "Transferencia"),
+        ("Ambos", "Ambos"),
+        ("Sin Recaudo", "Sin Recaudo"),
+    ]
     id_factura = models.IntegerField(primary_key=True)
     fecha_recibido = models.DateTimeField(blank=True, null=True)
     valor = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    tipo_recaudo = models.CharField(max_length=24, blank=True, null=True)
+    tipo_recaudo = models.CharField(max_length=24, choices=RECAUDO_CHOICES, blank=True, null=True)
     recaudo_efectivo = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     recaudo_transferencia = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     no_caja = models.IntegerField(blank=True, null=True)
