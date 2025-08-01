@@ -818,3 +818,23 @@
     position: relative;
   }
 }
+
+
+.field-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  padding: 4px 0;
+}
+
+.field-label {
+  font-weight: 600;
+  color: #555;
+}
+
+.field-value {
+  text-align: right;
+  color: #222;
+  max-width: 60%;
+  word-wrap: break-word;
+}

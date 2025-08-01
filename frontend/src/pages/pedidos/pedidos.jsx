@@ -1,8 +1,27 @@
-import { useState, useEffect, useCallback, useMemo } from "react"
-import { useLocation, useNavigate } from "react-router-dom"
-import { ChevronUp, ChevronDown, Building2, User, Package, Truck, CheckCircle, XCircle, Clock, AlertCircle, MapPin, DollarSign, Calendar, Users } from "lucide-react"
+import { useState, useEffect, useCallback, useMemo } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import {
+  ChevronUp,
+  ChevronDown,
+  Building2,
+  User,
+  Package,
+  Truck,
+  CheckCircle,
+  XCircle,
+  Clock,
+  AlertCircle,
+  MapPin,
+  DollarSign,
+  Calendar,
+  Users,
+} from "lucide-react";
 import "./pedidos.css";
-import { getPedidosAll, getPedidosPorEstado, getResumenPedidos } from "../../services/api.js"
+import {
+  getPedidosAll,
+  getPedidosPorEstado,
+  getResumenPedidos,
+} from "../../services/api.js";
 
 const statusToIdMap = {
   "ENTREGADO AL CLIENTE": 1,
@@ -25,7 +44,6 @@ const colorMap = {
   purple: "#6f42c1",
   orange: "#fd7e14",
 };
-
 
 const statusConfig = {
   "ENTREGADO AL CLIENTE": {
@@ -68,8 +86,6 @@ const findMatchingStatusKey = (rawStatus, map) => {
   }
   return "";
 };
-
-
 
 const PedidosPage = () => {
   const location = useLocation();
@@ -449,7 +465,6 @@ const PedidosPage = () => {
         </div>
 
         <div className={`filters-content ${showFilters ? "expanded" : ""}`}>
-
           <div className="filters-list">
             <button
               onClick={() => handleFilterChange("")}
@@ -492,11 +507,11 @@ const PedidosPage = () => {
         </div>
         <button
           className="filters-toggle-button"
-          onClick={() => setShowFilters(prev => !prev)}
+          onClick={() => setShowFilters((prev) => !prev)}
           aria-label={showFilters ? "Contraer filtros" : "Expandir filtros"}
         >
-          <span style={{ marginRight: '8px' }}>
-            {showFilters ? 'Contraer filtros' : 'Ver más filtros'}
+          <span style={{ marginRight: "8px" }}>
+            {showFilters ? "Contraer filtros" : "Ver más filtros"}
           </span>
           {showFilters ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
         </button>
@@ -512,16 +527,16 @@ const PedidosPage = () => {
             <h1 className="pedidos-title">
               {filterStatus ? `Pedidos - ${filterStatus}` : "Todos los Pedidos"}
             </h1>
-            
-              <p className="pedidos-subtitle">
-                {`Mostrando ${(currentPage - 1) * itemsPerPage + 1}-${Math.min(
-                  currentPage * itemsPerPage,
-                  filterStatus ? statusCounts[filterStatus] || 0 : totalPedidos
-                )} de ${
-                  filterStatus ? statusCounts[filterStatus] || 0 : totalPedidos
-                } pedidos`}
-              </p>
-            
+
+            <p className="pedidos-subtitle">
+              {`Mostrando ${(currentPage - 1) * itemsPerPage + 1}-${Math.min(
+                currentPage * itemsPerPage,
+                filterStatus ? statusCounts[filterStatus] || 0 : totalPedidos
+              )} de ${
+                filterStatus ? statusCounts[filterStatus] || 0 : totalPedidos
+              } pedidos`}
+            </p>
+
             {/* Barra de búsqueda - NUEVO */}
             <div className="search-bar-container">
               <input
@@ -554,17 +569,17 @@ const PedidosPage = () => {
                   return (
                     <div
                       key={pedido.id_factura}
-                      className={`pedido-card ${isSelected ? "selected" : ""} ${config?.color || "gray"}`}
+                      className={`pedido-card ${isSelected ? "selected" : ""} ${
+                        config?.color || "gray"
+                      }`}
                       style={{
                         color: colorMap[config?.color] || "#6c757d",
                       }}
                       onClick={() => handlePedidoClick(pedido)}
                     >
-
                       <div className="pedido-card-content">
                         <div className="pedido-card-left">
-                          <div
-                          >
+                          <div>
                             {typeof pedido.id_cliente === "number" &&
                             pedido.id_cliente % 2 === 0 ? (
                               <Building2 size={20} />
@@ -645,7 +660,6 @@ const PedidosPage = () => {
               >
                 Siguiente
               </button>
-
             </div>
           )}
         </div>
@@ -693,13 +707,22 @@ const PedidosPage = () => {
                 <h3 className="section-title">Cliente</h3>
                 <div className="section-content">
                   <div className="client-info">
-                    <div className="client-name">
-                      <User size={16} />
-                      {selectedPedido.cliente_nombre ||
-                        `Cliente ID: ${selectedPedido.id_cliente}`}
+                    <div className="field-row">
+                      <span className="field-label">
+                        <User size={16} style={{ marginRight: 6 }} />
+                        Nombre:
+                      </span>
+                      <span className="field-value">
+                        {selectedPedido.cliente_nombre ||
+                          `Cliente ID: ${selectedPedido.id_cliente}`}
+                      </span>
                     </div>
-                    <div className="client-details">
-                      <p>🏙️ {selectedPedido.ciudad || "N/A"}</p>
+
+                    <div className="field-row">
+                      <span className="field-label">🏙️ Ciudad:</span>
+                      <span className="field-value">
+                        {selectedPedido.ciudad || "N/A"}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -725,7 +748,7 @@ const PedidosPage = () => {
                     <span className="info-label">Transportadora:</span>
                     <span className="info-value">
                       {selectedPedido.transportadora_nombre ||
-                        selectedPedido.transportadora || 
+                        selectedPedido.transportadora ||
                         `ID: ${selectedPedido.id_transportadora}`}
                     </span>
                   </div>
@@ -833,25 +856,29 @@ const PedidosPage = () => {
                   <div className="info-row">
                     <span className="info-label">ID Vendedor:</span>
                     <span className="info-value">
-                      {selectedPedido.vendedor_nombre || `ID: ${selectedPedido.id_vendedor}`}
+                      {selectedPedido.vendedor_nombre ||
+                        `ID: ${selectedPedido.id_vendedor}`}
                     </span>
                   </div>
                   <div className="info-row">
                     <span className="info-label">ID Enrutador:</span>
                     <span className="info-value">
-                      {selectedPedido.enrutador_nombre || `ID: ${selectedPedido.id_enrutador}`}
+                      {selectedPedido.enrutador_nombre ||
+                        `ID: ${selectedPedido.id_enrutador}`}
                     </span>
                   </div>
                   <div className="info-row">
                     <span className="info-label">ID Alistador:</span>
                     <span className="info-value">
-                      {selectedPedido.alistador_nombre || `ID: ${selectedPedido.id_alistador}`}
+                      {selectedPedido.alistador_nombre ||
+                        `ID: ${selectedPedido.id_alistador}`}
                     </span>
                   </div>
                   <div className="info-row">
                     <span className="info-label">ID Empacador:</span>
                     <span className="info-value">
-                      {selectedPedido.empacador_nombre || `ID: ${selectedPedido.id_empacador}`}
+                      {selectedPedido.empacador_nombre ||
+                        `ID: ${selectedPedido.id_empacador}`}
                     </span>
                   </div>
                 </div>
