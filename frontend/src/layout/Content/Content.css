@@ -61,8 +61,3 @@
     transform: scale(0.92);
   }
 }
-
-/* Asegurar que las transiciones se apliquen suavemente */
-.main-content * {
-  transition: inherit;
-}
