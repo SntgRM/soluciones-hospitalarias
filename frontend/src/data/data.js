@@ -7,12 +7,6 @@ export const navigationLinks_bodega = [
         image: iconsImgs.house, 
         path: '/'
     },
-    // {
-    //     id: 2,
-    //     title: 'Registro',
-    //     image: iconsImgs.bookText,
-    //     path: '/registro'
-    // },
     {
         id: 2,
         title: 'Historial',
@@ -56,13 +50,7 @@ export const navigationLinks_admin = [
         image: iconsImgs.info,
         path: './ayuda'
     },
-    {
-        id: 3,
-        title: 'Salir',
-        image: iconsImgs.door,
-        path: '/login'
-    },
-    // ... otros enlaces de navegación
+    
 ];
 
 
