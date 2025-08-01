@@ -97,7 +97,7 @@ class PedidoUpdate(APIView):
 
     def put(self, request, pk):
         try:
-            pedido = Pedidos.objects.get(pk=pk)
+            pedido = Pedidos.objects.get(id_factura=pk)
             serializer = PedidoSerializer(pedido, data=request.data)
 
             if serializer.is_valid():
@@ -398,6 +398,12 @@ class AlistadoresView(APIView):
 
     def get(self, request):
         try:
+            search = request.query_params.get('search', '')
+            alistadores = Alistadores.objects.all().order_by('id_alistador')
+
+            if search:
+                alistadores = alistadores.filter(nombre_alistador__icontains=search)
+
             alistadores = Alistadores.objects.all().order_by('id_alistador')
             if not alistadores.exists():
                 return Response(
@@ -444,6 +450,12 @@ class EmpacadoresView(APIView):
 
     def get(self, request):
         try:
+            search = request.query_params.get('search', '')
+            empacadores = Empacadores.objects.all().order_by('id_empacador')
+
+            if search:
+                empacadores = empacadores.filter(nombre_empacador__icontains=search)
+
             empacadores = Empacadores.objects.all().order_by('id_empacador')
             if not empacadores.exists():
                 return Response(
@@ -489,23 +501,21 @@ class EnrutadoresView(APIView):
 
     def get(self, request):
         try:
+            search = request.query_params.get('search', '')
             enrutadores = Enrutadores.objects.all().order_by('id_enrutador')
+
+            if search:
+                enrutadores = enrutadores.filter(nombre_enrutador__icontains=search)
+
             if not enrutadores.exists():
-                return Response(
-                    {"mensaje": "No hay enrutadores registrados."},
-                    status=status.HTTP_204_NO_CONTENT
-                )
-        
+                return Response({"mensaje": "No hay enrutadores registrados."}, status=status.HTTP_204_NO_CONTENT)
+
             serializer = EnrutadorSerializer(enrutadores, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
 
         except Exception as e:
-            return Response(
-                {
-                    "error": "Ocurrió un error al obtener los enrutadores.",
-                },
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
+            return Response({"error": "Ocurrió un error al obtener los enrutadores."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 class EnrutadorCreate(APIView):
     permission_classes = [IsAuthenticated]
@@ -534,23 +544,20 @@ class TransportadorasView(APIView):
 
     def get(self, request):
         try:
+            search = request.query_params.get('search', '')
             transportadoras = Transportadoras.objects.all().order_by('id_transportadora')
+
+            if search:
+                transportadoras = transportadoras.filter(nombre_transportadora__icontains=search)
+
             if not transportadoras.exists():
-                return Response(
-                    {"mensaje": "No hay transportadoras registradas."},
-                    status=status.HTTP_204_NO_CONTENT
-                )
-        
+                return Response({"mensaje": "No hay transportadoras registradas."}, status=status.HTTP_204_NO_CONTENT)
+
             serializer = TransportadoraSerializer(transportadoras, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
-
+        
         except Exception as e:
-            return Response(
-                {
-                    "error": "Ocurrió un error al obtener las transportadoras.",
-                },
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
+            return Response({"error": "Ocurrió un error al obtener las transportadoras."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
 class TransportadoraCreate(APIView):
     permission_classes = [IsAuthenticated]
@@ -618,3 +625,14 @@ class VendedorCreate(APIView):
             )
 
 # --------------------------------------------------------------------------------------------------------
+
+class EstadosView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            estados = EstadosPedidos.objects.all().order_by('id_estado')
+            serializer = EstadoPedidoSerializer(estados, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'error': 'Error al obtener estados'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
