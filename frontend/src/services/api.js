@@ -77,9 +77,9 @@ export const createCliente = async (clienteData) => {
     return response.data.results;
 };
 
-export const getAlistadores = async () => {
-    const response = await api.get('bodega/alistadoresview/');
-    return response.data.results;
+export const getAlistadores = async (search = "") => {
+    const response = await api.get(`bodega/alistadoresview/?search=${encodeURIComponent(search)}`);
+    return response.data;
 };
 
 export const alistadorescreate = async (alistadordata) => {
@@ -87,9 +87,9 @@ export const alistadorescreate = async (alistadordata) => {
     return response.data.results;
 }
 
-export const getEmpacadores = async () => {
-    const response = await api.get('bodega/empacadoresview/');
-    return response.data.results;
+export const getEmpacadores = async (search = "") => {
+    const response = await api.get(`bodega/empacadoresview/?search=${encodeURIComponent(search)}`);
+    return response.data;
 }
 
 export const empacadoresCreate = async (empacadordata) => {
@@ -97,9 +97,9 @@ export const empacadoresCreate = async (empacadordata) => {
     return response.data.results;
 }
 
-export const getEnrutadores = async () => {
-    const response = await api.get('bodega/enrutadoresview/');
-    return response.data.results;
+export const getEnrutadores = async (search = "") => {
+    const response = await api.get(`bodega/enrutadoresview/?search=${encodeURIComponent(search)}`);
+    return response.data;
 }
 
 export const enrutadoresCreate = async (enrutadordata) => {
@@ -107,9 +107,9 @@ export const enrutadoresCreate = async (enrutadordata) => {
     return response.data.results;
 }
 
-export const getTransportadoras = async () => {
-    const response = await api.get('bodega/transportadorasview/');
-    return response.data.results;
+export const getTransportadoras = async (search = "") => {
+    const response = await api.get(`bodega/transportadorasview/?search=${encodeURIComponent(search)}`);
+    return response.data;
 }
 
 export const transportadorasCreate = async (transportadoradata) => {
@@ -117,14 +117,19 @@ export const transportadorasCreate = async (transportadoradata) => {
     return response.data.results;
 }
 
-export const getVendedores= async () => {
-    const response = await api.get('bodega/vendedoresview/');
-    return response.data.results;
+export const getVendedores= async (search = "") => {
+    const response = await api.get(`bodega/vendedoresview/?search=${encodeURIComponent(search)}`);
+    return response.data;
 }
 
 export const vendedoresCreate = async (vendedordata) => {
     const response = await api.post('bodega/vendedorescreate/', vendedordata);
     return response.data.results;
+}
+
+export const getEstados = async (search = "") => {
+    const response = await api.get(`bodega/estadosview/?search=${encodeURIComponent(search)}`);
+    return response.data;
 }
 
 // Interceptor para manejar respuestas y errores
