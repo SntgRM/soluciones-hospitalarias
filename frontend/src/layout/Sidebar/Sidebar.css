@@ -1,8 +1,7 @@
-/* Variables CSS para el Sidebar */
 :root {
   --sidebar-primary: #38e632;
   --sidebar-primary-dark: #764ba2;
-  --sidebar-bg-gradient: linear-gradient(135deg, #1a1919 0%, #3d3b3b 100%);
+  --sidebar-bg-gradient: #222222;
   --sidebar-overlay: #2ebe29af;
   --sidebar-overlay-hover: #2ebe29af;
   --sidebar-overlay-active: #059900;
@@ -14,14 +13,12 @@
   --sidebar-border-radius: 8px;
   --sidebar-border-radius-sm: 6px;
 }
-
-/* Sidebar principal */
 .sidebar {
   position: fixed;
   top: 0;
   left: 0;
   height: 100vh;
-  width: 260px; /* Ancho por defecto para desktop */
+  width: 260px;
   background: var(--sidebar-bg-gradient);
   box-shadow: var(--sidebar-shadow);
   z-index: 1000;
@@ -321,22 +318,17 @@
     left: 0;
     height: 100vh;
     width: 280px;
-    background: var(--sidebar-bg-gradient);
-    /* QUITAR BOX SHADOW EN MÓVILES */
     box-shadow: none;
     z-index: 1000;
-    transform: translateX(-100%); /* Oculto por defecto */
+    transform: translateX(-100%);
     overflow-y: auto;
     overflow-x: hidden;
-    /* ANIMACIONES MEJORADAS */
     transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     will-change: transform;
   }
 
   .sidebar.sidebar-change {
-    transform: translateX(0); /* Se abre completamente */
-    /* Efecto de rebote sutil al abrir */
-    animation: sidebarBounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    transform: translateX(0);
   }
 
   /* Overlay con animación suave para difuminar el contenido */

@@ -5,11 +5,13 @@
   padding: 32px;
   transition: filter 0.3s ease, transform 0.3s ease;
   position: relative;
+  margin-bottom: 20px;
 }
 
 .main-content-body {
   padding: 10px 10px;
   transition: filter 0.4s ease, transform 0.4s ease;
+  margin-bottom: 20px;
 }
 
 /* Media queries existentes */

@@ -156,6 +156,7 @@
   flex-direction: column;
   background-color: #f9f9f9;
   border-top: 1px solid #e0e0e0;
+  transition: all 0.3s ease-in-out; /* Smooth transition for expansion */
 }
 
 .details-header {
@@ -177,6 +178,7 @@
   flex: 1;
   padding: 15px 20px;
   overflow-y: auto;
+  transition: padding 0.3s ease-in-out; /* Smooth transition for padding */
 }
 
 .detail-item {
@@ -186,6 +188,8 @@
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  cursor: pointer; /* Make individual detail items clickable */
+  transition: all 0.3s ease-in-out; /* Smooth transition for expansion */
 }
 
 .detail-item:last-child {
@@ -315,4 +319,80 @@
   .detail-status {
     align-self: flex-end;
   }
+}
+
+/* Styles for expanded detail item */
+.pedido-details.detail-expanded-mode .details-content {
+  padding: 0; /* Remove padding when a single detail is expanded */
+  overflow-y: auto; /* Allow scrolling for the expanded detail */
+}
+
+.pedido-details.detail-expanded-mode .detail-item {
+  margin-bottom: 0;
+  border-bottom: none;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 20px; /* Adjust padding for expanded view */
+  height: 100%; /* Make it fill the container */
+  overflow-y: auto; /* Allow scrolling within the expanded detail */
+  background-color: white; /* Ensure background is white */
+}
+
+.pedido-details.detail-expanded-mode .detail-item:last-child {
+  margin-bottom: 0;
+}
+
+/* Hide other detail items when one is expanded */
+.pedido-details.detail-expanded-mode .detail-item:not(.expanded) {
+  display: none;
+}
+
+/* Close button for expanded detail */
+.close-details-button {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  color: #666;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.close-details-button:hover {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+/* New styles for additional details */
+.additional-details {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 13px;
+  color: #555;
+}
+
+.detail-row {
+  display: flex;
+  align-items: flex-start; /* Align items to the start for multi-line text */
+  gap: 8px;
+}
+
+.detail-icon {
+  color: #666; /* Icon color */
+  flex-shrink: 0; /* Prevent icon from shrinking */
+  margin-top: 2px; /* Adjust vertical alignment for icons */
+}
+
+.detail-row.notes {
+  font-style: italic;
+  color: #777;
+  background-color: #fcf8e3; /* Light yellow background for notes */
+  border-left: 3px solid #f0ad4e; /* Orange border for notes */
+  padding: 8px 12px;
+  border-radius: 4px;
 }

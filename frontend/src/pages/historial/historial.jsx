@@ -7,21 +7,9 @@ import "react-datepicker/dist/react-datepicker.css"
 import { parse } from "date-fns"
 import "./Historial.css"
 import { SidebarContext } from "../../context/sidebarContext"
-import {
-  ClipboardList,
-  Plus,
-  Pencil,
-  Trash,
-  Settings,
-  ArrowUpToLine,
-  Package,
-  Clock,
-  User,
-  ChevronDown,
-  ChevronUp,
+import { ClipboardList, Plus, Pencil, Trash, Settings, Package, Clock, User, ChevronDown, ChevronUp,
 } from "lucide-react"
 
-// Datos de ejemplo agrupados por producto
 const sampleHistoryByProduct = [
   {
     productId: "PROD-001",
@@ -374,15 +362,6 @@ const Historial = () => {
           </div>
         )}
       </div>
-
-      <button
-        className="btn-volver-arriba"
-        onClick={volverArriba}
-        aria-label="Volver al inicio de la página"
-        title="Volver arriba"
-      >
-        <ArrowUpToLine size={24} color="black" />
-      </button>
     </div>
   )
 }
