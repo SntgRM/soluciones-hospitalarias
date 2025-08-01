@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 * {
   padding: 0;
@@ -7,19 +7,19 @@
 }
 
 :root {
-   --clr-primary: #2b2b2b; /* background sidebar */
-   --clr-secondary: #ffffff; /* background del contendio */
-   --clr-over-boton: #21d14723;
-   --clr-black: #dfdfdf; /* background cards */
-  --clr-primar-light: #000000;  /* barras (faltantes) */
-  --clr-white: #ffffff; /* letras */
-  --clr-pumpkin: #049924; /* botones */
-  --clr-silver: #ffffff; /* letras cards */
-  --clr-silver-v1: #03701b; /* letras nombres */
-  --clr-scarlet: #000000; /* tarjetas y sidebar */
-  --clr-scarlet-v1: rgb(254, 30, 0, 0.79); /* tarjetas de credito */
+  --clr-primary: #2b2b2b;
+  --clr-secondary: #ffffff;
+  --clr-over-boton: #21d14723;
+  --clr-black: #dfdfdf;
+  --clr-primar-light: #000000;
+  --clr-white: #ffffff;
+  --clr-pumpkin: #049924;
+  --clr-silver: #ffffff;
+  --clr-silver-v1: #03701b;
+  --clr-scarlet: #000000;
+  --clr-scarlet-v1: rgb(254, 30, 0, 0.79);
   --clr-green: #000000;
-  --clr-yellow: #fec80a;/* tarjetas de credito */
+  --clr-yellow: #fec80a;
   --clr-jet: #302924;
   --clr-peach: #00ff55;
   --clr-recivido: #2a12fd;
@@ -29,11 +29,12 @@
   --transition-default: all 300ms ease-in-out;
 }
 
-html, body {
+html,
+body {
   min-height: 100vh;
   height: 100vh;
   font-family: var(--font-family-main);
-  overflow-x: hidden; /* Evitar scroll horizontal global */
+  overflow-x: hidden;
 }
 
 ul {
@@ -88,7 +89,7 @@ button {
 }
 .grid-common {
   background-color: var(--clr-white); /* Fondo del header */
-  box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.123)
+  box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.123);
 }
 .grid-c-title {
   display: flex;
@@ -131,7 +132,7 @@ button {
 
 /* Flechita opcional */
 .grid-c-title-icon .tooltip::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 100%; /* apunta hacia el ícono */
   left: 50%;
@@ -144,8 +145,6 @@ button {
 .grid-c-title-icon:hover .tooltip {
   opacity: 1;
 }
-
-
 
 @media screen and (max-width: 1400px) {
   .grid-common {
