@@ -6,6 +6,7 @@ from .views import EmpacadoresView, EmpacadorCreate
 from .views import EnrutadoresView, EnrutadorCreate
 from .views import TransportadorasView, TransportadoraCreate
 from .views import VendedoresView, VendedorCreate
+from .views import EstadosView
 
 urlpatterns = [
     # Pedidos URLs
@@ -43,5 +44,8 @@ urlpatterns = [
     # Vendedores URLs
     path('vendedoresview/', VendedoresView.as_view(), name='vendedores-view'),
     path('vendedorescreate/', VendedorCreate.as_view(), name='vendedor-create'),
+
+    # Estados URLs
+    path('estadosview/', EstadosView.as_view(), name='estados-view')
 
 ]
