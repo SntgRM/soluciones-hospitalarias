@@ -97,7 +97,8 @@ const Cards = () => {
       title: "Nuevo Pedido",
       description: "Registrar pedido manualmente",
       icon: Package,
-      action: () => navigate("/registro"),
+      action: () => navigate("/pedidos?status=SIN%2520REGISTRO&page=1"),
+
       color: "blue",
     },
     {

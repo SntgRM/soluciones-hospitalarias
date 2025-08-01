@@ -411,7 +411,7 @@
   gap: 12px;
   padding: 16px;
   border-radius: var(--cards-dashboard-border-radius);
-  border-left: 4px solid;
+  border: 1px solid;
   transition: var(--cards-dashboard-transition);
 }
 
@@ -458,7 +458,6 @@
 .cards-dashboard-alert-action {
   background: none;
   border: 1px solid currentColor;
-  color: inherit;
   padding: 6px 12px;
   border-radius: 6px;
   font-size: 12px;
@@ -468,8 +467,7 @@
 }
 
 .cards-dashboard-alert-action:hover {
-  background: currentColor;
-  color: var(--cards-dashboard-white);
+  background-color: rgb(204, 204, 204);
 }
 
 /* ========================================
