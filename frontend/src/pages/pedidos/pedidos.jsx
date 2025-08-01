@@ -167,7 +167,7 @@ const PedidosPage = () => {
           if (response.count !== undefined) {
           }
         } else {
-          response = await getPedidosAll(currentPage);
+          response = await getPedidosAll(currentPage, searchTerm);
         }
 
         // Manejar diferentes formatos de respuesta
@@ -222,9 +222,8 @@ const PedidosPage = () => {
       setCurrentPage(1); // Sincroniza el estado interno
     },
     [navigate, searchTerm]
-  ); // Agregué searchTerm a las dependencias
+  );
 
-  // Nueva función para manejar el cambio en la barra de búsqueda
   const handleSearchChange = useCallback(
     (e) => {
       const newSearchTerm = e.target.value;
