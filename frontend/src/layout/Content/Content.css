@@ -5,7 +5,6 @@
   padding: 32px;
   transition: filter 0.3s ease, transform 0.3s ease;
   position: relative;
-  overflow-x: hidden;
 }
 
 .main-content-body {
