@@ -754,3 +754,67 @@
   }
 }
 
+/* Estilos para el botón de toggle - visible en todas las pantallas pequeñas */
+.filters-toggle-button {
+  display: none;
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  color: var(--gray-700);
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+  border-top: 1px solid var(--gray-200);
+  transition: var(--transition);
+  font-weight: 500;
+  align-items: center;
+  justify-content: center;
+}
+
+.filters-toggle-button:hover {
+  background-color: var(--gray-50);
+  color: var(--gray-900);
+}
+
+/* Media query para pantallas pequeñas */
+@media (max-width: 440px) {
+  .filters-toggle-button {
+    display: flex;
+  }
+
+  .filters-content {
+    max-height: 100px; /* Esto mostrará aproximadamente el 20% del contenido */
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out;
+    position: relative;
+  }
+
+  .filters-content.expanded {
+    max-height: 600px; /* Altura suficiente para mostrar todo el contenido */
+  }
+
+  /* Gradiente de fade en la parte inferior cuando está colapsado */
+  .filters-content:not(.expanded)::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.95));
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Asegurar que los filtros tengan el espacio adecuado */
+  .filters-list {
+    padding-bottom: 8px;
+  }
+
+  /* Mejorar la visualización del panel de filtros en móvil */
+  .filters-panel {
+    width: 100%;
+    max-height: none;
+    position: relative;
+  }
+}

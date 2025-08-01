@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
-import { Building2, User, Package, Truck, CheckCircle, XCircle, Clock, AlertCircle, MapPin, DollarSign, Calendar, Users } from "lucide-react"
+import { ChevronUp, ChevronDown, Building2, User, Package, Truck, CheckCircle, XCircle, Clock, AlertCircle, MapPin, DollarSign, Calendar, Users } from "lucide-react"
 import "./pedidos.css";
 import { getPedidosAll, getPedidosPorEstado, getResumenPedidos } from "../../services/api.js"
 
@@ -69,11 +69,14 @@ const findMatchingStatusKey = (rawStatus, map) => {
   return "";
 };
 
+
+
 const PedidosPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [filterStatus, setFilterStatus] = useState("");
   const [selectedPedido, setSelectedPedido] = useState(null);
+  const [showFilters, setShowFilters] = useState(false);
 
   const [pedidos, setPedidos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -446,7 +449,8 @@ const PedidosPage = () => {
           <h2 className="filters-title">Filtros de Pedidos</h2>
         </div>
 
-        <div className="filters-content">
+        <div className={`filters-content ${showFilters ? "expanded" : ""}`}>
+
           <div className="filters-list">
             <button
               onClick={() => handleFilterChange("")}
@@ -487,6 +491,16 @@ const PedidosPage = () => {
             })}
           </div>
         </div>
+        <button
+          className="filters-toggle-button"
+          onClick={() => setShowFilters(prev => !prev)}
+          aria-label={showFilters ? "Contraer filtros" : "Expandir filtros"}
+        >
+          <span style={{ marginRight: '8px' }}>
+            {showFilters ? 'Contraer filtros' : 'Ver más filtros'}
+          </span>
+          {showFilters ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+        </button>
       </div>
 
       <div className="main-panel">
@@ -561,7 +575,7 @@ const PedidosPage = () => {
                           </div>
                           <div className="pedido-info">
                             <h3>
-                              {pedido.cliente_nombre} - {pedido.ciudad}
+                              {pedido.id_factura} - {pedido.ciudad}
                             </h3>
                             <p>
                               Fecha: {formatDate(pedido.fecha_recibido)} |
