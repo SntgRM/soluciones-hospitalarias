@@ -67,6 +67,11 @@ export const getPedidosPorTransportadora = async (id_transportadora, page = 1) =
     return response.data;
 };
 
+export const getHistorialPedidos = async (pk) => {
+    const response = await api.get(`bodega/historial_estados/${pk}/`)
+    return response.data;
+};
+
 export const getClientes = async (search = "") => {
     const response = await api.get(`bodega/clientesall/?search=${encodeURIComponent(search)}`);
     return response.data;
