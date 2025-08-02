@@ -18,6 +18,7 @@ from django.contrib.auth.views import PasswordResetConfirmView
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth import get_user_model
 from rest_framework.views import APIView
+from .permissions import IsAdmin
 
 class PasswordResetRequestView(APIView):
     permission_classes = [AllowAny]
@@ -71,7 +72,7 @@ class PasswordResetConfirmView(APIView):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdmin]
     parser_classes = [MultiPartParser, FormParser]
 
     def get_serializer_class(self):
