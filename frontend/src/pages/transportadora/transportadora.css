@@ -180,7 +180,6 @@
   overflow-y: auto;
   transition: padding 0.3s ease-in-out; /* Smooth transition for padding */
 }
-
 .detail-item {
   margin-bottom: 15px;
   padding: 15px;
