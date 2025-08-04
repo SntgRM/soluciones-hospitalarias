@@ -229,22 +229,31 @@ class PedidosPorEstado(APIView):
 
 # Mostrar los pedidos de cada transportador asignado
 class PedidosPorTransportadora(APIView):
-
     permission_classes = [IsAuthenticated]
 
     def get(self, request, id_transportadora):
         try:
+            # Obtener parámetros de búsqueda y paginación
+            search = request.query_params.get('search', '')
+            page = request.query_params.get('page', 1)
+            
+            # Filtrar pedidos por transportadora
             pedidos = Pedidos.objects.filter(id_transportadora=id_transportadora).order_by('-id_factura')
+            
+            # Aplicar búsqueda por factura si existe
+            if search:
+                pedidos = pedidos.filter(id_factura__icontains=search)
+            
             if not pedidos.exists():
                 return Response(
                     {'mensaje': 'No hay pedidos para esta transportadora.'},
                     status=status.HTTP_204_NO_CONTENT
                 )
-
             
+            # Paginación
             paginator = PaginacionPedido()
             result_page = paginator.paginate_queryset(pedidos, request)
-
+            
             serializer = PedidoSerializer(result_page, many=True)
             return paginator.get_paginated_response(serializer.data)
 
