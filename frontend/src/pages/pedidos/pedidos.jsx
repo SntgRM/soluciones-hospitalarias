@@ -15,6 +15,12 @@ import {
   MapPin,
   DollarSign,
   Users,
+  Wrench,
+  Archive,
+  PackageCheck,
+  Inbox,
+  Warehouse,
+  Settings,
 } from "lucide-react";
 import "./pedidos.css";
 import {
@@ -26,35 +32,41 @@ import {
 const statusToIdMap = {
   "ENTREGADO AL CLIENTE":      1,
   "ENVIADO EN TRANSPORTADORA": 2,
-  ANULADO:                     3,
+  "ANULADO":                   3,
   "SIN REGISTRO":              4,
   "PEDIDO NO RECIBIDO":        5,
   "EN ALISTAMIENTO":           6,
   "EN REPARTO":                7,
   "EN PREPARACION":            8,
-  EMPACADO:                    9,
+  "EMPACADO":                  9,
 };
+
+
+
 
 const colorMap = {
   green:   "#28a745",
+  green2:   "#126b27ff",
   blue:    "#007bff",
   red:     "#dc3545",
-  yellow:  "#ffc107",
+  yellow:  "#e9ec08ff",
   purple:  "#6f42c1",
   orange:  "#fd7e14",
+  orange2:  "#fdc714ff",
+  orange3:  "#cfa20cff",
 };
 
 const statusConfig = {
   "ENTREGADO AL CLIENTE": {
-    color: "green",
+    color: "green2",
     icon: CheckCircle,
   },
   "ENVIADO EN TRANSPORTADORA": {
-    color: "blue",
+    color: "green2",
     icon: Truck,
   },
-  ANULADO: {
-    color: "red",
+  "ANULADO": {
+    color: "blue",
     icon: XCircle,
   },
   "SIN REGISTRO": {
@@ -62,18 +74,27 @@ const statusConfig = {
     icon: AlertCircle,
   },
   "PEDIDO NO RECIBIDO": {
-    color: "yellow",
-    icon: AlertCircle,
+    color: "gray",
+    icon: Inbox,
   },
   "EN ALISTAMIENTO": {
-    color: "purple",
-    icon: Package,
+    color: "yellow",
+    icon: Wrench,
   },
   "EN REPARTO": {
     color: "orange",
     icon: Clock,
   },
+  "EN PREPARACION": {
+    color: "orange2",
+    icon: Settings,
+  },
+  "EMPACADO": {
+    color: "orange3",
+    icon: PackageCheck,
+  },
 };
+
 
 const findMatchingStatusKey = (rawStatus, map) => {
   if (!rawStatus) return "";
@@ -125,8 +146,6 @@ const PedidosPage = () => {
   if (selectedPedido && selectedPedido.id_factura === updatedPedido.id_factura) {
     setSelectedPedido(updatedPedido);
   }
-    // Opcional: mostrar mensaje de éxito
-  alert('Pedido actualizado correctamente');
 };
 
   useEffect(() => {
