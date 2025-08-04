@@ -240,9 +240,13 @@ class PedidosPorTransportadora(APIView):
                     {'mensaje': 'No hay pedidos para esta transportadora.'},
                     status=status.HTTP_204_NO_CONTENT
                 )
-    
-            serializer = PedidoSerializer(pedidos, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+
+            
+            paginator = PaginacionPedido()
+            result_page = paginator.paginate_queryset(pedidos, request)
+
+            serializer = PedidoSerializer(result_page, many=True)
+            return paginator.get_paginated_response(serializer.data)
 
         except Exception as e:
             return Response(
