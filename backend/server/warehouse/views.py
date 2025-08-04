@@ -240,12 +240,9 @@ class PedidosPorTransportadora(APIView):
                     {'mensaje': 'No hay pedidos para esta transportadora.'},
                     status=status.HTTP_204_NO_CONTENT
                 )
-
-            paginator = PaginacionPedido()
-            result_page = paginator.paginate_queryset(pedidos, request)
-
-            serializer = PedidoSerializer(result_page, many=True)
-            return paginator.get_paginated_response(serializer.data)
+    
+            serializer = PedidoSerializer(pedidos, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
         except Exception as e:
             return Response(
@@ -545,7 +542,7 @@ class TransportadorasView(APIView):
     def get(self, request):
         try:
             search = request.query_params.get('search', '')
-            transportadoras = Transportadoras.objects.all().order_by('id_transportadora')
+            transportadoras = Transportadoras.objects.all().annotate(total=Count('pedidos'))
 
             if search:
                 transportadoras = transportadoras.filter(nombre_transportadora__icontains=search)
@@ -558,7 +555,6 @@ class TransportadorasView(APIView):
         
         except Exception as e:
             return Response({"error": "Ocurrió un error al obtener las transportadoras."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
 class TransportadoraCreate(APIView):
     permission_classes = [IsAuthenticated]
 
