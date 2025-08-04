@@ -124,8 +124,8 @@ export const getPedidosPorEstado = async (id_estado, page = 1) => {
     return response.data;
 };
 
-export const getPedidosPorTransportadora = async (id_transportadora, page = 1) => {
-    const response = await api.get(`bodega/por_transportadora/${id_transportadora}/?page=${page}`);
+export const getPedidosPorTransportadora = async (id_transportadora, page = 1, search = "") => {
+    const response = await api.get(`bodega/por_transportadora/${id_transportadora}/?page=${page}&search=${encodeURIComponent(search)}`);
     return response.data;
 };
 
