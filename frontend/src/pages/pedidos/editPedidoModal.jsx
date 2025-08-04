@@ -26,16 +26,101 @@ const EditPedidoModal = ({ pedido, isOpen, onClose, onUpdate }) => {
   const [empacadores, setEmpacadores] = useState([]);
   const [enrutadores, setEnrutadores] = useState([]);
   const [estados, setEstados] = useState([]);
-    const clienteOptions = clientes.map((cliente, index) => {
-        const value = cliente.id_cliente || cliente.id || cliente.cliente_id || index;
-        const label = cliente.nombre_cliente || `Cliente ID: ${value}`;
-        return { value, label };
-    });
-    console.log("Opciones de cliente:", clienteOptions);
 
+  // Opciones para react-select
+  const clienteOptions = clientes.map((cliente, index) => {
+    const value = cliente.id_cliente || cliente.id || cliente.cliente_id || index;
+    const label = cliente.nombre_cliente || `Cliente ID: ${value}`;
+    return { value, label };
+  });
+
+  const transportadoraOptions = transportadoras.map((transportadora, index) => {
+    const value = transportadora.id || transportadora.id_transportadora || transportadora.transportadora_id || index;
+    const label = transportadora.nombre || transportadora.name || transportadora.nombres || 
+                 transportadora.transportadora_nombre || transportadora.razon_social || `Transportadora ID: ${value}`;
+    return { value, label };
+  });
+
+  const estadoOptions = estados.map((estado, index) => {
+    const value = estado.id || estado.id_estado || estado.estado_id || index;
+    const label = estado.nombre || estado.name || estado.nombres || 
+                 estado.estado_nombre || estado.descripcion || `Estado ID: ${value}`;
+    return { value, label };
+  });
+
+  const vendedorOptions = vendedores.map((vendedor, index) => {
+    const value = vendedor.id || vendedor.id_vendedor || vendedor.vendedor_id || index;
+    const label = vendedor.nombre || vendedor.name || vendedor.nombres || 
+                 vendedor.vendedor_nombre || vendedor.nombre_completo || `Vendedor ID: ${value}`;
+    return { value, label };
+  });
+
+  const enrutadorOptions = enrutadores.map((enrutador, index) => {
+    const value = enrutador.id || enrutador.id_enrutador || enrutador.enrutador_id || index;
+    const label = enrutador.nombre || enrutador.name || enrutador.nombres || 
+                 enrutador.enrutador_nombre || enrutador.nombre_completo || `Enrutador ID: ${value}`;
+    return { value, label };
+  });
+
+  const alistadorOptions = alistadores.map((alistador, index) => {
+    const value = alistador.id || alistador.id_alistador || alistador.alistador_id || index;
+    const label = alistador.nombre || alistador.name || alistador.nombres || 
+                 alistador.alistador_nombre || alistador.nombre_completo || `Alistador ID: ${value}`;
+    return { value, label };
+  });
+
+  const empacadorOptions = empacadores.map((empacador, index) => {
+    const value = empacador.id || empacador.id_empacador || empacador.empacador_id || index;
+    const label = empacador.nombre || empacador.name || empacador.nombres || 
+                 empacador.empacador_nombre || empacador.nombre_completo || `Empacador ID: ${value}`;
+    return { value, label };
+  });
+
+const tipoRecaudoOptions = [
+  { value: 'Efectivo', label: 'Efectivo' },
+  { value: 'Transferencia', label: 'Transferencia' },
+  { value: 'efectivo y transferencia', label: 'efectivo y transferencia' },
+  { value: 'Sin registro', label: 'Sin registro' }
+];
+
+
+  // Estilos personalizados para react-select
+  const customSelectStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      border: '1px solid #ddd',
+      borderRadius: '4px',
+      fontSize: '14px',
+      minHeight: '40px',
+      boxShadow: state.isFocused ? '0 0 0 2px rgba(4, 153, 36, 0.25)' : 'none',
+      borderColor: state.isFocused ? '#049924' : '#ddd',
+      '&:hover': {
+        borderColor: state.isFocused ? '#049924' : '#ddd'
+      }
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isSelected 
+        ? '#049924' 
+        : state.isFocused 
+          ? '#f8f9fa' 
+          : 'white',
+      color: state.isSelected ? 'white' : '#333',
+      '&:hover': {
+        backgroundColor: state.isSelected ? '#049924' : '#f8f9fa'
+      }
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      color: '#999'
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+      color: '#333'
+    })
+  };
   useEffect(() => {
     if (pedido && isOpen) {
-      console.log("Pedido recibido en modal:", pedido);
       setFormData({
         id_factura: pedido.id_factura || "",
         id_cliente: pedido.id_cliente || "",
@@ -43,15 +128,6 @@ const EditPedidoModal = ({ pedido, isOpen, onClose, onUpdate }) => {
         valor: pedido.valor || "",
         id_transportadora: pedido.id_transportadora || "",
         id_estado: pedido.id_estado || "",
-        fecha_recibido: pedido.fecha_recibido
-          ? new Date(pedido.fecha_recibido).toISOString().split("T")[0]
-          : "",
-        fecha_enrutamiento: pedido.fecha_enrutamiento
-          ? new Date(pedido.fecha_enrutamiento).toISOString().split("T")[0]
-          : "",
-        fecha_entrega: pedido.fecha_entrega
-          ? new Date(pedido.fecha_entrega).toISOString().split("T")[0]
-          : "",
         tipo_recaudo: pedido.tipo_recaudo || "",
         recaudo_efectivo: pedido.recaudo_efectivo || 0,
         recaudo_transferencia: pedido.recaudo_transferencia || 0,
@@ -89,16 +165,6 @@ const EditPedidoModal = ({ pedido, isOpen, onClose, onUpdate }) => {
         getEnrutadores(),
         getEstados(),
       ]);
-
-      console.log("Datos cargados:", {
-        clientes: clientesData,
-        transportadoras: transportadorasData,
-        vendedores: vendedoresData,
-        alistadores: alistadoresData,
-        empacadores: empacadoresData,
-        enrutadores: enrutadoresData,
-        estados: estadosData,
-      });
 
       // Manejar diferentes estructuras de respuesta
       setClientes(
@@ -152,21 +218,54 @@ const EditPedidoModal = ({ pedido, isOpen, onClose, onUpdate }) => {
     }));
   };
 
+  const handleSelectChange = (fieldName, selectedOption) => {
+    const selectedValue = selectedOption ? selectedOption.value : "";
+    
+    setFormData((prev) => {
+      const newFormData = {
+        ...prev,
+        [fieldName]: selectedValue,
+      };
+
+      // Si se cambia el tipo de recaudo a "efectivo y transferencia", calcular el valor total
+      if (fieldName === "tipo_recaudo" && selectedValue === "efectivo y transferencia") {
+        const efectivo = prev.recaudo_efectivo || 0;
+        const transferencia = prev.recaudo_transferencia || 0;
+        newFormData.valor = efectivo + transferencia;
+      }
+
+      return newFormData;
+    });
+  };
+
+  const handleRecaudoChange = (e) => {
+    const { name, value } = e.target;
+    const numericValue = parseFloat(value) || 0;
+    
+    setFormData((prev) => {
+      const newFormData = {
+        ...prev,
+        [name]: numericValue,
+      };
+
+      // Si el tipo de recaudo es "efectivo y transferencia", actualizar el valor total automáticamente
+      if (prev.tipo_recaudo === "efectivo y transferencia") {
+        const efectivo = name === "recaudo_efectivo" ? numericValue : (prev.recaudo_efectivo || 0);
+        const transferencia = name === "recaudo_transferencia" ? numericValue : (prev.recaudo_transferencia || 0);
+        newFormData.valor = efectivo + transferencia;
+      }
+
+      return newFormData;
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
 
     try {
-      console.log("Datos del formulario antes de enviar:", formData);
-      console.log("ID del pedido:", pedido.id_factura);
-
-      // Campos que no deben ser modificados pero sí enviados
       const readOnlyFields = ["id_factura"];
-
-      // Preparar datos para envío - incluir campos de solo lectura y campos que han cambiado
       const dataToSend = {};
-
-      // Primero, agregar campos de solo lectura
       readOnlyFields.forEach((field) => {
         if (formData[field]) {
           dataToSend[field] = formData[field];
@@ -196,6 +295,8 @@ const EditPedidoModal = ({ pedido, isOpen, onClose, onUpdate }) => {
           dataToSend[key] = `${newValue}T00:00:00Z`;
         } else if (newValue !== originalValue) {
           // Para otros campos, incluir si son diferentes
+          console.log(`Campo ${key}: nuevo="${newValue}", original="${originalValue}", tipo nuevo: ${typeof newValue}, tipo original: ${typeof originalValue}`);
+          
           if (newValue === "" || newValue === 0) {
             // Solo enviar null si el valor original no era vacío
             if (
@@ -211,7 +312,10 @@ const EditPedidoModal = ({ pedido, isOpen, onClose, onUpdate }) => {
         }
       });
 
-      console.log("Datos a enviar (solo campos modificados):", dataToSend);
+      // Validar que tipo_recaudo sea un string y no un array
+      if (dataToSend.tipo_recaudo && Array.isArray(dataToSend.tipo_recaudo)) {
+        dataToSend.tipo_recaudo = dataToSend.tipo_recaudo[0] || "";
+      }
 
       // Si no hay cambios, mostrar mensaje y salir
       if (Object.keys(dataToSend).length === 0) {
@@ -309,23 +413,19 @@ const EditPedidoModal = ({ pedido, isOpen, onClose, onUpdate }) => {
                   />
                 </div>
 
-            <div className="form-group">
-            <label htmlFor="id_cliente">Cliente:</label>
-            <Select
-                id="id_cliente"
-                name="id_cliente"
-                options={clienteOptions}
-                placeholder="Seleccionar cliente"
-                isClearable
-                value={clienteOptions.find(option => option.value === formData.id_cliente) || null}
-                onChange={(selectedOption) =>
-                setFormData((prev) => ({
-                    ...prev,
-                    id_cliente: selectedOption ? selectedOption.value : "",
-                }))
-                }
-            />
-            </div>
+                <div className="form-group">
+                  <label htmlFor="id_cliente">Cliente:</label>
+                  <Select
+                    id="id_cliente"
+                    name="id_cliente"
+                    options={clienteOptions}
+                    placeholder="Seleccionar cliente"
+                    isClearable
+                    styles={customSelectStyles}
+                    value={clienteOptions.find(option => option.value === formData.id_cliente) || null}
+                    onChange={(selectedOption) => handleSelectChange('id_cliente', selectedOption)}
+                  />
+                </div>
 
                 <div className="form-group">
                   <label htmlFor="ciudad">Ciudad:</label>
@@ -347,7 +447,17 @@ const EditPedidoModal = ({ pedido, isOpen, onClose, onUpdate }) => {
                     value={formData.valor}
                     onChange={handleInputChange}
                     step="0.01"
+                    disabled={formData.tipo_recaudo === "efectivo y transferencia"}
+                    style={{
+                      backgroundColor: formData.tipo_recaudo === "efectivo y transferencia" ? "#f8f9fa" : "",
+                      color: formData.tipo_recaudo === "efectivo y transferencia" ? "#6c757d" : ""
+                    }}
                   />
+                  {formData.tipo_recaudo === "efectivo y transferencia" && (
+                    <small style={{ color: "#6c757d", fontSize: "0.8em" }}>
+                      Calculado automáticamente como la suma de efectivo + transferencia
+                    </small>
+                  )}
                 </div>
               </div>
             </div>
@@ -357,69 +467,30 @@ const EditPedidoModal = ({ pedido, isOpen, onClose, onUpdate }) => {
               <div className="form-grid">
                 <div className="form-group">
                   <label htmlFor="id_estado">Estado:</label>
-                  <select
+                  <Select
                     id="id_estado"
                     name="id_estado"
-                    value={formData.id_estado}
-                    onChange={handleInputChange}
-                  >
-                    <option value="">Seleccionar estado</option>
-                    {estados.map((estado, index) => {
-                      const estadoId =
-                        estado.id ||
-                        estado.id_estado ||
-                        estado.estado_id ||
-                        index;
-                      const estadoNombre =
-                        estado.nombre ||
-                        estado.name ||
-                        estado.nombres ||
-                        estado.estado_nombre ||
-                        estado.descripcion ||
-                        `Estado ID: ${estadoId}`;
-
-                      return (
-                        <option key={`estado-${estadoId}`} value={estadoId}>
-                          {estadoNombre}
-                        </option>
-                      );
-                    })}
-                  </select>
+                    options={estadoOptions}
+                    placeholder="Seleccionar estado"
+                    isClearable
+                    styles={customSelectStyles}
+                    value={estadoOptions.find(option => option.value === formData.id_estado) || null}
+                    onChange={(selectedOption) => handleSelectChange('id_estado', selectedOption)}
+                  />
                 </div>
 
                 <div className="form-group">
                   <label htmlFor="id_transportadora">Transportadora:</label>
-                  <select
+                  <Select
                     id="id_transportadora"
-                    name="transportadora_nombre"
-                    value={formData.transportadora_nombre}
-                    onChange={handleInputChange}
-                  >
-                    <option value="">Seleccionar transportadora</option>
-                    {transportadoras.map((transportadora, index) => {
-                      const transportadoraId =
-                        transportadora.id ||
-                        transportadora.id_transportadora ||
-                        transportadora.transportadora_id ||
-                        index;
-                      const transportadoraNombre =
-                        transportadora.nombre ||
-                        transportadora.name ||
-                        transportadora.nombres ||
-                        transportadora.transportadora_nombre ||
-                        transportadora.razon_social ||
-                        `Transportadora ID: ${transportadoraId}`;
-
-                      return (
-                        <option
-                          key={`transportadora-${transportadoraId}`}
-                          value={transportadoraId}
-                        >
-                          {transportadoraNombre}
-                        </option>
-                      );
-                    })}
-                  </select>
+                    name="id_transportadora"
+                    options={transportadoraOptions}
+                    placeholder="Seleccionar transportadora"
+                    isClearable
+                    styles={customSelectStyles}
+                    value={transportadoraOptions.find(option => option.value === formData.id_transportadora) || null}
+                    onChange={(selectedOption) => handleSelectChange('id_transportadora', selectedOption)}
+                  />
                 </div>
               </div>
             </div>
@@ -428,19 +499,16 @@ const EditPedidoModal = ({ pedido, isOpen, onClose, onUpdate }) => {
               <div className="form-grid">
                 <div className="form-group">
                   <label htmlFor="tipo_recaudo">Tipo Recaudo:</label>
-                  <select
+                  <Select
                     id="tipo_recaudo"
                     name="tipo_recaudo"
-                    value={formData.tipo_recaudo}
-                    onChange={handleInputChange}
-                  >
-                    <option value="">Seleccionar tipo</option>
-                    <option value="Efectivo">Efectivo</option>
-                    <option value="Transferencia">
-                      Transferencia
-                    </option>
-                    <option value="Efectivo_transferencia">Efectivo y Transferencia</option>
-                  </select>
+                    options={tipoRecaudoOptions}
+                    placeholder="Seleccionar tipo"
+                    isClearable
+                    styles={customSelectStyles}
+                    value={tipoRecaudoOptions.find(option => option.value === formData.tipo_recaudo) || null}
+                    onChange={(selectedOption) => handleSelectChange('tipo_recaudo', selectedOption)}
+                  />
                 </div>
 
                 <div className="form-group">
@@ -450,10 +518,12 @@ const EditPedidoModal = ({ pedido, isOpen, onClose, onUpdate }) => {
                     id="recaudo_efectivo"
                     name="recaudo_efectivo"
                     value={formData.recaudo_efectivo}
-                    onChange={handleInputChange}
+                    onChange={handleRecaudoChange}
                     step="0.01"
+                    disabled={formData.tipo_recaudo === "Transferencia"}
                   />
                 </div>
+
                 <div className="form-group">
                   <label htmlFor="recaudo_transferencia">
                     Recaudo Transferencia:
@@ -463,8 +533,9 @@ const EditPedidoModal = ({ pedido, isOpen, onClose, onUpdate }) => {
                     id="recaudo_transferencia"
                     name="recaudo_transferencia"
                     value={formData.recaudo_transferencia}
-                    onChange={handleInputChange}
+                    onChange={handleRecaudoChange}
                     step="0.01"
+                    disabled={formData.tipo_recaudo === "Efectivo"}
                   />
                 </div>
 
@@ -486,142 +557,58 @@ const EditPedidoModal = ({ pedido, isOpen, onClose, onUpdate }) => {
               <div className="form-grid">
                 <div className="form-group">
                   <label htmlFor="id_vendedor">Vendedor:</label>
-                  <select
+                  <Select
                     id="id_vendedor"
                     name="id_vendedor"
-                    value={formData.id_vendedor}
-                    onChange={handleInputChange}
-                  >
-                    <option value="">Seleccionar vendedor</option>
-                    {vendedores.map((vendedor, index) => {
-                      const vendedorId =
-                        vendedor.id ||
-                        vendedor.id_vendedor ||
-                        vendedor.vendedor_id ||
-                        index;
-                      const vendedorNombre =
-                        vendedor.nombre ||
-                        vendedor.name ||
-                        vendedor.nombres ||
-                        vendedor.vendedor_nombre ||
-                        vendedor.nombre_completo ||
-                        `Vendedor ID: ${vendedorId}`;
-
-                      return (
-                        <option
-                          key={`vendedor-${vendedorId}`}
-                          value={vendedorId}
-                        >
-                          {vendedorNombre}
-                        </option>
-                      );
-                    })}
-                  </select>
+                    options={vendedorOptions}
+                    placeholder="Seleccionar vendedor"
+                    isClearable
+                    styles={customSelectStyles}
+                    value={vendedorOptions.find(option => option.value === formData.id_vendedor) || null}
+                    onChange={(selectedOption) => handleSelectChange('id_vendedor', selectedOption)}
+                  />
                 </div>
 
                 <div className="form-group">
                   <label htmlFor="id_enrutador">Enrutador:</label>
-                  <select
+                  <Select
                     id="id_enrutador"
                     name="id_enrutador"
-                    value={formData.id_enrutador}
-                    onChange={handleInputChange}
-                  >
-                    <option value="">Seleccionar enrutador</option>
-                    {enrutadores.map((enrutador, index) => {
-                      const enrutadorId =
-                        enrutador.id ||
-                        enrutador.id_enrutador ||
-                        enrutador.enrutador_id ||
-                        index;
-                      const enrutadorNombre =
-                        enrutador.nombre ||
-                        enrutador.name ||
-                        enrutador.nombres ||
-                        enrutador.enrutador_nombre ||
-                        enrutador.nombre_completo ||
-                        `Enrutador ID: ${enrutadorId}`;
-
-                      return (
-                        <option
-                          key={`enrutador-${enrutadorId}`}
-                          value={enrutadorId}
-                        >
-                          {enrutadorNombre}
-                        </option>
-                      );
-                    })}
-                  </select>
+                    options={enrutadorOptions}
+                    placeholder="Seleccionar enrutador"
+                    isClearable
+                    styles={customSelectStyles}
+                    value={enrutadorOptions.find(option => option.value === formData.id_enrutador) || null}
+                    onChange={(selectedOption) => handleSelectChange('id_enrutador', selectedOption)}
+                  />
                 </div>
 
                 <div className="form-group">
                   <label htmlFor="id_alistador">Alistador:</label>
-                  <select
+                  <Select
                     id="id_alistador"
                     name="id_alistador"
-                    value={formData.id_alistador}
-                    onChange={handleInputChange}
-                  >
-                    <option value="">Seleccionar alistador</option>
-                    {alistadores.map((alistador, index) => {
-                      const alistadorId =
-                        alistador.id ||
-                        alistador.id_alistador ||
-                        alistador.alistador_id ||
-                        index;
-                      const alistadorNombre =
-                        alistador.nombre ||
-                        alistador.name ||
-                        alistador.nombres ||
-                        alistador.alistador_nombre ||
-                        alistador.nombre_completo ||
-                        `Alistador ID: ${alistadorId}`;
-
-                      return (
-                        <option
-                          key={`alistador-${alistadorId}`}
-                          value={alistadorId}
-                        >
-                          {alistadorNombre}
-                        </option>
-                      );
-                    })}
-                  </select>
+                    options={alistadorOptions}
+                    placeholder="Seleccionar alistador"
+                    isClearable
+                    styles={customSelectStyles}
+                    value={alistadorOptions.find(option => option.value === formData.id_alistador) || null}
+                    onChange={(selectedOption) => handleSelectChange('id_alistador', selectedOption)}
+                  />
                 </div>
 
                 <div className="form-group">
                   <label htmlFor="id_empacador">Empacador:</label>
-                  <select
+                  <Select
                     id="id_empacador"
                     name="id_empacador"
-                    value={formData.id_empacador}
-                    onChange={handleInputChange}
-                  >
-                    <option value="">Seleccionar empacador</option>
-                    {empacadores.map((empacador, index) => {
-                      const empacadorId =
-                        empacador.id ||
-                        empacador.id_empacador ||
-                        empacador.empacador_id ||
-                        index;
-                      const empacadorNombre =
-                        empacador.nombre ||
-                        empacador.name ||
-                        empacador.nombres ||
-                        empacador.empacador_nombre ||
-                        empacador.nombre_completo ||
-                        `Empacador ID: ${empacadorId}`;
-
-                      return (
-                        <option
-                          key={`empacador-${empacadorId}`}
-                          value={empacadorId}
-                        >
-                          {empacadorNombre}
-                        </option>
-                      );
-                    })}
-                  </select>
+                    options={empacadorOptions}
+                    placeholder="Seleccionar empacador"
+                    isClearable
+                    styles={customSelectStyles}
+                    value={empacadorOptions.find(option => option.value === formData.id_empacador) || null}
+                    onChange={(selectedOption) => handleSelectChange('id_empacador', selectedOption)}
+                  />
                 </div>
               </div>
             </div>
@@ -654,60 +641,6 @@ const EditPedidoModal = ({ pedido, isOpen, onClose, onUpdate }) => {
             </div>
 
             <div className="modal-actions">
-              {/* <button
-                type="button"
-                className="btn-debug"
-                onClick={() => {
-                  console.log("=== DEBUG INFO COMPLETO ===");
-                  console.log("Pedido original:", pedido);
-                  console.log("FormData actual:", formData);
-                  console.log("ID Cliente desde pedido:", pedido?.id_cliente);
-                  console.log(
-                    "ID Cliente desde formData:",
-                    formData.id_cliente
-                  );
-                  console.log(
-                    "Tipo recaudo desde pedido:",
-                    pedido?.tipo_recaudo
-                  );
-                  console.log(
-                    "Tipo recaudo desde formData:",
-                    formData.tipo_recaudo
-                  );
-                  console.log("ID Factura desde pedido:", pedido?.id_factura);
-                  console.log(
-                    "ID Factura desde formData:",
-                    formData.id_factura
-                  );
-                  console.log("Clientes cargados:", clientes);
-                  console.log("Estados cargados:", estados);
-                  console.log("Transportadoras cargadas:", transportadoras);
-
-                  // Simular lo que se enviaría
-                  const readOnlyFields = ["id_factura"];
-                  const testDataToSend = {};
-
-                  readOnlyFields.forEach((field) => {
-                    if (formData[field]) {
-                      testDataToSend[field] = formData[field];
-                    }
-                  });
-
-                  Object.keys(formData).forEach((key) => {
-                    if (readOnlyFields.includes(key)) return;
-                    const newValue = formData[key];
-                    const originalValue = pedido[key];
-                    if (newValue !== originalValue) {
-                      testDataToSend[key] = newValue;
-                    }
-                  });
-
-                  console.log("Datos que se enviarían:", testDataToSend);
-                  console.log("===============================");
-                }}
-              >
-                Debug
-              </button> */}
               <button
                 type="button"
                 className="btn-cancel"
