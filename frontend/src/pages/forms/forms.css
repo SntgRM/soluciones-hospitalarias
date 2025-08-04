@@ -59,7 +59,9 @@
 
   .auth-content-wrapper {
     flex-direction: column;
-    max-width: 450px;
+    justify-content: center;
+    width: 100vh;
+    height: 100vh;
   }
 }
 
@@ -379,7 +381,7 @@
 @media (max-width: 480px) {
   .form_main {
     width: 100%;
-    padding: 40px 25px;
+    padding: 60px 25px;
   }
 
   .heading {
