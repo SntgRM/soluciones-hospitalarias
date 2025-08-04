@@ -15,7 +15,7 @@ import {
   MapPin,
   DollarSign,
   Users,
-  Wrench,
+  ListChecks,
   Archive,
   PackageCheck,
   Inbox,
@@ -79,7 +79,7 @@ const statusConfig = {
   },
   "EN ALISTAMIENTO": {
     color: "yellow",
-    icon: Wrench,
+    icon: ListChecks,
   },
   "EN REPARTO": {
     color: "orange",
@@ -517,7 +517,6 @@ const PedidosPage = () => {
               const Icon = config.icon;
               const count = statusCounts[status] || 0;
               const isActive = filterStatus === status;
-
               return (
                 <button
                   key={status}
@@ -716,11 +715,6 @@ const PedidosPage = () => {
             </div>
 
             <div className="details-content">
-              <div className="details-section">
-                <div className="actions-section">
-                  
-                </div>
-              </div>
 
               {/* Modal de edición */}
               {showEditModal && (

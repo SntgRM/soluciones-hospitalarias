@@ -1,15 +1,19 @@
 :root {
   --primary-color: #10b981;
+  --primary-color2: #126b27ff;
   --primary-hover: #059669;
   --blue-color: #3b82f6;
   --blue-hover: #2563eb;
   --red-color: #ef4444;
   --red-hover: #dc2626;
   --yellow-color: #f59e0b;
+  --yellow2-color: #e9ec08ff;
   --yellow-hover: #d97706;
   --purple-color: #8b5cf6;
   --purple-hover: #7c3aed;
   --orange-color: #f97316;
+  --orange2-color: #fdc714ff;
+  --orange3-color: #cfa20cff;
   --orange-hover: #ea580c;
   --gray-color: #6b7280;
   --gray-hover: #4b5563;
@@ -97,6 +101,11 @@
   border-color: var(--primary-color);
   color: var(--primary-color);
 }
+.filter-button.active.green2 {
+  background-color: rgba(16, 185, 129, 0.05);
+  border-color: var(--primary-color2);
+  color: var(--primary-color);
+}
 
 .filter-button.active.blue {
   background-color: rgba(59, 130, 246, 0.05);
@@ -112,7 +121,7 @@
 
 .filter-button.active.yellow {
   background-color: rgba(245, 158, 11, 0.05);
-  border-color: var(--yellow-color);
+  border-color: var(--yellow2-color);
   color: var(--yellow-color);
 }
 
@@ -125,6 +134,16 @@
 .filter-button.active.orange {
   background-color: rgba(249, 115, 22, 0.05);
   border-color: var(--orange-color);
+  color: var(--orange-color);
+}
+.filter-button.active.orange2 {
+  background-color: rgba(249, 115, 22, 0.05);
+  border-color: var(--orange2-color);
+  color: var(--orange-color);
+}
+.filter-button.active.orange3 {
+  background-color: rgba(249, 115, 22, 0.05);
+  border-color: var(--orange3-color);
   color: var(--orange-color);
 }
 
@@ -648,7 +667,6 @@
 @media (max-width: 440px) {
   .pedido-info h3 {
     font-size: 10px;
-    color: #007bff;
     margin: 0 0 4px 0;
   }
 
