@@ -3,11 +3,7 @@
 import { useEffect, useState, useContext, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import { personsImgs } from "../../utils/images";
-import {
-  navigationLinks_bodega,
-  navigationLinks_ventas,
-  navigationLinks_admin,
-} from "../../data/data";
+import { navigationLinks_bodega, navigationLinks_ventas, navigationLinks_admin } from "../../data/data";
 import "./Sidebar.css";
 import { SidebarContext } from "../../context/sidebarContext";
 import { ChevronDown, X, Warehouse, BadgeDollarSign } from "lucide-react";
@@ -105,7 +101,7 @@ const Sidebar = () => {
 
           <nav className="navigation">
             {/* Bodega: Solo administrador y bodega */}
-            {["administrador", "bodega"].includes(role) && (
+            {["administrador", "bodega", "ventas"].includes(role) && (
               <div className="dropdown-container">
                 <button
                   className={`dropdown-toggle ${

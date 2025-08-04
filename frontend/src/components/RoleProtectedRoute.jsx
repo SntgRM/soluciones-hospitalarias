@@ -4,7 +4,7 @@ const RoleProtectedRoute = ({ allowedRoles, children }) => {
   const role = localStorage.getItem("userRole");
 
   if (!allowedRoles.includes(role)) {
-    return <Navigate to="/notFound" replace />;
+    return <Navigate to="/" replace />;
   }
 
   return children;

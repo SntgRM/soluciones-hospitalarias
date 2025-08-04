@@ -41,7 +41,7 @@ function App() {
                 path="historial"
                 element={
                   <RoleProtectedRoute
-                    allowedRoles={["administrador", "bodega"]}
+                    allowedRoles={["administrador", "bodega", "ventas"]}
                   >
                     <Historial />
                   </RoleProtectedRoute>
@@ -52,7 +52,7 @@ function App() {
                 path="transportadora"
                 element={
                   <RoleProtectedRoute
-                    allowedRoles={["administrador", "bodega"]}
+                    allowedRoles={["administrador", "bodega", "ventas"]}
                   >
                     <Transportadora />
                   </RoleProtectedRoute>
