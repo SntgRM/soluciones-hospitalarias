@@ -86,18 +86,18 @@ export default function Transportadora() {
     fetchTransportadoras();
   }, []);
 
-  const fetchPedidosPorTransportadora = async (transportadora, page = 1) => {
+  const fetchPedidosPorTransportadora = async (transportadora, page = 1, search = "") => {
     try {
       const response = await getPedidosPorTransportadora(
         transportadora.id_transportadora,
-        page
+        page,
+        search
       );
-      const nuevos =
-        page === 1
-          ? response.results || []
-          : [...pedidos, ...(response.results || [])];
+      const nuevos = page === 1
+        ? response.results || []
+        : [...pedidos, ...(response.results || [])];
       setPedidos(nuevos);
-      setHasMore(response && response.next !== null);
+      setHasMore(response.next !== null);
     } catch (error) {
       console.error("Error al obtener pedidos:", error);
       setHasMore(false);
@@ -152,8 +152,15 @@ export default function Transportadora() {
   );
 
   useEffect(() => {
+    if (!selectedTransportadora) return;
+    setPage(1);
+    setPedidos([]);
+    fetchPedidosPorTransportadora(selectedTransportadora, 1, searchFactura);
+  }, [searchFactura, selectedTransportadora]);
+
+  useEffect(() => {
     if (page === 1 || !selectedTransportadora) return;
-    fetchPedidosPorTransportadora(selectedTransportadora, page);
+    fetchPedidosPorTransportadora(selectedTransportadora, page, searchFactura);
   }, [page]);
 
   return (
