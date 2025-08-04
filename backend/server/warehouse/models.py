@@ -133,8 +133,8 @@ class Pedidos(models.Model):
     RECAUDO_CHOICES = [
         ("Efectivo", "Efectivo"),
         ("Transferencia", "Transferencia"),
-        ("Ambos", "Ambos"),
-        ("Sin Recaudo", "Sin Recaudo"),
+        ("efectivo y transferencia", "efectivo y transferencia"),
+        ("Sin registro", "Sin registro"),
     ]
     id_factura = models.IntegerField(primary_key=True)
     fecha_recibido = models.DateTimeField(blank=True, null=True)
