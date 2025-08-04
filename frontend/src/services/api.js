@@ -96,12 +96,11 @@ export const getTiposRecaudo = async () => {
         return response.data;
     } catch (error) {
         console.error('Error obteniendo tipos de recaudo:', error);
-        // Fallback con valores comunes si falla la API
         return {
             results: [
                 { value: 'efectivo', label: 'Efectivo' },
                 { value: 'transferencia', label: 'Transferencia' },
-                { value: 'mixto', label: 'Mixto' }
+                { value: 'efectivo y transferencia', label: 'efectivo y transferencia' }
             ]
         };
     }
@@ -136,16 +135,22 @@ export const getHistorialPedidos = async (pk) => {
 };
 
 export const getClientes = async (search = "") => {
-    const response = await api.get(`bodega/clientesall/?search=${encodeURIComponent(search)}`);
-    
-    // Si solo vienen IDs, hacemos peticiones adicionales para obtener detalles
-    if (Array.isArray(response.data) && response.data.length > 0 && typeof response.data[0] === 'number') {
-        const clientesDetallados = await Promise.all(
-            response.data.map(id => api.get(`bodega/clientesdetail/${id}/`))
-        );
-        return clientesDetallados.map(res => res.data);
-    }
-}
+  const response = await api.get(`bodega/clientesall/?search=${encodeURIComponent(search)}`);
+
+  if (
+    Array.isArray(response.data) &&
+    response.data.length > 0 &&
+    typeof response.data[0] === "number"
+  ) {
+    const clientesDetallados = await Promise.all(
+      response.data.map((id) => api.get(`bodega/clientesdetail/${id}/`))
+    );
+    return clientesDetallados.map((res) => res.data);
+  }
+
+  return response.data;
+};
+
 
 export const createCliente = async (clienteData) => {
     const response = await api.post('bodega/clientecreate/', clienteData);
