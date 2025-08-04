@@ -35,44 +35,43 @@ const EditPedidoModal = ({ pedido, isOpen, onClose, onUpdate }) => {
   });
 
   const transportadoraOptions = transportadoras.map((transportadora, index) => {
-    const value = transportadora.id || transportadora.id_transportadora || transportadora.transportadora_id || index;
-    const label = transportadora.nombre || transportadora.name || transportadora.nombres || 
-                 transportadora.transportadora_nombre || transportadora.razon_social || `Transportadora ID: ${value}`;
+   const value = transportadora.id_transportadora || transportadora.id || transportadora.transportadora_id || index;
+    const label = transportadora.nombre_transportadora || `transportadora ID: ${value}`;
     return { value, label };
   });
 
   const estadoOptions = estados.map((estado, index) => {
     const value = estado.id || estado.id_estado || estado.estado_id || index;
     const label = estado.nombre || estado.name || estado.nombres || 
-                 estado.estado_nombre || estado.descripcion || `Estado ID: ${value}`;
+                 estado.nombre_estado || estado.descripcion || `Estado ID: ${value}`;
     return { value, label };
   });
 
   const vendedorOptions = vendedores.map((vendedor, index) => {
     const value = vendedor.id || vendedor.id_vendedor || vendedor.vendedor_id || index;
     const label = vendedor.nombre || vendedor.name || vendedor.nombres || 
-                 vendedor.vendedor_nombre || vendedor.nombre_completo || `Vendedor ID: ${value}`;
+                 vendedor.nombre_vendedor || vendedor.descripcion || `Vendedor ID: ${value}`;
     return { value, label };
   });
 
   const enrutadorOptions = enrutadores.map((enrutador, index) => {
     const value = enrutador.id || enrutador.id_enrutador || enrutador.enrutador_id || index;
     const label = enrutador.nombre || enrutador.name || enrutador.nombres || 
-                 enrutador.enrutador_nombre || enrutador.nombre_completo || `Enrutador ID: ${value}`;
+                 enrutador.nombre_enrutador || enrutador.descripcion || `Enrutador ID: ${value}`;
     return { value, label };
   });
 
   const alistadorOptions = alistadores.map((alistador, index) => {
     const value = alistador.id || alistador.id_alistador || alistador.alistador_id || index;
     const label = alistador.nombre || alistador.name || alistador.nombres || 
-                 alistador.alistador_nombre || alistador.nombre_completo || `Alistador ID: ${value}`;
+                 alistador.nombre_alistador || alistador.nombre_completo || `Alistador ID: ${value}`;
     return { value, label };
   });
 
   const empacadorOptions = empacadores.map((empacador, index) => {
     const value = empacador.id || empacador.id_empacador || empacador.empacador_id || index;
     const label = empacador.nombre || empacador.name || empacador.nombres || 
-                 empacador.empacador_nombre || empacador.nombre_completo || `Empacador ID: ${value}`;
+                 empacador.nombre_empacador || empacador.nombre_completo || `Empacador ID: ${value}`;
     return { value, label };
   });
 
@@ -488,7 +487,7 @@ const tipoRecaudoOptions = [
                     placeholder="Seleccionar transportadora"
                     isClearable
                     styles={customSelectStyles}
-                    value={transportadoraOptions.find(option => option.value === formData.id_transportadora) || null}
+                    value={transportadoraOptions.find(option => option.value === formData.transportadora_nombre) || null}
                     onChange={(selectedOption) => handleSelectChange('id_transportadora', selectedOption)}
                   />
                 </div>
@@ -564,7 +563,7 @@ const tipoRecaudoOptions = [
                     placeholder="Seleccionar vendedor"
                     isClearable
                     styles={customSelectStyles}
-                    value={vendedorOptions.find(option => option.value === formData.id_vendedor) || null}
+                    value={vendedorOptions.find(option => option.value === formData.nombre_vendedor) || null}
                     onChange={(selectedOption) => handleSelectChange('id_vendedor', selectedOption)}
                   />
                 </div>

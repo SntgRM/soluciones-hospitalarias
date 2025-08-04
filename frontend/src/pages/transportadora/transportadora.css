@@ -52,13 +52,13 @@
 }
 
 .detalles-transportadora {
-  flex: 1;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  overflow: auto;
-  /* display: flex;
-  flex-direction: column; */
+    flex: 1;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .section-header {
@@ -156,7 +156,8 @@
   flex-direction: column;
   background-color: #f9f9f9;
   border-top: 1px solid #e0e0e0;
-  transition: all 0.3s ease-in-out; /* Smooth transition for expansion */
+  transition: all 0.3s ease-in-out;
+  overflow-y: auto;
 }
 
 .details-header {
@@ -178,7 +179,7 @@
   flex: 1;
   padding: 15px 20px;
   overflow-y: auto;
-  transition: padding 0.3s ease-in-out; /* Smooth transition for padding */
+  transition: padding 0.3s ease-in-out;
 }
 .detail-item {
   margin-bottom: 15px;
@@ -267,7 +268,6 @@
   font-size: 14px;
 }
 
-/* Scrollbar styling */
 .pedidos-list::-webkit-scrollbar {
   width: 6px;
 }
@@ -284,6 +284,24 @@
 .pedidos-list::-webkit-scrollbar-thumb:hover {
   background: #a8a8a8;
 }
+
+.details-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.details-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.details-content::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.details-content::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
 
 /* Responsive design */
 @media (max-width: 768px) {
