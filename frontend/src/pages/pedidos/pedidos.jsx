@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import EditPedidoModal from './editPedidoModal';
 import {
   ChevronUp,
   ChevronDown,
@@ -13,7 +14,6 @@ import {
   AlertCircle,
   MapPin,
   DollarSign,
-  Calendar,
   Users,
 } from "lucide-react";
 import "./pedidos.css";
@@ -24,25 +24,24 @@ import {
 } from "../../services/api.js";
 
 const statusToIdMap = {
-  "ENTREGADO AL CLIENTE": 1,
+  "ENTREGADO AL CLIENTE":      1,
   "ENVIADO EN TRANSPORTADORA": 2,
-  ANULADO: 3,
-  "SIN REGISTRO": 4,
-  "PEDIDO NO RECIBIDO": 5,
-  "EN ALISTAMIENTO": 6,
-  "EN REPARTO": 7,
-  "EN PREPARACION": 8,
-  EMPACADO: 9,
+  ANULADO:                     3,
+  "SIN REGISTRO":              4,
+  "PEDIDO NO RECIBIDO":        5,
+  "EN ALISTAMIENTO":           6,
+  "EN REPARTO":                7,
+  "EN PREPARACION":            8,
+  EMPACADO:                    9,
 };
 
 const colorMap = {
-  green: "#28a745",
-  blue: "#007bff",
-  red: "#dc3545",
-  gray: "#6c757d",
-  yellow: "#ffc107",
-  purple: "#6f42c1",
-  orange: "#fd7e14",
+  green:   "#28a745",
+  blue:    "#007bff",
+  red:     "#dc3545",
+  yellow:  "#ffc107",
+  purple:  "#6f42c1",
+  orange:  "#fd7e14",
 };
 
 const statusConfig = {
@@ -93,6 +92,7 @@ const PedidosPage = () => {
   const [filterStatus, setFilterStatus] = useState("");
   const [selectedPedido, setSelectedPedido] = useState(null);
   const [showFilters, setShowFilters] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
 
   const [pedidos, setPedidos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -113,6 +113,21 @@ const PedidosPage = () => {
       navigate(`?${params.toString()}`);
     }
   };
+
+  const handlePedidoUpdate = (updatedPedido) => {
+  // Actualizar el pedido en la lista
+  setPedidos(prevPedidos => 
+    prevPedidos.map(p => 
+      p.id_factura === updatedPedido.id_factura ? updatedPedido : p
+    )
+  );
+    // Actualizar el pedido seleccionado si es el mismo
+  if (selectedPedido && selectedPedido.id_factura === updatedPedido.id_factura) {
+    setSelectedPedido(updatedPedido);
+  }
+    // Opcional: mostrar mensaje de éxito
+  alert('Pedido actualizado correctamente');
+};
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -577,8 +592,6 @@ const PedidosPage = () => {
                       }}
                       onClick={() => handlePedidoClick(pedido)}
                     >
-                      
-
                         <div className="pedido-card-content">
                           <div className="pedido-card-left">
                             <div>
@@ -685,27 +698,20 @@ const PedidosPage = () => {
 
             <div className="details-content">
               <div className="details-section">
-                <h3 className="section-title">Estado</h3>
-                <div>
-                  {(() => {
-                    const estadoTexto =
-                      Object.keys(statusToIdMap).find(
-                        (key) => statusToIdMap[key] === selectedPedido.id_estado
-                      ) || "SIN REGISTRO";
-                    const config =
-                      statusConfig[estadoTexto] || statusConfig["SIN REGISTRO"];
-                    const Icon = config.icon;
-                    return (
-                      <div
-                        className={`pedido-badge ${config?.color || "gray"}`}
-                      >
-                        <Icon size={16} />
-                        {estadoTexto}
-                      </div>
-                    );
-                  })()}
+                <div className="actions-section">
+                  
                 </div>
               </div>
+
+              {/* Modal de edición */}
+              {showEditModal && (
+                <EditPedidoModal
+                  pedido={selectedPedido}
+                  isOpen={showEditModal}
+                  onClose={() => setShowEditModal(false)}
+                  onUpdate={handlePedidoUpdate}
+                />
+              )}
 
               {/* Información del cliente */}
               <div className="details-section">
@@ -913,7 +919,12 @@ const PedidosPage = () => {
               <div className="details-section">
                 <div className="actions-section">
                   <div className="actions-buttons">
-                    <button className="btn btn-primary">Editar Pedido</button>
+                    <button 
+                      className="btn btn-primary"
+                      onClick={() => setShowEditModal(true)}
+                    >
+                      Editar Pedido
+                    </button>
                     <button
                       className="btn btn-secondary"
                       onClick={() => navigate("/historial")}

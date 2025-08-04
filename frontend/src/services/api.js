@@ -38,11 +38,74 @@ export const createPedido = async (pedidoData) => {
     return response.data.results;
 };
 
-export const updatePedido = async (pk, pedidoData) => {
-    const response = await api.put(`bodega/update/${pk}/`, pedidoData);
-    return response.data.results;
+
+// Función updatePedido corregida para api.js
+export const updatePedido = async (id_factura, pedidoData) => {
+    try {
+        console.log('API updatePedido - ID:', id_factura);
+        console.log('API updatePedido - Datos a enviar:', pedidoData);
+        
+        // Limpiar datos undefined, null o vacíos antes de enviar
+        const cleanedData = Object.entries(pedidoData).reduce((acc, [key, value]) => {
+            if (value !== undefined && value !== null && value !== '') {
+                // Convertir strings de números a números si es necesario
+                if (key === 'valor' || key === 'recaudo_efectivo' || key === 'recaudo_transferencia') {
+                    acc[key] = parseFloat(value) || 0;
+                } else if (key.includes('id_') && value) {
+                    // Asegurar que los IDs sean números enteros
+                    acc[key] = parseInt(value) || value;
+                } else {
+                    acc[key] = value;
+                }
+            }
+            return acc;
+        }, {});
+
+        console.log('API updatePedido - Datos limpiados:', cleanedData);
+        
+        const response = await api.put(`bodega/update/${id_factura}/`, cleanedData);
+        
+        console.log('API updatePedido - Respuesta completa:', response);
+        console.log('API updatePedido - Datos de respuesta:', response.data);
+        
+        return response.data.results || response.data.data || response.data || pedidoData;
+    } catch (error) {
+        console.error('Error completo en updatePedido:', error);
+        console.error('Error response:', error.response);
+        console.error('Error request:', error.request);
+        
+        if (error.response) {
+            console.error('Error status:', error.response.status);
+            console.error('Error data:', error.response.data);
+            
+            // IMPORTANTE: Crear un nuevo error que incluya la data del response
+            const newError = new Error(`Error ${error.response.status}: ${error.response.statusText}`);
+            newError.response = error.response; // Preservar la respuesta completa
+            throw newError;
+        } else if (error.request) {
+            throw new Error('No se pudo conectar con el servidor. Verifique su conexión.');
+        } else {
+            throw new Error('Error en la petición: ' + error.message);
+        }
+    }
 };
 
+export const getTiposRecaudo = async () => {
+    try {
+        const response = await api.get('bodega/tipos-recaudo/');
+        return response.data;
+    } catch (error) {
+        console.error('Error obteniendo tipos de recaudo:', error);
+        // Fallback con valores comunes si falla la API
+        return {
+            results: [
+                { value: 'efectivo', label: 'Efectivo' },
+                { value: 'transferencia', label: 'Transferencia' },
+                { value: 'mixto', label: 'Mixto' }
+            ]
+        };
+    }
+};
 export const deletePedido = async (pk) => {
     await api.delete(`bodega/delete/${pk}/`);
 };
@@ -74,8 +137,15 @@ export const getHistorialPedidos = async (pk) => {
 
 export const getClientes = async (search = "") => {
     const response = await api.get(`bodega/clientesall/?search=${encodeURIComponent(search)}`);
-    return response.data;
-};
+    
+    // Si solo vienen IDs, hacemos peticiones adicionales para obtener detalles
+    if (Array.isArray(response.data) && response.data.length > 0 && typeof response.data[0] === 'number') {
+        const clientesDetallados = await Promise.all(
+            response.data.map(id => api.get(`bodega/clientesdetail/${id}/`))
+        );
+        return clientesDetallados.map(res => res.data);
+    }
+}
 
 export const createCliente = async (clienteData) => {
     const response = await api.post('bodega/clientecreate/', clienteData);
