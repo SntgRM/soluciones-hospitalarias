@@ -36,6 +36,7 @@ class EnrutadorSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class TransportadoraSerializer(serializers.ModelSerializer):
+    total = serializers.IntegerField()
     class Meta:
         model = Transportadoras
         fields = '__all__'
