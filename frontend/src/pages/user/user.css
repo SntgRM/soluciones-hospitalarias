@@ -34,9 +34,12 @@ input::-ms-reveal {
   --user-gray-800: #1f2937;
   --user-gray-900: #111827;
   --user-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --user-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --user-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --user-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --user-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --user-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --user-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
   --user-border-radius: 12px;
   --user-border-radius-lg: 16px;
   --user-transition: all 0.2s ease;
@@ -67,6 +70,13 @@ input::-ms-reveal {
   display: flex;
   align-items: center;
   gap: 16px;
+}
+
+.img-profile {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .header-icons-user {
@@ -202,15 +212,27 @@ input::-ms-reveal {
 }
 
 .user-stat-total {
-  background: linear-gradient(135deg, var(--user-primary-color), var(--user-primary-hover));
+  background: linear-gradient(
+    135deg,
+    var(--user-primary-color),
+    var(--user-primary-hover)
+  );
 }
 
 .user-stat-warehouse {
-  background: linear-gradient(135deg, var(--user-success-color), var(--user-success-hover));
+  background: linear-gradient(
+    135deg,
+    var(--user-success-color),
+    var(--user-success-hover)
+  );
 }
 
 .user-stat-sales {
-  background: linear-gradient(135deg, var(--user-danger-color), var(--user-danger-hover));
+  background: linear-gradient(
+    135deg,
+    var(--user-danger-color),
+    var(--user-danger-hover)
+  );
 }
 
 .user-stat-admins {
@@ -273,12 +295,6 @@ input::-ms-reveal {
   padding: 20px;
   transition: var(--user-transition);
   box-shadow: var(--user-shadow-sm);
-}
-
-.user-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--user-shadow-md);
-  border-color: var(--user-primary-color);
 }
 
 .user-card-header {
@@ -434,7 +450,11 @@ input::-ms-reveal {
 }
 
 .user-btn-primary {
-  background: linear-gradient(135deg, var(--user-primary-color), var(--user-primary-hover));
+  background: linear-gradient(
+    135deg,
+    var(--user-primary-color),
+    var(--user-primary-hover)
+  );
   color: white;
   box-shadow: var(--user-shadow-md);
 }
@@ -463,7 +483,11 @@ input::-ms-reveal {
 }
 
 .user-btn-danger {
-  background: linear-gradient(135deg, var(--user-danger-color), var(--user-danger-hover));
+  background: linear-gradient(
+    135deg,
+    var(--user-danger-color),
+    var(--user-danger-hover)
+  );
   color: white;
   box-shadow: var(--user-shadow-md);
 }
@@ -902,13 +926,16 @@ input::-ms-reveal {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     gap: 16px;
-}
+  }
 
   .user-grid {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(
+      2,
+      1fr
+    ); /* MODIFICADO: Para 2 columnas en móviles */
     gap: 16px;
-    justify-items: center;
+    /* justify-items: center; */
   }
 
   .user-stat-card {
@@ -950,10 +977,6 @@ input::-ms-reveal {
   .user-stat-label {
     font-size: 14px;
     color: #666;
-  }
-
-  .user-card {
-    width: 70%;
   }
 
   .user-card-header {
@@ -1029,9 +1052,34 @@ input::-ms-reveal {
     flex-direction: row-reverse;
     justify-content: space-between;
   }
+
+  .user-role-badge,
+  .user-status-badge {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-size: 0.6rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
 }
 
 @media screen and (max-width: 480px) {
+  .user-name {
+    font-size: 0.8rem;
+    font-weight: 400;
+    margin: 0 0 4px 0;
+    line-height: 1.3;
+  }
+
+  .img-profile {
+    width: 40px;
+    height: 40px;
+  }
+
   .header-icons-user {
     width: 22px;
     display: flex;
@@ -1103,7 +1151,7 @@ input::-ms-reveal {
   }
 
   .user-card {
-    padding: 16px;
+    padding: 6px;
   }
 
   .user-form-label {

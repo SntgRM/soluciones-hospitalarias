@@ -344,16 +344,14 @@ function User() {
             {filteredUsers.map((user) => (
               <div key={user.id} className="user-card">
                 <div className="user-card-header">
-                  <div className="user-avatar">
+                  <div className="user-profile">
                     <img
                       src={user.profile_image_url || personsImgs.ISOTIPO}
                       alt={user.first_name}
                       onError={handleImageError}
+                      className="img-profile"
                       style={{
-                        width: "50px",
-                        height: "50px",
-                        borderRadius: "50%",
-                        objectFit: "cover",
+                        
                       }}
                     />
                   </div>
