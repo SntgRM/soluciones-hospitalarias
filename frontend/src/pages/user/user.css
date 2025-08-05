@@ -34,12 +34,9 @@ input::-ms-reveal {
   --user-gray-800: #1f2937;
   --user-gray-900: #111827;
   --user-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --user-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --user-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-    0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --user-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
-    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --user-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --user-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --user-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   --user-border-radius: 12px;
   --user-border-radius-lg: 16px;
   --user-transition: all 0.2s ease;
@@ -70,13 +67,6 @@ input::-ms-reveal {
   display: flex;
   align-items: center;
   gap: 16px;
-}
-
-.img-profile {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  object-fit: cover;
 }
 
 .header-icons-user {
@@ -212,27 +202,15 @@ input::-ms-reveal {
 }
 
 .user-stat-total {
-  background: linear-gradient(
-    135deg,
-    var(--user-primary-color),
-    var(--user-primary-hover)
-  );
+  background: linear-gradient(135deg, var(--user-primary-color), var(--user-primary-hover));
 }
 
 .user-stat-warehouse {
-  background: linear-gradient(
-    135deg,
-    var(--user-success-color),
-    var(--user-success-hover)
-  );
+  background: linear-gradient(135deg, var(--user-success-color), var(--user-success-hover));
 }
 
 .user-stat-sales {
-  background: linear-gradient(
-    135deg,
-    var(--user-danger-color),
-    var(--user-danger-hover)
-  );
+  background: linear-gradient(135deg, var(--user-danger-color), var(--user-danger-hover));
 }
 
 .user-stat-admins {
@@ -280,14 +258,15 @@ input::-ms-reveal {
   color: var(--user-gray-900);
 }
 
-/* Grid de usuarios */
+/* Grid de usuarios mejorado */
 .user-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 20px;
   padding: 24px;
 }
 
+/* Tarjeta de usuario mejorada */
 .user-card {
   background: #ffffff;
   border: 1px solid var(--user-gray-200);
@@ -295,8 +274,16 @@ input::-ms-reveal {
   padding: 20px;
   transition: var(--user-transition);
   box-shadow: var(--user-shadow-sm);
+  position: relative;
 }
 
+.user-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--user-shadow-md);
+  border-color: var(--user-primary-color);
+}
+
+/* Header de la tarjeta rediseñado */
 .user-card-header {
   display: flex;
   align-items: flex-start;
@@ -304,38 +291,61 @@ input::-ms-reveal {
   margin-bottom: 16px;
 }
 
+.user-avatar {
+  flex-shrink: 0;
+}
+
+.user-avatar img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--user-gray-200);
+}
+
 .user-basic-info {
   flex: 1;
+  min-width: 0;
 }
 
 .user-name {
-  font-size: 1.125rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--user-gray-900);
   margin: 0 0 4px 0;
   line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .user-username {
   font-size: 0.875rem;
-  color: var(--user-gray-600);
+  color: var(--user-gray-500);
   margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
+/* Acciones en la esquina superior derecha */
 .user-actions {
   display: flex;
   gap: 4px;
+  flex-shrink: 0;
 }
 
 .user-action-btn {
-  padding: 8px;
+  padding: 6px;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
   transition: var(--user-transition);
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 28px;
+  height: 28px;
 }
 
 .user-action-view {
@@ -365,44 +375,40 @@ input::-ms-reveal {
   background: rgba(239, 68, 68, 0.2);
 }
 
-.user-card-body {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 16px;
-}
-
-.user-info-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.875rem;
-  color: var(--user-gray-600);
-}
-
-.user-info-row svg {
-  color: var(--user-gray-400);
-  flex-shrink: 0;
-}
-
+/* Footer de la tarjeta */
 .user-card-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 12px;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--user-gray-100);
 }
 
-.user-role-badge,
-.user-status-badge {
-  display: flex;
+.user-role-badge {
+  display: inline-flex;
   align-items: center;
   gap: 4px;
   padding: 4px 8px;
-  border-radius: 20px;
+  border-radius: 12px;
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+.user-status-indicators {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.user-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--user-primary-color);
 }
 
 /* Estado sin resultados */
@@ -450,11 +456,7 @@ input::-ms-reveal {
 }
 
 .user-btn-primary {
-  background: linear-gradient(
-    135deg,
-    var(--user-primary-color),
-    var(--user-primary-hover)
-  );
+  background: linear-gradient(135deg, var(--user-primary-color), var(--user-primary-hover));
   color: white;
   box-shadow: var(--user-shadow-md);
 }
@@ -483,11 +485,7 @@ input::-ms-reveal {
 }
 
 .user-btn-danger {
-  background: linear-gradient(
-    135deg,
-    var(--user-danger-color),
-    var(--user-danger-hover)
-  );
+  background: linear-gradient(135deg, var(--user-danger-color), var(--user-danger-hover));
   color: white;
   box-shadow: var(--user-shadow-md);
 }
@@ -528,12 +526,11 @@ input::-ms-reveal {
   box-shadow: var(--user-shadow-xl);
   max-width: 800px;
   width: 100%;
-  /* Default for smaller screens or fallback */
   max-height: 90vh;
   overflow-y: auto;
   animation: userSlideUp 0.3s ease-out;
-  display: flex; /* Added for flex layout */
-  flex-direction: column; /* Added for flex layout */
+  display: flex;
+  flex-direction: column;
 }
 
 @keyframes userSlideUp {
@@ -553,7 +550,7 @@ input::-ms-reveal {
   align-items: center;
   padding: 24px;
   border-bottom: 1px solid var(--user-gray-200);
-  flex-shrink: 0; /* Prevent header from shrinking */
+  flex-shrink: 0;
 }
 
 .user-modal-header h3 {
@@ -580,8 +577,8 @@ input::-ms-reveal {
 
 .user-modal-body {
   padding: 24px;
-  flex-grow: 1; /* Allow body to take available space */
-  overflow-y: visible; /* Ensure no scrollbar on body itself */
+  flex-grow: 1;
+  overflow-y: visible;
 }
 
 /* Formulario de usuario */
@@ -618,7 +615,7 @@ input::-ms-reveal {
 .user-img-edit-btn {
   position: absolute;
   bottom: 2px;
-  right: calc(50% - 35px - 8px); /* Centrado respecto a la imagen */
+  right: calc(50% - 35px - 8px);
   width: 24px;
   height: 24px;
   background-color: var(--user-primary-color);
@@ -703,7 +700,7 @@ input::-ms-reveal {
   width: 100%;
   height: 48px;
   font-size: 16px;
-  padding: 10px 40px 10px 12px; /* espacio a la derecha para el ícono */
+  padding: 10px 40px 10px 12px;
   box-sizing: border-box;
 }
 
@@ -864,11 +861,369 @@ input::-ms-reveal {
   }
 }
 
-@media screen and (max-width: 1024px) {
+/* Media Queries para Responsividad Mejorada */
+
+/* Pantallas muy grandes - 4+ columnas */
+@media screen and (min-width: 1400px) {
   .user-grid {
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+}
+
+/* Pantallas grandes - 3 columnas */
+@media screen and (min-width: 1024px) and (max-width: 1399px) {
+  .user-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    padding: 20px;
+  }
+}
+
+/* Tablets - 2 columnas */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  .user-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    padding: 18px;
   }
 
+  .user-card {
+    padding: 18px;
+    min-width: 0;
+  }
+
+  .user-name {
+    font-size: 0.95rem;
+  }
+
+  .user-username {
+    font-size: 0.85rem;
+  }
+
+  .user-avatar img {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+/* Tablets pequeños y móviles grandes - 2 columnas */
+@media screen and (min-width: 480px) and (max-width: 767px) {
+  .user-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    padding: 16px;
+  }
+
+  .user-card {
+    padding: 16px;
+    min-width: 0;
+  }
+
+  .user-name {
+    font-size: 0.9rem;
+  }
+
+  .user-username {
+    font-size: 0.8rem;
+  }
+
+  .user-avatar img {
+    width: 42px;
+    height: 42px;
+  }
+
+  .user-action-btn {
+    width: 26px;
+    height: 26px;
+    padding: 5px;
+  }
+
+  .user-role-badge {
+    font-size: 0.7rem;
+    padding: 3px 7px;
+  }
+}
+
+/* Móviles pequeños - 2 columnas compactas con botones abajo */
+@media screen and (max-width: 479px) {
+  .user-management-container {
+    padding: 12px;
+  }
+
+  .user-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .user-card {
+    padding: 14px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 140px; /* Altura mínima para acomodar el contenido */
+  }
+
+  /* Header de la card sin botones */
+  .user-card-header {
+    gap: 10px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: flex-start;
+  }
+
+  /* Mover los botones fuera del header */
+  .user-card-header .user-actions {
+    display: none; /* Ocultar botones del header */
+  }
+
+  /* Crear nueva sección para botones en la parte inferior */
+  .user-card::after {
+    content: "";
+    flex-grow: 1; /* Empuja los botones hacia abajo */
+  }
+
+  .user-avatar img {
+    width: 38px;
+    height: 38px;
+  }
+
+  .user-name {
+    font-size: 0.85rem;
+    line-height: 1.2;
+  }
+
+  .user-username {
+    font-size: 0.75rem;
+  }
+
+  /* Footer con botones y role badge */
+  .user-card-footer {
+    margin-top: auto; /* Empuja hacia abajo */
+    padding-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  /* Botones en la parte inferior */
+  .user-card-footer .user-actions-mobile {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .user-action-btn {
+    width: 32px;
+    height: 32px;
+    padding: 6px;
+    border-radius: 8px;
+  }
+
+  .user-role-badge {
+    font-size: 0.65rem;
+    padding: 4px 8px;
+    text-align: center;
+    border-radius: 12px;
+  }
+
+  /* Estadísticas - 2 columnas en móviles */
+  .user-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .user-stat-card {
+    padding: 16px 12px;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .user-stat-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    color: white;
+    font-size: 20px;
+  }
+
+  .user-stat-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .user-stat-number {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 2px;
+    color: var(--user-gray-900);
+  }
+
+  .user-stat-label {
+    font-size: 12px;
+    color: var(--user-gray-600);
+    font-weight: 500;
+  }
+}
+
+/* Tablets pequeños y móviles grandes - Mejorar estadísticas */
+@media screen and (min-width: 480px) and (max-width: 767px) {
+  .user-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .user-stat-card {
+    padding: 20px 16px;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .user-stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  }
+
+  .user-stat-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    color: white;
+    font-size: 22px;
+  }
+
+  .user-stat-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .user-stat-number {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--user-gray-900);
+  }
+
+  .user-stat-label {
+    font-size: 13px;
+    color: var(--user-gray-600);
+    font-weight: 500;
+  }
+}
+
+/* Tablets - Mejorar estadísticas */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  .user-stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 30px;
+  }
+
+  .user-stat-card {
+    padding: 22px 18px;
+    min-height: 130px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border-radius: 14px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .user-stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  }
+
+  .user-stat-icon {
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    margin-bottom: 14px;
+    color: white;
+    font-size: 24px;
+  }
+
+  .user-stat-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .user-stat-number {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: var(--user-gray-900);
+  }
+
+  .user-stat-label {
+    font-size: 14px;
+    color: var(--user-gray-600);
+    font-weight: 500;
+  }
+}
+
+/* Ocultar botones móviles en pantallas grandes */
+.user-actions-mobile {
+  display: none;
+}
+
+/* Mostrar solo botones móviles en pantallas pequeñas */
+@media screen and (max-width: 479px) {
+  .user-card-header .user-actions {
+    display: none !important;
+  }
+
+  .user-actions-mobile {
+    display: flex !important;
+  }
+}
+
+/* Para pantallas intermedias, mantener botones en el header */
+@media screen and (min-width: 480px) {
+  .user-actions-mobile {
+    display: none;
+  }
+
+  .user-card-header .user-actions {
+    display: flex;
+  }
+}
+
+/* Resto de media queries existentes para otros elementos */
+@media screen and (max-width: 1200px) {
   .user-form-grid-custom {
     grid-template-columns: 1fr;
   }
@@ -878,10 +1233,10 @@ input::-ms-reveal {
   }
 }
 
-@media screen and (min-width: 769px) {
+@media screen and (min-width: 800px) {
   .user-modal-content {
-    max-height: none; /* Elimina la altura máxima para que el contenido dicte la altura */
-    overflow-y: visible; /* Asegura que no haya scrollbar en el modal */
+    max-height: none;
+    overflow-y: visible;
   }
 }
 
@@ -897,11 +1252,7 @@ input::-ms-reveal {
     padding: 15px 14px;
     border-radius: var(--user-border-radius);
     font-weight: 600;
-    font-size: 0.5rem;
-  }
-
-  .user-management-container {
-    padding: 16px;
+    font-size: 0.7rem;
   }
 
   .user-management-header {
@@ -926,16 +1277,6 @@ input::-ms-reveal {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     gap: 16px;
-  }
-
-  .user-grid {
-    display: grid;
-    grid-template-columns: repeat(
-      2,
-      1fr
-    ); /* MODIFICADO: Para 2 columnas en móviles */
-    gap: 16px;
-    /* justify-items: center; */
   }
 
   .user-stat-card {
@@ -975,29 +1316,8 @@ input::-ms-reveal {
   }
 
   .user-stat-label {
-    font-size: 14px;
+    font-size: 12px;
     color: #666;
-  }
-
-  .user-card-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 12px;
-  }
-
-  .user-card-header > :nth-child(3) {
-    order: 1;
-  }
-
-  .user-actions {
-    order: -1;
-  }
-
-  .user-card-footer {
-    flex-direction: column;
-    gap: 8px;
   }
 
   .user-form-actions {
@@ -1032,7 +1352,6 @@ input::-ms-reveal {
     background: #ffffff;
   }
 
-  /* Sección de filtros */
   .user-filters-section {
     gap: 3px;
     align-items: center;
@@ -1052,45 +1371,12 @@ input::-ms-reveal {
     flex-direction: row-reverse;
     justify-content: space-between;
   }
-
-  .user-role-badge,
-  .user-status-badge {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    padding: 4px 8px;
-    border-radius: 20px;
-    font-size: 0.6rem;
-    font-weight: 400;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
 }
 
 @media screen and (max-width: 480px) {
-  .user-name {
-    font-size: 0.8rem;
-    font-weight: 400;
-    margin: 0 0 4px 0;
-    line-height: 1.3;
-  }
-
-  .img-profile {
-    width: 40px;
-    height: 40px;
-  }
-
   .header-icons-user {
     width: 22px;
     display: flex;
-  }
-
-  .user-management-container {
-    padding: 12px;
-  }
-
-  .user-management-header {
-    padding: 16px;
   }
 
   .user-page-title {
@@ -1144,14 +1430,6 @@ input::-ms-reveal {
     font-weight: 400;
     color: var(--user-gray-700);
     min-width: 50px;
-  }
-
-  .user-grid {
-    padding: 16px;
-  }
-
-  .user-card {
-    padding: 6px;
   }
 
   .user-form-label {
