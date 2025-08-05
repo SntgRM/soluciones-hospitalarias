@@ -17,6 +17,7 @@ import Transportadora from "./pages/transportadora/transportadora.jsx";
 import { useResizeAnimationStopper } from "./utils/hooks";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import RoleProtectedRoute from "./components/RoleProtectedRoute.jsx";
+import Inicio from "./pages/inicio/inicio.jsx"
 
 function App() {
   useResizeAnimationStopper();
@@ -34,7 +35,8 @@ function App() {
                 </ProtectedRoute>
               }
             >
-              <Route index element={<Home />} />
+              <Route index element={<Inicio />} />
+              <Route path="home" element={<Home />} />
               <Route path="ayuda" element={<Ayuda />} />
 
               <Route

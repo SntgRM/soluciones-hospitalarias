@@ -3,9 +3,9 @@ import { iconsImgs, personsImgs } from '../utils/images';
 export const navigationLinks_bodega = [
     {
         id: 1,
-        title: 'Inicio',
+        title: 'Bodega',
         image: iconsImgs.house, 
-        path: '/'
+        path: '/home'
     },
     {
         id: 2,
@@ -52,6 +52,14 @@ export const navigationLinks_admin = [
     },
     
 ];
+
+// Crear un nuevo objeto para "Inicio"
+export const inicioLink = {
+    id: 1,
+    title: 'Inicio',
+    image: iconsImgs.house, // Cambiado de iconsImgs.user a iconsImgs.house para que tenga sentido
+    path: './'
+};
 
 
 // Exportación de reportData
