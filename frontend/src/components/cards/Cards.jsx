@@ -15,6 +15,7 @@ import {
   Activity,
   Calendar,
   Eye,
+  Truck,
 } from "lucide-react"
 import "./Cards.css"
 
@@ -94,25 +95,31 @@ const Cards = () => {
 
   const quickActions = [
     {
-      title: "Nuevo Pedido",
-      description: "Registrar pedido manualmente",
-      icon: Package,
-      action: () => navigate("/pedidos?status=SIN%2520REGISTRO&page=1"),
-
-      color: "blue",
-    },
-    {
-      title: "Ver Inventario",
-      description: "Consultar stock disponible",
+      title: "Ver Pedidos",
+      description: "Ver detalles de Pedidos",
       icon: Eye,
-      action: () => navigate("/historial"),
+      action: () => navigate("/pedidos"),
       color: "green",
     },
     {
-      title: "Reportes",
-      description: "Generar reportes de ventas",
+      title: "Ver Historial",
+      description: "Historial de estados de Pedidos",
+      icon: Package,
+      action: () => navigate("/Historial"),
+      color: "blue",
+    },
+    {
+      title: "Ver Pedidos por Transportadora",
+      description: "Ver detalles de Pedidos asignado a Transportadora",
+      icon: Truck,
+      action: () => navigate("/Transportadora"),
+      color: "black",
+    },
+    {
+      title: "Nuevo Registro",
+      description: "Crear nuevo registro",
       icon: Activity,
-      action: () => navigate("/reportes"),
+      action: () => navigate("/pedidos?status=SIN%2520REGISTRO&page=1"),
       color: "purple",
     },
   ]
