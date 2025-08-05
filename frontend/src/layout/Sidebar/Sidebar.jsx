@@ -3,7 +3,7 @@
 import { useEffect, useState, useContext, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import { personsImgs } from "../../utils/images";
-import { navigationLinks_bodega, navigationLinks_ventas, navigationLinks_admin } from "../../data/data";
+import { navigationLinks_bodega, navigationLinks_ventas, navigationLinks_admin, inicioLink } from "../../data/data";
 import "./Sidebar.css";
 import { SidebarContext } from "../../context/sidebarContext";
 import { ChevronDown, X, Warehouse, BadgeDollarSign } from "lucide-react";
@@ -100,7 +100,29 @@ const Sidebar = () => {
           </div>
 
           <nav className="navigation">
-            {/* Bodega: Solo administrador y bodega */}
+          {/* INICIO - Ahora aparece primero, arriba de todo */}
+            <ul className="nav-list">
+              <li className="nav-item dropdown-container" role="none">
+                <NavLink
+                  to={inicioLink.path}
+                  className={({ isActive }) =>
+                    `nav-link ${isActive ? "active" : ""}`
+                  }
+                  onClick={handleLinkClick}
+                  role="menuitem"
+                >
+                  <img
+                    src={inicioLink.image || "/placeholder.svg"}
+                    className="nav-link-icon"
+                    style={{ filter: "invert(100%)" }}
+                    alt={inicioLink.title}
+                  />
+                  <span className="nav-link-text">
+                    {inicioLink.title}
+                  </span>
+                </NavLink>
+              </li>
+            </ul>
             {["administrador", "bodega", "ventas"].includes(role) && (
               <div className="dropdown-container">
                 <button
