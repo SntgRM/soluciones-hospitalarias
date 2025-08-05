@@ -237,12 +237,12 @@
 
 .client-icon {
   margin-right: 8px;
-  color: #4caf50;
+  color: #000000;
 }
 
 .client-name {
   font-size: 12px;
-  color: #4caf50;
+  color: #000000;
   font-weight: 500;
   text-transform: uppercase;
 }
