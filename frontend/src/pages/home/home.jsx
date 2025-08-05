@@ -50,7 +50,7 @@ const Home = () => {
           <Activity size={32} className="header-icons" />
           <div>
             <h1 className="dashboard-title">Gestión de Bodega</h1>
-            <p className="dashboard-subtitle">Panel de control y gestión integral</p>
+            <p className="dashboard-subtitle">Panel de control y gestión de pedidos</p>
           </div>
         </div>
       </div>
