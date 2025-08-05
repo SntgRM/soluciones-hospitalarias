@@ -1,100 +1,45 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import EditPedidoModal from './editPedidoModal';
-import {
-  ChevronUp,
-  ChevronDown,
-  Building2,
-  User,
-  Package,
-  Truck,
-  CheckCircle,
-  XCircle,
-  Clock,
-  AlertCircle,
-  MapPin,
-  DollarSign,
-  Users,
-  ListChecks,
-  Archive,
-  PackageCheck,
-  Inbox,
-  Warehouse,
-  Settings,
-} from "lucide-react";
+import EditPedidoModal from "./editPedidoModal";
+import { ChevronUp, ChevronDown, Building2, User, Package, Truck, CheckCircle, XCircle, Clock, AlertCircle, MapPin,DollarSign, Users, ListChecks, Archive, PackageCheck, Inbox, Warehouse, Settings, } from "lucide-react";
 import "./pedidos.css";
-import {
-  getPedidosAll,
-  getPedidosPorEstado,
-  getResumenPedidos,
-} from "../../services/api.js";
+import { getPedidosAll, getPedidosPorEstado, getResumenPedidos, } from "../../services/api.js";
 
 const statusToIdMap = {
-  "ENTREGADO AL CLIENTE":      1,
+  "ENTREGADO AL CLIENTE": 1,
   "ENVIADO EN TRANSPORTADORA": 2,
-  "ANULADO":                   3,
-  "SIN REGISTRO":              4,
-  "PEDIDO NO RECIBIDO":        5,
-  "EN ALISTAMIENTO":           6,
-  "EN REPARTO":                7,
-  "EN PREPARACION":            8,
-  "EMPACADO":                  9,
+  ANULADO: 3,
+  "SIN REGISTRO": 4,
+  "PEDIDO NO RECIBIDO": 5,
+  "EN ALISTAMIENTO": 6,
+  "EN REPARTO": 7,
+  "EN PREPARACION": 8,
+  EMPACADO: 9,
 };
 
-
-
-
 const colorMap = {
-  green:   "#28a745",
-  green2:   "#126b27ff",
-  blue:    "#007bff",
-  red:     "#dc3545",
-  yellow:  "#e9ec08ff",
-  purple:  "#6f42c1",
-  orange:  "#fd7e14",
-  orange2:  "#fdc714ff",
-  orange3:  "#cfa20cff",
+  green: "#28a745",
+  green2: "#126b27ff",
+  blue: "#007bff",
+  red: "#dc3545",
+  yellow: "#e9ec08ff",
+  purple: "#6f42c1",
+  orange: "#fd7e14",
+  orange2: "#fdc714ff",
+  orange3: "#cfa20cff",
 };
 
 const statusConfig = {
-  "ENTREGADO AL CLIENTE": {
-    color: "green2",
-    icon: CheckCircle,
-  },
-  "ENVIADO EN TRANSPORTADORA": {
-    color: "green2",
-    icon: Truck,
-  },
-  "ANULADO": {
-    color: "blue",
-    icon: XCircle,
-  },
-  "SIN REGISTRO": {
-    color: "gray",
-    icon: AlertCircle,
-  },
-  "PEDIDO NO RECIBIDO": {
-    color: "gray",
-    icon: Inbox,
-  },
-  "EN ALISTAMIENTO": {
-    color: "yellow",
-    icon: ListChecks,
-  },
-  "EN REPARTO": {
-    color: "orange",
-    icon: Clock,
-  },
-  "EN PREPARACION": {
-    color: "orange2",
-    icon: Settings,
-  },
-  "EMPACADO": {
-    color: "orange3",
-    icon: PackageCheck,
-  },
+  "ENTREGADO AL CLIENTE": { color: "green2", icon: CheckCircle, },
+  "ENVIADO EN TRANSPORTADORA": { color: "green2", icon: Truck, },
+  "ANULADO": { color: "blue", icon: XCircle, },
+  "SIN REGISTRO": { color: "gray", icon: AlertCircle, },
+  "PEDIDO NO RECIBIDO": { color: "gray", icon: Inbox, },
+  "EN ALISTAMIENTO": { color: "yellow", icon: ListChecks, },
+  "EN REPARTO": { color: "orange", icon: Clock, },
+  "EN PREPARACION": { color: "orange2", icon: Settings, },
+  "EMPACADO": { color: "orange3", icon: PackageCheck, },
 };
-
 
 const findMatchingStatusKey = (rawStatus, map) => {
   if (!rawStatus) return "";
@@ -114,39 +59,33 @@ const PedidosPage = () => {
   const [selectedPedido, setSelectedPedido] = useState(null);
   const [showFilters, setShowFilters] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
-
+  const [totalGlobalPedidos, setTotalGlobalPedidos] = useState(0);
   const [pedidos, setPedidos] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [statusCounts, setStatusCounts] = useState({});
-  const [totalPedidos, setTotalPedidos] = useState(0);
-
+  const [totalPedidos, setTotalPedidos] = useState(0)
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10);
-
   // Nuevo estado para el término de búsqueda
   const [searchTerm, setSearchTerm] = useState("");
-
-  const paginate = (pageNumber) => {
-    if (pageNumber >= 1 && pageNumber <= totalPages) {
-      const params = new URLSearchParams(location.search);
-      params.set("page", pageNumber);
-      navigate(`?${params.toString()}`);
-    }
-  };
+  const [hasMore, setHasMore] = useState(true);
+  const observer = useRef();
 
   const handlePedidoUpdate = (updatedPedido) => {
-  // Actualizar el pedido en la lista
-  setPedidos(prevPedidos => 
-    prevPedidos.map(p => 
-      p.id_factura === updatedPedido.id_factura ? updatedPedido : p
-    )
-  );
+    // Actualizar el pedido en la lista
+    setPedidos((prevPedidos) =>
+      prevPedidos.map((p) =>
+        p.id_factura === updatedPedido.id_factura ? updatedPedido : p
+      )
+    );
     // Actualizar el pedido seleccionado si es el mismo
-  if (selectedPedido && selectedPedido.id_factura === updatedPedido.id_factura) {
-    setSelectedPedido(updatedPedido);
-  }
-};
+    if (
+      selectedPedido &&
+      selectedPedido.id_factura === updatedPedido.id_factura
+    ) {
+      setSelectedPedido(updatedPedido);
+    }
+  };
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -192,7 +131,7 @@ const PedidosPage = () => {
 
         console.log("Resumen de estados:", counts);
         setStatusCounts(counts);
-        setTotalPedidos(total);
+        setTotalGlobalPedidos(total);
       } catch (error) {
         console.error("Error al obtener resumen de pedidos:", error);
       }
@@ -203,94 +142,70 @@ const PedidosPage = () => {
   useEffect(() => {
     const fetchPedidos = async () => {
       setLoading(true);
-      setError(null);
+
       try {
         let response;
 
-        // Obtener pedidos según filtro
         if (filterStatus) {
           const statusId = statusToIdMap[filterStatus];
-          response =
-            statusId !== undefined
-              ? await getPedidosPorEstado(statusId, currentPage)
-              : await getPedidosAll(currentPage);
-          if (response.count !== undefined) {
-          }
+          response = await getPedidosPorEstado(
+            statusId,
+            currentPage,
+            searchTerm
+          );
         } else {
           response = await getPedidosAll(currentPage, searchTerm);
         }
 
-        // Manejar diferentes formatos de respuesta
-        if (response.results) {
-          setPedidos(response.results || []);
-          // Actualizar el total solo si no hay filtro aplicado
-          if (!filterStatus) {
-            setTotalPedidos(response.count || 0);
-          }
-        } else if (Array.isArray(response)) {
-          setPedidos(response);
-          // Actualizar el total solo si no hay filtro aplicado
-          if (!filterStatus) {
-            setTotalPedidos(response.length);
-          }
-        } else {
-          setPedidos([]);
-          console.error("Formato de respuesta inesperado:", response);
+        if (response.results && response.results.length > 0) {
+          setPedidos((prev) => [...prev, ...response.results]);
+          setTotalPedidos(response.count || 0);
         }
-      } catch (err) {
-        console.error("Error fetching pedidos:", err);
-        setError(
-          "No se pudieron cargar los pedidos. Inténtelo de nuevo más tarde."
-        );
-        setPedidos([]);
-        setTotalPedidos(0); // Resetear el contador en caso de error
+
+        if (!response.next || response.results.length < 1) {
+          setHasMore(false);
+        }
+      } catch (error) {
+        console.error("Error cargando pedidos:", error);
       } finally {
         setLoading(false);
       }
     };
 
     fetchPedidos();
-  }, [filterStatus, currentPage]); // Dependencias del efecto
+  }, [filterStatus, currentPage, searchTerm]);
 
-  const handleFilterChange = useCallback(
-    (statusKey) => {
-      const params = new URLSearchParams();
+  const handleFilterChange = (statusKey) => {
+    setFilterStatus(statusKey); 
+    setSearchTerm(""); // Limpia búsqueda si deseas
+    setPedidos([]);
+    setCurrentPage(1);
+    setHasMore(true);
+  };
 
-      if (statusKey) {
-        // Codifica correctamente el status (solo una vez)
-        params.set("status", encodeURIComponent(statusKey));
-      }
+  const lastPedidoRef = useCallback(
+    (node) => {
+      if (loading) return;
+      if (observer.current) observer.current.disconnect();
 
-      if (searchTerm) {
-        params.set("search", searchTerm);
-      }
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          setCurrentPage((prev) => prev + 1);
+        }
+      });
 
-      // Siempre resetear a página 1 al cambiar filtro
-      params.set("page", "1");
-
-      navigate(`?${params.toString()}`);
-      setCurrentPage(1); // Sincroniza el estado interno
+      if (node) observer.current.observe(node);
     },
-    [navigate, searchTerm]
+    [loading, hasMore]
   );
 
-  const handleSearchChange = useCallback(
-    (e) => {
-      const newSearchTerm = e.target.value;
-      setSearchTerm(newSearchTerm);
-      // Actualizar la URL con el término de búsqueda
-      const params = new URLSearchParams();
-      if (filterStatus) {
-        params.set("status", encodeURIComponent(filterStatus));
-      }
-      if (newSearchTerm) {
-        params.set("search", encodeURIComponent(newSearchTerm));
-      }
-      navigate(`?${params.toString()}`);
-      setCurrentPage(1); // Resetear a la primera página al buscar
-    },
-    [navigate, filterStatus]
-  ); // Agregué filterStatus a las dependencias
+  const handleSearchChange = useCallback((e) => {
+    const newSearchTerm = e.target.value;
+    setSearchTerm(newSearchTerm);
+    setPedidos([]); // limpiar lista actual
+    setCurrentPage(1); // volver a la página 1
+    setHasMore(true); // habilitar scroll infinito
+  }, []);
 
   const handlePedidoClick = (pedido) => {
     setSelectedPedido(pedido);
@@ -329,168 +244,6 @@ const PedidosPage = () => {
     }).format(numericAmount);
   };
 
-  // Filtrado de pedidos basado en el término de búsqueda y el estado (si el estado no se usa en la API)
-  const filteredPedidos = useMemo(() => {
-    if (!searchTerm) {
-      return pedidos;
-    }
-    const lowerCaseSearchTerm = searchTerm.toLowerCase();
-    return pedidos.filter((pedido) => {
-      // Buscar en id_factura
-      if (
-        pedido.id_factura &&
-        String(pedido.id_factura).includes(lowerCaseSearchTerm)
-      ) {
-        return true;
-      }
-      // Buscar en ciudad
-      if (
-        pedido.ciudad &&
-        pedido.ciudad.toLowerCase().includes(lowerCaseSearchTerm)
-      ) {
-        return true;
-      }
-      // Buscar en nombre del cliente
-      if (
-        pedido.cliente_nombre &&
-        pedido.cliente_nombre.toLowerCase().includes(lowerCaseSearchTerm)
-      ) {
-        return true;
-      }
-      // Buscar en productos (si es un array de strings)
-      if (Array.isArray(pedido.productos)) {
-        if (
-          pedido.productos.some((product) =>
-            product.toLowerCase().includes(lowerCaseSearchTerm)
-          )
-        ) {
-          return true;
-        }
-      }
-      // Puedes añadir más campos aquí según sea necesario (ej. transportadora, estado, etc.)
-      // Para 'estado', necesitarías el texto del estado para comparar
-      const estadoTexto =
-        Object.keys(statusToIdMap).find(
-          (key) => statusToIdMap[key] === pedido.id_estado
-        ) || "";
-      if (estadoTexto.toLowerCase().includes(lowerCaseSearchTerm)) {
-        return true;
-      }
-
-      return false;
-    });
-  }, [pedidos, searchTerm, statusToIdMap]); // Dependencias para useMemo
-
-  const totalPages = Math.ceil(
-    searchTerm
-      ? filteredPedidos.length / itemsPerPage
-      : (filterStatus ? statusCounts[filterStatus] || 0 : totalPedidos) /
-          itemsPerPage
-  );
-
-  const pageRangeDisplayed = 5;
-
-  const renderPageNumbers = () => {
-    if (totalPages <= 1) return null;
-
-    const pageItems = [];
-    const maxVisiblePages = 5; // Número máximo de páginas visibles
-    const halfRange = Math.floor(maxVisiblePages / 2);
-
-    let startPage = Math.max(1, currentPage - halfRange);
-    let endPage = Math.min(totalPages, currentPage + halfRange);
-
-    // Ajustar si estamos cerca del inicio
-    if (currentPage <= halfRange) {
-      endPage = Math.min(maxVisiblePages, totalPages);
-    }
-    // Ajustar si estamos cerca del final
-    if (currentPage > totalPages - halfRange) {
-      startPage = Math.max(1, totalPages - maxVisiblePages + 1);
-    }
-
-    // Botón para la primera página
-    if (startPage > 1) {
-      pageItems.push(
-        <button
-          key="page-1"
-          onClick={() => paginate(1)}
-          className={`pagination-page ${currentPage === 1 ? "active" : ""}`}
-        >
-          1
-        </button>
-      );
-      if (startPage > 2) {
-        pageItems.push(
-          <span key="ellipsis-start" className="pagination-ellipsis">
-            ...
-          </span>
-        );
-      }
-    }
-
-    // Páginas intermedias
-    for (let i = startPage; i <= endPage; i++) {
-      pageItems.push(
-        <button
-          key={`page-${i}`}
-          onClick={() => paginate(i)}
-          className={`pagination-page ${currentPage === i ? "active" : ""}`}
-        >
-          {i}
-        </button>
-      );
-    }
-
-    // Botón para la última página
-    if (endPage < totalPages) {
-      if (endPage < totalPages - 1) {
-        pageItems.push(
-          <span key="ellipsis-end" className="pagination-ellipsis">
-            ...
-          </span>
-        );
-      }
-      pageItems.push(
-        <button
-          key={`page-${totalPages}`}
-          onClick={() => paginate(totalPages)}
-          className={`pagination-page ${
-            currentPage === totalPages ? "active" : ""
-          }`}
-        >
-          {totalPages}
-        </button>
-      );
-    }
-
-    return pageItems;
-  };
-
-  if (loading) {
-    return (
-      <div className="pedidos-container">
-        <div className="main-panel">
-          <div className="pedidos-list-container">
-            <p className="loading-message">Cargando pedidos...</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="pedidos-container">
-        <div className="main-panel">
-          <div className="pedidos-list-container">
-            <p className="error-message">Error: {error}</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="pedidos-container">
       <div className="filters-panel">
@@ -509,7 +262,7 @@ const PedidosPage = () => {
                 <span className="filter-button-text">Todo</span>
               </div>
               <span className="filter-badge">
-                {totalPedidos.toLocaleString()}
+                {totalGlobalPedidos.toLocaleString()}
               </span>
             </button>
 
@@ -562,19 +315,14 @@ const PedidosPage = () => {
             </h1>
 
             <p className="pedidos-subtitle">
-              {`Mostrando ${(currentPage - 1) * itemsPerPage + 1}-${Math.min(
-                currentPage * itemsPerPage,
-                filterStatus ? statusCounts[filterStatus] || 0 : totalPedidos
-              )} de ${
-                filterStatus ? statusCounts[filterStatus] || 0 : totalPedidos
-              } pedidos`}
+              Mostrando {pedidos.length} de {totalPedidos} pedidos
             </p>
 
             {/* Barra de búsqueda - NUEVO */}
             <div className="search-bar-container">
               <input
                 type="text"
-                placeholder="Buscar por ID, ciudad, cliente, productos..."
+                placeholder="Buscar por ID, ciudad, cliente"
                 value={searchTerm}
                 onChange={handleSearchChange}
                 className="search-input"
@@ -584,24 +332,30 @@ const PedidosPage = () => {
 
           <div className="pedidos-content">
             <div className="pedidos-grid">
+              {/* Mostrar mensaje si no hay pedidos */}
               {pedidos.length === 0 && !loading && !error ? (
                 <p className="no-pedidos-message">
                   No hay pedidos disponibles para este filtro.
                 </p>
               ) : (
-                pedidos.map((pedido) => {
+                pedidos.map((pedido, index) => {
                   const estadoActual =
                     Object.keys(statusToIdMap).find(
                       (key) => statusToIdMap[key] === pedido.id_estado
                     ) || "SIN REGISTRO";
+
                   const config = statusConfig[estadoActual];
                   const Icon = config?.icon || Package;
                   const isSelected =
-                    selectedPedido?.id_factura === pedido.id_factura; // Comparar por id_factura
+                    selectedPedido?.id_factura === pedido.id_factura;
+
+                  const refProp =
+                    index === pedidos.length - 1 ? { ref: lastPedidoRef } : {};
 
                   return (
                     <div
                       key={pedido.id_factura}
+                      {...refProp}
                       className={`pedido-card ${isSelected ? "selected" : ""} ${
                         config?.color || "gray"
                       }`}
@@ -610,94 +364,42 @@ const PedidosPage = () => {
                       }}
                       onClick={() => handlePedidoClick(pedido)}
                     >
-                        <div className="pedido-card-content">
-                          <div className="pedido-card-left">
-                            <div>
-                              {typeof pedido.id_cliente === "number" &&
-                              pedido.id_cliente % 2 === 0 ? (
-                                <Building2 size={20} />
-                              ) : (
-                                <User size={20} />
-                              )}
-                            </div>
-                            <div className="pedido-info">
-                              <h2 className="pedido-id">{pedido.id_factura}</h2>
-                              <h3>
-                                {pedido.cliente_nombre ||
-                                  `Cliente ID: ${pedido.id_cliente}`}
-                              </h3>
-                              <p>{pedido.transportadora_nombre} | {pedido.ciudad}</p>
-                              <p>
-                                Fecha: {formatDate(pedido.fecha_recibido)} |
-                                Valor: {formatCurrency(pedido.valor)}
-                              </p>
-                            </div>
+                      <div className="pedido-card-content">
+                        <div className="pedido-card-left">
+                          <div>
+                            {typeof pedido.id_cliente === "number" &&
+                            pedido.id_cliente % 2 === 0 ? (
+                              <Building2 size={20} />
+                            ) : (
+                              <User size={20} />
+                            )}
+                          </div>
+                          <div className="pedido-info">
+                            <h2 className="pedido-id">{pedido.id_factura}</h2>
+                            <h3>
+                              {pedido.cliente_nombre ||
+                                `Cliente ID: ${pedido.id_cliente}`}
+                            </h3>
+                            <p>
+                              {pedido.transportadora_nombre} | {pedido.ciudad}
+                            </p>
+                            <p>
+                              Fecha: {formatDate(pedido.fecha_recibido)} |
+                              Valor: {formatCurrency(pedido.valor)}
+                            </p>
                           </div>
                         </div>
+                      </div>
                     </div>
                   );
                 })
               )}
+              {/* Mostrar mensaje si ya no hay más por cargar */}
+              {!hasMore && !loading && pedidos.length > 0 && (
+                <p className="end-message">No hay más pedidos por cargar.</p>
+              )}
             </div>
           </div>
-          {totalPages > 1 && (
-            <div className="pagination">
-              <button
-                onClick={() => paginate(currentPage - 1)}
-                disabled={currentPage === 1}
-                className="page-nav"
-              >
-                Anterior
-              </button>
-
-              {currentPage > 2 && totalPages > 5 && (
-                <button onClick={() => paginate(1)} className="pagination-page">
-                  1
-                </button>
-              )}
-
-              {currentPage > 3 && totalPages > 5 && (
-                <span className="pagination-ellipsis">...</span>
-              )}
-
-              {[currentPage - 1, currentPage, currentPage + 1].map(
-                (page) =>
-                  page >= 1 &&
-                  page <= totalPages && (
-                    <button
-                      key={page}
-                      onClick={() => paginate(page)}
-                      className={`pagination-page ${
-                        currentPage === page ? "active" : ""
-                      }`}
-                    >
-                      {page}
-                    </button>
-                  )
-              )}
-
-              {currentPage < totalPages - 2 && totalPages > 5 && (
-                <span className="pagination-ellipsis">...</span>
-              )}
-
-              {currentPage < totalPages - 1 && totalPages > 5 && (
-                <button
-                  onClick={() => paginate(totalPages)}
-                  className="pagination-page"
-                >
-                  {totalPages}
-                </button>
-              )}
-
-              <button
-                onClick={() => paginate(currentPage + 1)}
-                disabled={currentPage === totalPages}
-                className="page-nav"
-              >
-                Siguiente
-              </button>
-            </div>
-          )}
         </div>
 
         {selectedPedido && (
@@ -715,7 +417,6 @@ const PedidosPage = () => {
             </div>
 
             <div className="details-content">
-
               {/* Modal de edición */}
               {showEditModal && (
                 <EditPedidoModal
@@ -932,7 +633,7 @@ const PedidosPage = () => {
               <div className="details-section">
                 <div className="actions-section">
                   <div className="actions-buttons">
-                    <button 
+                    <button
                       className="btn btn-primary"
                       onClick={() => setShowEditModal(true)}
                     >
