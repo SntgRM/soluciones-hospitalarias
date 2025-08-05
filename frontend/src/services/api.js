@@ -23,8 +23,8 @@ api.interceptors.request.use(
 );
 
 // Funciones para los endpoints de Pedidos
-export const getPedidosAll = async (page = 1) => {
-    const response = await api.get(`bodega/showall/?page=${page}`);
+export const getPedidosAll = async (page = 1, search = "") => {
+    const response = await api.get(`bodega/showall/?page=${page}&search=${encodeURIComponent(search)}`);
     return response.data;
 };
 
@@ -119,9 +119,35 @@ export const getResumenPedidos = async () => {
   }
 };
 
-export const getPedidosPorEstado = async (id_estado, page = 1) => {
-    const response = await api.get(`bodega/por_estado/${id_estado}/?page=${page}`);
-    return response.data;
+export const getPedidosPorEstado = async (id_estado, page = 1, search = "") => {
+    try {
+        // Construir URL con parámetros de paginación y búsqueda
+        const searchParam = search ? `&search=${encodeURIComponent(search)}` : '';
+        const url = `bodega/por_estado/${id_estado}/?page=${page}${searchParam}`;
+        
+        const response = await api.get(url);
+        
+        if (!response.data) {
+            throw new Error('Respuesta inválida del servidor');
+        }
+        
+        return {
+            results: response.data.results || [],
+            count: response.data.count || 0,
+            next: response.data.next,
+            previous: response.data.previous
+        };
+    } catch (error) {
+        console.error('Error en getPedidosPorEstado:', error);
+        
+        if (error.response) {
+            throw new Error(`Error del servidor: ${error.response.status} - ${error.response.statusText}`);
+        } else if (error.request) {
+            throw new Error('Error de conexión. Verifique su conexión a internet.');
+        } else {
+            throw new Error(`Error en la petición: ${error.message}`);
+        }
+    }
 };
 
 export const getPedidosPorTransportadora = async (id_transportadora, page = 1, search = "") => {
