@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.pagination import PageNumberPagination
 from .models import Pedidos, EstadosPedidos, HistorialEstados, Clientes, Alistadores, Empacadores, Enrutadores, Transportadoras, Vendedores
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.utils import timezone
 from .serializers import PedidoSerializer, ClienteSerializer, AlistadorSerializer, EmpacadorSerializer, EnrutadorSerializer, TransportadoraSerializer, VendedorSerializer, EstadoPedidoSerializer
 
@@ -14,7 +14,19 @@ class PedidoViewAll(APIView):
 
     def get(self, request): 
         try:
+            search = request.query_params.get('search', '')
             pedidos = Pedidos.objects.all().order_by('-id_factura')
+
+            if search:
+                try:
+                    pedidos = pedidos.filter(
+                        Q(id_factura__icontains=search) |
+                        Q(id_cliente__nombre_cliente__icontains=search) |  
+                        Q(ciudad__icontains=search) 
+                    )
+                    
+                except Exception as e:
+                    return Response({"error": str(e)}, status=40)
 
             if not pedidos.exists():
                 return Response(
@@ -199,6 +211,13 @@ class PedidosPorEstado(APIView):
 
     def get(self, request, id_estado):
         try:
+
+            search = request.query_params.get('search', '')
+            page = request.query_params.get('page', 1)
+
+            if search:
+                pedidos = pedidos.filter(id_factura__icontains=search)
+
             # Validar que el estado exista
             estado = EstadosPedidos.objects.filter(id_estado=id_estado).first()
             if not estado:
