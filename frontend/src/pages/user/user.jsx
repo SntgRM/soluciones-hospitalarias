@@ -344,21 +344,20 @@ function User() {
             {filteredUsers.map((user) => (
               <div key={user.id} className="user-card">
                 <div className="user-card-header">
-                  <div className="user-profile">
+                  <div className="user-profile-img">
                     <img
                       src={user.profile_image_url || personsImgs.ISOTIPO}
                       alt={user.first_name}
                       onError={handleImageError}
-                      className="img-profile"
-                      style={{
-                        
-                      }}
+                      className="user-avatar"
+                      style={{}}
                     />
                   </div>
                   <div className="user-basic-info">
                     <h4 className="user-name">{`${user.first_name}`}</h4>
                     <p className="user-username">@{user.username}</p>
                   </div>
+                  {/* Botones para pantallas grandes */}
                   <div className="user-actions">
                     <button
                       className="user-action-btn user-action-view"
@@ -394,6 +393,31 @@ function User() {
                   >
                     <Shield size={12} />
                     {getRoleLabel(user.role)}
+                  </div>
+
+                  {/* Botones para móviles */}
+                  <div className="user-actions-mobile">
+                    <button
+                      className="user-action-btn user-action-view"
+                      onClick={() => openModal("view", user)}
+                      title="Ver detalles"
+                    >
+                      <Eye size={16} />
+                    </button>
+                    <button
+                      className="user-action-btn user-action-edit"
+                      onClick={() => openModal("edit", user)}
+                      title="Editar usuario"
+                    >
+                      <Edit size={16} />
+                    </button>
+                    <button
+                      className="user-action-btn user-action-delete"
+                      onClick={() => handleDelete(user)}
+                      title="Eliminar usuario"
+                    >
+                      <Trash2 size={16} />
+                    </button>
                   </div>
                 </div>
               </div>
@@ -484,6 +508,7 @@ function User() {
                         selectedImage ||
                         personsImgs.ISOTIPO ||
                         "/placeholder.svg?height=70&width=70" ||
+                        "/placeholder.svg" ||
                         "/placeholder.svg"
                       }
                       alt="Usuario"
