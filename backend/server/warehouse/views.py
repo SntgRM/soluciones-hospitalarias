@@ -20,9 +20,9 @@ class PedidoViewAll(APIView):
             if search:
                 try:
                     pedidos = pedidos.filter(
-                        Q(id_factura__icontains=search) |
-                        Q(id_cliente__nombre_cliente__icontains=search) |  
-                        Q(ciudad__icontains=search) 
+                        Q(id_factura__istartswith=search) |
+                        Q(id_cliente__nombre_cliente__istartswith=search) |  
+                        Q(ciudad__istartswith=search) 
                     )
                     
                 except Exception as e:
@@ -206,17 +206,11 @@ class PedidoResumenEstados(APIView):
 
 # Mostrar un pedido por su estado 
 class PedidosPorEstado(APIView):
-
     permission_classes = [IsAuthenticated]
 
     def get(self, request, id_estado):
         try:
-
-            search = request.query_params.get('search', '')
-            page = request.query_params.get('page', 1)
-
-            if search:
-                pedidos = pedidos.filter(id_factura__icontains=search)
+            search = request.query_params.get('search', '').strip()
 
             # Validar que el estado exista
             estado = EstadosPedidos.objects.filter(id_estado=id_estado).first()
@@ -226,25 +220,36 @@ class PedidosPorEstado(APIView):
                     status=status.HTTP_400_BAD_REQUEST
                 )
 
-            # Buscar pedidos con ese estado
-            pedidos = Pedidos.objects.filter(id_estado=id_estado).order_by('-id_factura')
+            # Base: filtrar por estado primero
+            pedidos = Pedidos.objects.filter(id_estado=id_estado).order_by("-id_factura")
+
+            # Luego aplicar búsqueda si hay texto
+            if search:
+                pedidos = pedidos.filter(
+                    Q(id_factura__istartswith=search) |
+                    Q(id_cliente__nombre_cliente__istartswith=search) |
+                    Q(ciudad__istartswith=search)
+                )
+
+            # Verificar si hay resultados
             if not pedidos.exists():
                 return Response(
-                    {'mensaje': f'No hay pedidos en el estado: {estado.nombre_estado}'},
+                    {'mensaje': f'No hay pedidos encontrados para este estado con ese criterio.'},
                     status=status.HTTP_204_NO_CONTENT
                 )
-    
+
+            # Paginación y serialización
             paginator = PaginacionPedido()
             result_page = paginator.paginate_queryset(pedidos, request)
-
             serializer = PedidoSerializer(result_page, many=True)
             return paginator.get_paginated_response(serializer.data)
 
         except Exception as e:
             return Response(
-                {'error': 'Error al obtener pedidos por estado.'},
+                {'error': 'Error al obtener pedidos por transportadora.'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+            
 
 # Mostrar los pedidos de cada transportador asignado
 class PedidosPorTransportadora(APIView):
@@ -254,14 +259,15 @@ class PedidosPorTransportadora(APIView):
         try:
             # Obtener parámetros de búsqueda y paginación
             search = request.query_params.get('search', '')
-            page = request.query_params.get('page', 1)
             
             # Filtrar pedidos por transportadora
             pedidos = Pedidos.objects.filter(id_transportadora=id_transportadora).order_by('-id_factura')
             
             # Aplicar búsqueda por factura si existe
             if search:
-                pedidos = pedidos.filter(id_factura__icontains=search)
+                pedidos = pedidos.filter(
+                    Q(id_factura__istartswith=search) 
+                )
             
             if not pedidos.exists():
                 return Response(
@@ -274,7 +280,7 @@ class PedidosPorTransportadora(APIView):
             result_page = paginator.paginate_queryset(pedidos, request)
             
             serializer = PedidoSerializer(result_page, many=True)
-            return paginator.get_paginated_response(serializer.data)
+            return paginator.get_paginated_response(serializer.data)    
 
         except Exception as e:
             return Response(
@@ -577,7 +583,11 @@ class TransportadorasView(APIView):
             transportadoras = Transportadoras.objects.all().annotate(total=Count('pedidos'))
 
             if search:
-                transportadoras = transportadoras.filter(nombre_transportadora__icontains=search)
+                transportadoras = transportadoras.filter(
+                    Q(id_transportadora__id_factura__istartswith=search) |
+                    Q(nombre_transportadora__istartswith=search) 
+                    
+                    )
 
             if not transportadoras.exists():
                 return Response({"mensaje": "No hay transportadoras registradas."}, status=status.HTTP_204_NO_CONTENT)
