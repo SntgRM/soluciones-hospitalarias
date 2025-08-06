@@ -328,6 +328,35 @@ class HistorialPedidoView(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
         
+
+class HistorialGeneralView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            historial = HistorialEstados.objects.select_related('id_factura', 'id_estado').order_by('-fecha_cambio')
+
+            if not historial.exists():
+                return Response([], status=status.HTTP_200_OK)
+                
+
+            data = []
+            for item in historial:
+                data.append({
+                    'id_historial': item.id_historial,
+                    'id_pedido': item.id_factura.id_factura,
+                    'id_estado': item.id_estado.id_estado,
+                    'nombre_estado': item.id_estado.nombre_estado,
+                    'fecha_cambio': item.fecha_cambio,
+                    'observacion': item.observacion
+                })
+
+            return Response(data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({'error': 'Error al obtener el historial general.', 'detalle': str(e)},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
 class LimpiarPedido(APIView):
 
     permission_classes = [IsAuthenticated]
