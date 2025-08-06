@@ -198,7 +198,7 @@ function FAQ() {
     <div className="faq-container">
       <div className="faq-header">
         <div className="faq-title-section">
-          <HelpCircle size={32} className="header-icons" />
+          <HelpCircle size={32} className="header-icon" />
           <div>
             <h2 className="faq-title">Centro de Ayuda</h2>
             <p className="faq-subtitle">Encuentra respuestas a las preguntas más frecuentes</p>

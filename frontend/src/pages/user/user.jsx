@@ -247,7 +247,7 @@ function User() {
       {/* Header */}
       <div className="user-management-header">
         <div className="user-header-title-section">
-          <div className="user-icon">
+          <div className="header-icon">
             <Users size={32} />
           </div>
           <div>
