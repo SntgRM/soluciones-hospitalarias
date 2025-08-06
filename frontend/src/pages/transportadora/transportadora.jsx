@@ -127,6 +127,14 @@ export default function Transportadora() {
     setSelectedDetailId(selectedDetailId === detailId ? null : detailId);
   };
 
+  const formatCurrency = (valor) =>
+    new Intl.NumberFormat("es-CO", {
+      style: "currency",
+      currency: "COP",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+  }).format(valor);
+
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
     const date = new Date(dateString);
@@ -309,6 +317,10 @@ export default function Transportadora() {
           <div className="additional-details">
             <div className="detail-row">
               <User size={16} className="detail-icon" />
+              <span>Nombre del cliente: {detail.cliente_nombre}</span>
+            </div>
+            <div className="detail-row">
+              <User size={16} className="detail-icon" />
               <span>Nombre del Vendedor: {detail.vendedor_nombre}</span>
             </div>
             <div className="detail-row">
@@ -344,18 +356,20 @@ export default function Transportadora() {
               <span>Numero de Cajas: {detail.no_caja}</span>
             </div>
             <div className="detail-row">
+              <Banknote size={16} className="detail-icon" />
+              <span>Valor: {formatCurrency(detail.valor)}</span>
+            </div>
+            <div className="detail-row">
               <HandCoins size={16} className="detail-icon" />
               <span>Tipo de recaudo: {detail.tipo_recaudo?.toUpperCase()}</span>
             </div>
             <div className="detail-row">
               <Banknote size={16} className="detail-icon" />
-              <span>Recaudo en Efectivo: {detail.recaudo_efectivo}</span>
+              <span>Recaudo en Efectivo: {formatCurrency(detail.recaudo_efectivo)}</span>
             </div>
             <div className="detail-row">
               <CreditCard size={16} className="detail-icon" />
-              <span>
-                Recaudo en Transferencia: {detail.recaudo_transferencia}
-              </span>
+              <span> Recaudo en Transferencia: {formatCurrency(detail.recaudo_transferencia)}</span>
             </div>
             <div className="detail-row">
               <Truck size={16} className="detail-icon" />
