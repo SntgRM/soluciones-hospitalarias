@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import PedidoViewAll, PedidoDetail, PedidoCreate, PedidoUpdate, PedidoDelete, PedidoResumenEstados, PedidosPorEstado, PedidosPorTransportadora, HistorialPedidoView, LimpiarPedido
+from .views import HistorialGeneralView
 from .views import ClientesView, ClienteCreate
 from .views import AlistadoresView, AlistadorCreate
 from .views import EmpacadoresView, EmpacadorCreate 
@@ -20,6 +21,7 @@ urlpatterns = [
     path('por_transportadora/<int:id_transportadora>/', PedidosPorTransportadora.as_view(), name='pedido-por-transportadora'),
     path('historial_estados/<int:pk>/', HistorialPedidoView.as_view(), name='pedido-historial-estados'),
     path('limpiar_pedido/<int:pk>/', LimpiarPedido.as_view(), name='pedido-limpiar'),
+    path('historial_general/', HistorialGeneralView.as_view(), name='historial-general'),
 
     # Clientes URLs
     path('clientesall/', ClientesView.as_view(), name='clientes-view'),
