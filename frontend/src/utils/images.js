@@ -22,6 +22,7 @@ import bookText from "../assets/icons/bookText.svg"
 import folder from "../assets/icons/folder.svg"
 import house from "../assets/icons/house.svg"
 import info from "../assets/icons/info.svg"
+import chartArea from "../assets/icons/chartArea.svg"
 
 
 // images
@@ -49,6 +50,7 @@ export const iconsImgs = {
   packageIcon,
   settings,
   check1,
+  chartArea,
 };
 
 export const personsImgs = {

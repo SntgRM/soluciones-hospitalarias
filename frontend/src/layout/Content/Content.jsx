@@ -14,21 +14,22 @@ const Content = () => {
 
     switch (lastSegment) {
       case 'dashboard':
+        return 'dashboard'
       case undefined:
         return 'Inicio';
       case 'ayuda':
         return 'Ayuda';
       case 'historial':
         return 'Historial';
+      case 'bodega':
+        return 'Bodega';
       case 'registro':
         return 'Registro';
       case 'products':
         return 'Productos';
-      case 'productsList': // Agrega este si tienes una página productsList
+      case 'productsList':
         return 'Lista de Productos';
-      // Agrega más casos para tus otras páginas si es necesario
       default:
-        // Puedes Capitalizar la primera letra del segmento si quieres
         if (lastSegment) {
           return lastSegment.charAt(0).toUpperCase() + lastSegment.slice(1);
         }
