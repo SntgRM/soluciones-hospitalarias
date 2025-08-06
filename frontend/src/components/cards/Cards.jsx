@@ -140,6 +140,41 @@ const Cards = () => {
       </div>
 
       {/* Dashboard Content */}
+              {/* Alertas importantes */}
+        <div className="cards-dashboard-alerts-section">
+          <div className="cards-dashboard-section-header">
+            <h4 className="cards-dashboard-section-title">
+              <AlertTriangle size={20} />
+              Alertas Importantes
+            </h4>
+          </div>
+          <div className="cards-dashboard-alerts-grid">
+            <div className="cards-dashboard-alert cards-dashboard-alert-warning">
+              <AlertTriangle size={18} />
+              <div className="cards-dashboard-alert-content">
+                <h5>Stock Bajo</h5>
+                <p>5 productos requieren reabastecimiento</p>
+              </div>
+              <button className="cards-dashboard-alert-action">Revisar</button>
+            </div>
+            <div className="cards-dashboard-alert cards-dashboard-alert-info">
+              <Calendar size={18} />
+              <div className="cards-dashboard-alert-content">
+                <h5>Pedidos Pendientes</h5>
+                <p>12 pedidos esperan confirmación</p>
+              </div>
+              <button className="cards-dashboard-alert-action">Ver</button>
+            </div>
+            <div className="cards-dashboard-alert cards-dashboard-alert-success">
+              <CheckCircle size={18} />
+              <div className="cards-dashboard-alert-content">
+                <h5>Meta Alcanzada</h5>
+                <p>Objetivo de ventas del mes cumplido</p>
+              </div>
+              <button className="cards-dashboard-alert-action">Detalles</button>
+            </div>
+          </div>
+        </div>
       <div className="cards-dashboard-content">
         {/* Sección de dos columnas */}
         <div className="cards-dashboard-two-column">
@@ -192,42 +227,6 @@ const Cards = () => {
                   </button>
                 )
               })}
-            </div>
-          </div>
-        </div>
-
-        {/* Alertas importantes */}
-        <div className="cards-dashboard-alerts-section">
-          <div className="cards-dashboard-section-header">
-            <h4 className="cards-dashboard-section-title">
-              <AlertTriangle size={20} />
-              Alertas Importantes
-            </h4>
-          </div>
-          <div className="cards-dashboard-alerts-grid">
-            <div className="cards-dashboard-alert cards-dashboard-alert-warning">
-              <AlertTriangle size={18} />
-              <div className="cards-dashboard-alert-content">
-                <h5>Stock Bajo</h5>
-                <p>5 productos requieren reabastecimiento</p>
-              </div>
-              <button className="cards-dashboard-alert-action">Revisar</button>
-            </div>
-            <div className="cards-dashboard-alert cards-dashboard-alert-info">
-              <Calendar size={18} />
-              <div className="cards-dashboard-alert-content">
-                <h5>Pedidos Pendientes</h5>
-                <p>12 pedidos esperan confirmación</p>
-              </div>
-              <button className="cards-dashboard-alert-action">Ver</button>
-            </div>
-            <div className="cards-dashboard-alert cards-dashboard-alert-success">
-              <CheckCircle size={18} />
-              <div className="cards-dashboard-alert-content">
-                <h5>Meta Alcanzada</h5>
-                <p>Objetivo de ventas del mes cumplido</p>
-              </div>
-              <button className="cards-dashboard-alert-action">Detalles</button>
             </div>
           </div>
         </div>

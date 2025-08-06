@@ -50,7 +50,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
   padding-bottom: 16px;
   border-bottom: 1px solid var(--cards-dashboard-gray-200);
 }
@@ -238,7 +237,6 @@
   align-items: center;
   margin-bottom: 16px;
   padding-bottom: 12px;
-  border-bottom: 1px solid var(--cards-dashboard-gray-200);
 }
 
 .cards-dashboard-section-title {
@@ -393,10 +391,10 @@
 /* Sección de alertas */
 .cards-dashboard-alerts-section {
   background: var(--cards-dashboard-white);
-  border: 1px solid var(--cards-dashboard-gray-200);
   border-radius: var(--cards-dashboard-border-radius);
   padding: 20px;
   box-shadow: var(--cards-dashboard-shadow-sm);
+  margin-bottom: 10px;
 }
 
 .cards-dashboard-alerts-grid {
