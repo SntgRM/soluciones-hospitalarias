@@ -1,179 +1,207 @@
 "use client"
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from "recharts"
-import { LayoutDashboard, TrendingUp, ShoppingCart, DollarSign, Package, Calendar } from "lucide-react"
+import { Home, Shield, Package, ShoppingCart, Users, BarChart3, Settings, Bell, Calendar, Clock, CheckCircle } from "lucide-react"
 import "./inicio.css"
 
-// Datos de ejemplo para las gráficas
-const ventasData = [
-  { mes: "Ene", ventas: 4000, pedidos: 240 },
-  { mes: "Feb", ventas: 3000, pedidos: 198 },
-  { mes: "Mar", ventas: 2000, pedidos: 156 },
-  { mes: "Abr", ventas: 2780, pedidos: 208 },
-  { mes: "May", ventas: 1890, pedidos: 142 },
-  { mes: "Jun", ventas: 2390, pedidos: 178 },
-  { mes: "Jul", ventas: 3490, pedidos: 265 },
-]
+const WelcomePage = () => {
+  const currentTime = new Date().toLocaleTimeString('es-ES', { 
+    hour: '2-digit', 
+    minute: '2-digit' 
+  })
+  const currentDate = new Date().toLocaleDateString('es-ES', { 
+    weekday: 'long', 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+  })
 
-const actividadSemanalData = [
-  { dia: "Lun", actividad: 65 },
-  { dia: "Mar", actividad: 78 },
-  { dia: "Mié", actividad: 90 },
-  { dia: "Jue", actividad: 81 },
-  { dia: "Vie", actividad: 56 },
-  { dia: "Sáb", actividad: 45 },
-  { dia: "Dom", actividad: 38 },
-]
+  const roleFeatures = {
+    admin: [
+      { icon: Users, title: "Gestión de Usuarios", description: "Administra permisos y roles del sistema" },
+      { icon: BarChart3, title: "Reportes Avanzados", description: "Accede a análisis detallados y métricas" },
+      { icon: Settings, title: "Configuración", description: "Personaliza el sistema según tus necesidades" }
+    ],
+    bodega: [
+      { icon: Package, title: "Control de Inventario", description: "Gestiona stock y movimientos de productos" },
+      { icon: CheckCircle, title: "Recepción de Mercancía", description: "Registra entradas y salidas de almacén" },
+      { icon: BarChart3, title: "Reportes de Bodega", description: "Consulta estadísticas de inventario" }
+    ],
+    ventas: [
+      { icon: ShoppingCart, title: "Gestión de Ventas", description: "Procesa pedidos y cotizaciones" },
+      { icon: Users, title: "Clientes", description: "Administra tu cartera de clientes" },
+      { icon: BarChart3, title: "Métricas de Ventas", description: "Revisa tu rendimiento y comisiones" }
+    ]
+  }
 
-const DashboardPage = () => {
   return (
     <div className="dashboard-container">
       <div className="dashboard-wrapper">
-        {/* Header mejorado */}
+        {/* Header de Bienvenida */}
         <div className="dashboard-header">
           <div className="header-content">
             <div className="header-left">
               <div className="header-icon">
-                <LayoutDashboard size={28} />
+                <Home size={28} />
               </div>
               <div className="header-text">
-                <h1 className="header-title">Dashboard Ejecutivo</h1>
-                <p className="header-subtitle">Panel de control y análisis de datos</p>
+                <h1 className="header-title">Soluciones Hospitalarias de la Costa S.A.S</h1>
+                <p className="header-subtitle">Un mundo de Soluciones - Sistema de Gestión Integral</p>
               </div>
-            </div>
-            <div className="header-right">
-              <div className="status-info">
-                <p className="status-label">Última actualización</p>
-                <p className="status-time">Hoy, 14:30</p>
-              </div>
-              <div className="status-indicator"></div>
             </div>
           </div>
         </div>
 
-        {/* Tarjetas de estadísticas */}
-        <div className="stats-grid">
-          <div className="stat-card">
-            <div className="stat-icon stat-icon-green">
-              <DollarSign size={24} />
+        {/* Información de la empresa */}
+        <div className="company-info-section">
+          <div className="company-card">
+            <div className="company-header">
+              <div className="company-logo">
+                <Shield size={48} />
+              </div>
+              <div className="company-intro">
+                <h2>¿Quiénes somos?</h2>
+                <p>
+                  Somos una empresa proactiva e innovadora dedicada a brindarle soluciones a sus clientes 
+                  en la adquisición de equipos médicos, medicamentos, insumos hospitalarios, repuestos, 
+                  accesorios y gestión de mantenimiento, naciendo así en respuesta a las necesidades del 
+                  sector salud de encontrar un aliado que le suministre un servicio integral.
+                </p>
+              </div>
             </div>
-            <div className="stat-info">
-              <p className="stat-label">Ventas Totales</p>
-              <p className="stat-value">$45,231</p>
-              <p className="stat-trend stat-trend-positive">
-                <TrendingUp size={14} />
-                +12% vs mes anterior
-              </p>
-            </div>
-          </div>
+            
+            <div className="company-values">
+              <div className="value-card">
+                <div className="value-icon value-icon-mission">
+                  <CheckCircle size={32} />
+                </div>
+                <div className="value-content">
+                  <h3>Misión</h3>
+                  <p>
+                    Ofrecemos un servicio integral a nuestros clientes a través de la asesoría en la 
+                    adquisición de dispositivos médicos, repuestos, accesorios, insumos hospitalarios 
+                    y medicamentos, realizamos mantenimiento de equipos médicos cumpliendo con la 
+                    normativa legal vigente, apoyándonos con plataformas tecnológicas.
+                  </p>
+                </div>
+              </div>
 
-          <div className="stat-card">
-            <div className="stat-icon stat-icon-blue">
-              <ShoppingCart size={24} />
-            </div>
-            <div className="stat-info">
-              <p className="stat-label">Pedidos</p>
-              <p className="stat-value">1,423</p>
-              <p className="stat-trend stat-trend-positive">
-                <TrendingUp size={14} />
-                +8% vs mes anterior
-              </p>
-            </div>
-          </div>
-          <div className="stat-card">
-            <div className="stat-icon stat-icon-orange">
-              <Package size={24} />
-            </div>
-            <div className="stat-info">
-              <p className="stat-label">Productos</p>
-              <p className="stat-value">2,847</p>
-              <p className="stat-trend stat-trend-warning">
-                <Package size={14} />
-                347 en stock bajo
-              </p>
+              <div className="value-card">
+                <div className="value-icon value-icon-vision">
+                  <BarChart3 size={32} />
+                </div>
+                <div className="value-content">
+                  <h3>Visión</h3>
+                  <p>
+                    En el 2030 estaremos consolidados como una empresa líder en Colombia en la 
+                    comercialización de productos médicos y en soluciones tecnológicas para el 
+                    apoyo a la gestión de la tecnología Biomédica manteniendo así un nivel alto 
+                    de calidad para seguir siendo identificados como símbolo de excelencia en el sector salud.
+                  </p>
+                </div>
+              </div>
+
+              <div className="value-card value-card-full">
+                <div className="value-icon value-icon-quality">
+                  <Settings size={32} />
+                </div>
+                <div className="value-content">
+                  <h3>Política de Calidad</h3>
+                  <p>
+                    Nos comprometemos a garantizar la satisfacción de las necesidades de nuestros clientes 
+                    ofreciéndoles productos y servicios de acuerdo a los requisitos especificados en el área 
+                    hospitalaria, haciendo entrega de estos de manera eficaz y oportuna brindándole una 
+                    atención personalizada. Contamos con un recurso humano altamente calificado bajo los 
+                    principios de seriedad, responsabilidad, cumplimiento y honestidad.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-
-        {/* Gráficas principales */}
-        <div className="charts-grid">
-          {/* Gráfica de barras - Ventas mensuales */}
-          <div className="chart-card">
-            <div className="chart-header">
-              <div className="chart-header-icon chart-icon-green">
-                <BarChart size={20} />
+                {/* Mensaje de bienvenida personalizado */}
+        <div className="welcome-message">
+          <div className="message-card">
+            <div className="message-header">
+              <div className="message-icon">
+                <CheckCircle size={24} />
               </div>
-              <div className="chart-header-text">
-                <h3 className="chart-title">Ventas Mensuales</h3>
-                <p className="chart-subtitle">Últimos 7 meses</p>
-              </div>
+              <h3>¡Bienvenido al Sistema de Gestión!</h3>
             </div>
-            <div className="chart-container">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={ventasData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#0032961e" />
-                  <XAxis dataKey="mes" stroke="#000000ff" fontSize={12} />
-                  <YAxis stroke="#000000ff" fontSize={12} />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: "#f0fff0", // Cambiado a un verde muy claro
-                      border: "1px solid #e5e7eb",
-                      borderRadius: "8px",
-                      boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-                    }}
-                  />
-                  <Bar
-                    dataKey="ventas"
-                    fill="#10b91eff"
-                    radius={[4, 4, 0, 0]}
-                    activeBar={{ fill: "#08bb17ff", strokeWidth: 2 }}
-                  />
-                </BarChart>
-              </ResponsiveContainer>
+            <div className="message-content">
+              <p>
+                Nuestro sistema de gestión está diseñado específicamente para el sector de la salud, 
+                integrando todas las áreas operativas de Soluciones Hospitalarias de la Costa S.A.S. 
+                Utiliza el menú de navegación para acceder a las diferentes funcionalidades según tu rol asignado.
+              </p>
+              <div className="message-tips">
+                <h4>Nuestros Servicios:</h4>
+                <ul>
+                  <li>Comercialización de equipos médicos y dispositivos especializados</li>
+                  <li>Suministro de medicamentos genéricos y comerciales</li>
+                  <li>Gestión de insumos hospitalarios y accesorios médicos</li>
+                  <li>Mantenimiento preventivo y correctivo de equipos biomédicos</li>
+                  <li>Asesoría técnica especializada en tecnología hospitalaria</li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
+        {/* Tarjetas de acceso rápido por rol */}
+        <div className="welcome-section">
+          <h2 className="section-title">Acceso por Rol del Sistema</h2>
+          <div className="roles-grid">
+            <div className="role-card">
+              <div className="role-icon role-icon-admin">
+                <Shield size={32} />
+              </div>
+              <div className="role-info">
+                <h3 className="role-title">Administrador</h3>
+                <p className="role-description">Control total del sistema de gestión hospitalaria</p>
+                <div className="role-features">
+                  {roleFeatures.admin.map((feature, index) => (
+                    <div key={index} className="feature-item">
+                      <feature.icon size={16} />
+                      <span>{feature.title}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
 
-        {/* Gráfica de línea - Actividad semanal */}
-        <div className="chart-card chart-card-full">
-          <div className="chart-header-with-stats">
-            <div className="chart-header">
-              <div className="chart-header-icon chart-icon-purple">
-                <Calendar size={20} />
+            <div className="role-card">
+              <div className="role-icon role-icon-bodega">
+                <Package size={32} />
               </div>
-              <div className="chart-header-text">
-                <h3 className="chart-title">Actividad de la Semana</h3>
-                <p className="chart-subtitle">Porcentaje de actividad por día</p>
+              <div className="role-info">
+                <h3 className="role-title">Bodega</h3>
+                <p className="role-description">Gestión de inventario de equipos médicos e insumos</p>
+                <div className="role-features">
+                  {roleFeatures.bodega.map((feature, index) => (
+                    <div key={index} className="feature-item">
+                      <feature.icon size={16} />
+                      <span>{feature.title}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-            <div className="chart-stats">
-              <p className="chart-stats-value">68%</p>
-              <p className="chart-stats-label">Promedio semanal</p>
+
+            <div className="role-card">
+              <div className="role-icon role-icon-ventas">
+                <ShoppingCart size={32} />
+              </div>
+              <div className="role-info">
+                <h3 className="role-title">Ventas</h3>
+                <p className="role-description">Gestión de clientes y comercialización de productos</p>
+                <div className="role-features">
+                  {roleFeatures.ventas.map((feature, index) => (
+                    <div key={index} className="feature-item">
+                      <feature.icon size={16} />
+                      <span>{feature.title}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="chart-container chart-container-line">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={actividadSemanalData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
-                <XAxis dataKey="dia" stroke="#6b7280" fontSize={12} />
-                <YAxis stroke="#6b7280" fontSize={12} />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "#ffffff",
-                    border: "1px solid #e5e7eb",
-                    borderRadius: "8px",
-                    boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-                  }}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="actividad"
-                  stroke="#8b5cf6"
-                  strokeWidth={3}
-                  dot={{ fill: "#8b5cf6", strokeWidth: 2, r: 6 }}
-                  activeDot={{ r: 8, stroke: "#8b5cf6", strokeWidth: 2 }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
           </div>
         </div>
       </div>
@@ -181,4 +209,4 @@ const DashboardPage = () => {
   )
 }
 
-export default DashboardPage
+export default WelcomePage
