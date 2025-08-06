@@ -26,6 +26,8 @@ const Cards = () => {
     navigate("/pedidos")
   }
 
+
+
   // Datos simulados para el dashboard
   const dashboardStats = [
     {
@@ -152,26 +154,26 @@ const Cards = () => {
             <div className="cards-dashboard-alert cards-dashboard-alert-warning">
               <AlertTriangle size={18} />
               <div className="cards-dashboard-alert-content">
-                <h5>Stock Bajo</h5>
-                <p>5 productos requieren reabastecimiento</p>
+                <h5>Pedido sin bajar a bodega</h5>
+                <p>La factura $factura no sigue el consecutivo</p>
               </div>
-              <button className="cards-dashboard-alert-action">Revisar</button>
+              <button className="cards-dashboard-alert-action">REVISAR</button>
             </div>
             <div className="cards-dashboard-alert cards-dashboard-alert-info">
               <Calendar size={18} />
               <div className="cards-dashboard-alert-content">
-                <h5>Pedidos Pendientes</h5>
-                <p>12 pedidos esperan confirmación</p>
+                <h5>Pedidos anulados este mes</h5>
+                <p>$pedidosanulados pedidos anulados este mes</p>
               </div>
-              <button className="cards-dashboard-alert-action">Ver</button>
+              <button className="cards-dashboard-alert-action">VER</button>
             </div>
-            <div className="cards-dashboard-alert cards-dashboard-alert-success">
-              <CheckCircle size={18} />
+            <div className="cards-dashboard-alert cards-dashboard-alert-warning">
+              <AlertTriangle size={18} />
               <div className="cards-dashboard-alert-content">
-                <h5>Meta Alcanzada</h5>
-                <p>Objetivo de ventas del mes cumplido</p>
+                <h5>Nuevas PQR registradas</h5>
+                <p>$numdepqr registradas hoy</p>
               </div>
-              <button className="cards-dashboard-alert-action">Detalles</button>
+              <button className="cards-dashboard-alert-action">REVISAR</button>
             </div>
           </div>
         </div>
