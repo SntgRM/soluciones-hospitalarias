@@ -6,7 +6,7 @@ import { personsImgs } from "../../utils/images";
 import { navigationLinks_bodega, navigationLinks_ventas, navigationLinks_admin, inicioLink } from "../../data/data";
 import "./Sidebar.css";
 import { SidebarContext } from "../../context/sidebarContext";
-import { ChevronDown, X, Warehouse, BadgeDollarSign } from "lucide-react";
+import { ChevronDown, X, Warehouse, BadgeDollarSign, ChartArea } from "lucide-react";
 
 const Sidebar = () => {
   const [sidebarClass, setSidebarClass] = useState("");

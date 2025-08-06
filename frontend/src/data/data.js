@@ -19,6 +19,12 @@ export const navigationLinks_bodega = [
         image: iconsImgs.truck,
         path: '/transportadora'
     },
+        {
+        id: 4,
+        title: 'Dashboard',
+        image: iconsImgs.chartArea,
+        path: '/dashboard'
+    },
     
 ];
 

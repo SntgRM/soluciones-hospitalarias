@@ -18,6 +18,7 @@ import { useResizeAnimationStopper } from "./utils/hooks";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import RoleProtectedRoute from "./components/RoleProtectedRoute.jsx";
 import Inicio from "./pages/inicio/inicio.jsx"
+import Dashboard from "./pages/dashboard/dashboard.jsx"
 
 function App() {
   useResizeAnimationStopper();
@@ -57,6 +58,16 @@ function App() {
                     allowedRoles={["administrador", "bodega", "ventas"]}
                   >
                     <Transportadora />
+                  </RoleProtectedRoute>
+                }
+              />
+              <Route
+                path="dashboard"
+                element={
+                  <RoleProtectedRoute
+                    allowedRoles={["administrador", "bodega", "ventas"]}
+                  >
+                    <Dashboard />
                   </RoleProtectedRoute>
                 }
               />
