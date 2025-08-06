@@ -3,7 +3,7 @@ import { iconsImgs, personsImgs } from '../utils/images';
 export const navigationLinks_bodega = [
     {
         id: 1,
-        title: 'Bodega',
+        title: 'Gestion',
         image: iconsImgs.house, 
         path: '/home'
     },

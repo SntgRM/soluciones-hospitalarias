@@ -47,11 +47,15 @@ const Home = () => {
     <div className={getMainContentClass()}>
       <div className="dashboard-header">
         <div className="header-title-section">
-          <Activity size={32} className="header-icons" />
-          <div>
-            <h1 className="dashboard-title">Gestión de Bodega</h1>
-            <p className="dashboard-subtitle">Panel de control y gestión de pedidos</p>
-          </div>
+            <div className="header-left">
+              <div className="header-icon">
+                <Activity size={28} />
+              </div>
+              <div className="header-text">
+                <h1 className="header-title">Bodega</h1>
+                <p className="header-subtitle">Panel de control y gestion de bodega</p>
+              </div>
+            </div>
         </div>
       </div>
 

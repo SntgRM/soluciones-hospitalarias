@@ -56,12 +56,16 @@
   gap: 16px;
 }
 
-.header-icons {
-  color: rgb(0, 0, 0);
-  border-radius: var(--user-border-radius);
+/* .header-icons {
+  padding: 12px;
+  background: linear-gradient(135deg, var(--dashboard-primary-color) 0%, #16a34a 100%);
+  border-radius: var(--dashboard-border-radius);
+  box-shadow: var(--dashboard-shadow-md);
+  color: white;
   display: flex;
-  gap: 10px;
-}
+  align-items: center;
+  justify-content: center;
+} */
 .dashboard-title {
   font-size: 2rem;
   font-weight: 700;
