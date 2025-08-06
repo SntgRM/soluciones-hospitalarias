@@ -160,6 +160,11 @@ export const getHistorialPedidos = async (pk) => {
     return response.data;
 };
 
+export const getHistorialGeneral = async () => {
+    const response = await api.get('bodega/historial_general/');
+    return response.data;
+};
+
 export const getClientes = async (search = "") => {
   const response = await api.get(`bodega/clientesall/?search=${encodeURIComponent(search)}`);
 
