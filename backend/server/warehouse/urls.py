@@ -8,6 +8,7 @@ from .views import EnrutadoresView, EnrutadorCreate
 from .views import TransportadorasView, TransportadoraCreate
 from .views import VendedoresView, VendedorCreate
 from .views import EstadosView
+from .views import FilterOptionsView
 
 urlpatterns = [
     # Pedidos URLs
@@ -48,6 +49,8 @@ urlpatterns = [
     path('vendedorescreate/', VendedorCreate.as_view(), name='vendedor-create'),
 
     # Estados URLs
-    path('estadosview/', EstadosView.as_view(), name='estados-view')
+    path('estadosview/', EstadosView.as_view(), name='estados-view'),
 
+    # Filtro de opciones
+     path('filter_options/', FilterOptionsView.as_view(), name='filter-options'),
 ]
