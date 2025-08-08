@@ -6,6 +6,7 @@ from rest_framework.pagination import PageNumberPagination
 from .models import Pedidos, EstadosPedidos, HistorialEstados, Clientes, Alistadores, Empacadores, Enrutadores, Transportadoras, Vendedores
 from django.db.models import Count, Q
 from django.utils import timezone
+from datetime import datetime
 from .serializers import PedidoSerializer, ClienteSerializer, AlistadorSerializer, EmpacadorSerializer, EnrutadorSerializer, TransportadoraSerializer, VendedorSerializer, EstadoPedidoSerializer
 
 # Mostrar todas los pedidos
@@ -16,6 +17,68 @@ class PedidoViewAll(APIView):
         try:
             search = request.query_params.get('search', '')
             pedidos = Pedidos.objects.all().order_by('-id_factura')
+
+            # --- Filtros permitidos ---
+            tipo_recaudo = request.query_params.get('tipo_recaudo')
+            fecha_enrutamiento_inicio = request.query_params.get('fecha_enrutamiento_inicio')
+            fecha_enrutamiento_fin = request.query_params.get('fecha_enrutamiento_fin')
+            fecha_entrega_inicio = request.query_params.get('fecha_entrega_inicio')
+            fecha_entrega_fin = request.query_params.get('fecha_entrega_fin')
+            fecha_recibido_inicio = request.query_params.get('fecha_inicio')
+            fecha_recibido_fin = request.query_params.get('fecha_fin')
+            id_vendedor = request.query_params.get('vendedor')
+            id_transportadora = request.query_params.get('transportadora')
+            id_enrutador = request.query_params.get('enrutador')
+            id_alistador = request.query_params.get('alistador')
+            id_empacador = request.query_params.get('empacador')
+
+            # Función para parsear fechas
+            def parse_date(date_str):
+                try:
+                    return datetime.strptime(date_str, "%Y-%m-%d").date()
+                except:
+                    return None
+
+            # Aplicar filtros
+            if tipo_recaudo:
+                pedidos = pedidos.filter(tipo_recaudo__iexact=tipo_recaudo)
+            if id_vendedor:
+                pedidos = pedidos.filter(id_vendedor=id_vendedor)
+            if id_transportadora:
+                pedidos = pedidos.filter(id_transportadora=id_transportadora)
+            if id_enrutador:
+                pedidos = pedidos.filter(id_enrutador=id_enrutador)
+            if id_alistador:
+                pedidos = pedidos.filter(id_alistador=id_alistador)
+            if id_empacador:
+                pedidos = pedidos.filter(id_empacador=id_empacador)
+
+            if fecha_recibido_inicio:
+                fi = parse_date(fecha_recibido_inicio)
+                if fi:
+                    pedidos = pedidos.filter(fecha_recibido__date__gte=fi)
+            if fecha_recibido_fin:
+                ff = parse_date(fecha_recibido_fin)
+                if ff:
+                    pedidos = pedidos.filter(fecha_recibido__date__lte=ff)
+
+            if fecha_enrutamiento_inicio:
+                fei = parse_date(fecha_enrutamiento_inicio)
+                if fei:
+                    pedidos = pedidos.filter(fecha_enrutamiento__date__gte=fei)
+            if fecha_enrutamiento_fin:
+                fef = parse_date(fecha_enrutamiento_fin)
+                if fef:
+                    pedidos = pedidos.filter(fecha_enrutamiento__date__lte=fef)
+
+            if fecha_entrega_inicio:
+                foi = parse_date(fecha_entrega_inicio)
+                if foi:
+                    pedidos = pedidos.filter(fecha_entrega__date__gte=foi)
+            if fecha_entrega_fin:
+                fof = parse_date(fecha_entrega_fin)
+                if fof:
+                    pedidos = pedidos.filter(fecha_entrega__date__lte=fof)
 
             if search:
                 try:
@@ -222,6 +285,67 @@ class PedidosPorEstado(APIView):
 
             # Base: filtrar por estado primero
             pedidos = Pedidos.objects.filter(id_estado=id_estado).order_by("-id_factura")
+
+
+            # --- Filtros permitidos ---
+            tipo_recaudo = request.query_params.get('tipo_recaudo')
+            fecha_enrutamiento_inicio = request.query_params.get('fecha_enrutamiento_inicio')
+            fecha_enrutamiento_fin = request.query_params.get('fecha_enrutamiento_fin')
+            fecha_entrega_inicio = request.query_params.get('fecha_entrega_inicio')
+            fecha_entrega_fin = request.query_params.get('fecha_entrega_fin')
+            fecha_recibido_inicio = request.query_params.get('fecha_inicio')
+            fecha_recibido_fin = request.query_params.get('fecha_fin')
+            id_vendedor = request.query_params.get('vendedor')
+            id_transportadora = request.query_params.get('transportadora')
+            id_enrutador = request.query_params.get('enrutador')
+            id_alistador = request.query_params.get('alistador')
+            id_empacador = request.query_params.get('empacador')
+
+            def parse_date(date_str):
+                try:
+                    return datetime.strptime(date_str, "%Y-%m-%d").date()
+                except:
+                    return None
+
+            if tipo_recaudo:
+                pedidos = pedidos.filter(tipo_recaudo__iexact=tipo_recaudo)
+            if id_vendedor:
+                pedidos = pedidos.filter(id_vendedor=id_vendedor)
+            if id_transportadora:
+                pedidos = pedidos.filter(id_transportadora=id_transportadora)
+            if id_enrutador:
+                pedidos = pedidos.filter(id_enrutador=id_enrutador)
+            if id_alistador:
+                pedidos = pedidos.filter(id_alistador=id_alistador)
+            if id_empacador:
+                pedidos = pedidos.filter(id_empacador=id_empacador)
+
+            if fecha_recibido_inicio:
+                fi = parse_date(fecha_recibido_inicio)
+                if fi:
+                    pedidos = pedidos.filter(fecha_recibido__date__gte=fi)
+            if fecha_recibido_fin:
+                ff = parse_date(fecha_recibido_fin)
+                if ff:
+                    pedidos = pedidos.filter(fecha_recibido__date__lte=ff)
+
+            if fecha_enrutamiento_inicio:
+                fei = parse_date(fecha_enrutamiento_inicio)
+                if fei:
+                    pedidos = pedidos.filter(fecha_enrutamiento__date__gte=fei)
+            if fecha_enrutamiento_fin:
+                fef = parse_date(fecha_enrutamiento_fin)
+                if fef:
+                    pedidos = pedidos.filter(fecha_enrutamiento__date__lte=fef)
+
+            if fecha_entrega_inicio:
+                foi = parse_date(fecha_entrega_inicio)
+                if foi:
+                    pedidos = pedidos.filter(fecha_entrega__date__gte=foi)
+            if fecha_entrega_fin:
+                fof = parse_date(fecha_entrega_fin)
+                if fof:
+                    pedidos = pedidos.filter(fecha_entrega__date__lte=fof)
 
             # Luego aplicar búsqueda si hay texto
             if search:
@@ -703,3 +827,48 @@ class EstadosView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'error': 'Error al obtener estados'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+
+class FilterOptionsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            vendedores = [
+                {"value": v.id_vendedor, "label": v.nombre_vendedor}
+                for v in Vendedores.objects.all()
+            ]
+            transportadoras = [
+                {"value": t.id_transportadora, "label": t.nombre_transportadora}
+                for t in Transportadoras.objects.all()
+            ]
+            enrutadores = [
+                {"value": e.id_enrutador, "label": e.nombre_enrutador}
+                for e in Enrutadores.objects.all()
+            ]
+            alistadores = [
+                {"value": a.id_alistador, "label": a.nombre_alistador}
+                for a in Alistadores.objects.all()
+            ]
+            empacadores = [
+                {"value": e.id_empacador, "label": e.nombre_empacador}
+                for e in Empacadores.objects.all()
+            ]
+
+            tipos_recaudo = [
+                {"value": "efectivo", "label": "Efectivo"},
+                {"value": "transferencia", "label": "Transferencia"},
+                {"value": "efectivo y transferencia", "label": "Efectivo y Transferencia"},
+            ]
+
+            return Response({
+                "vendedores": vendedores,
+                "transportadoras": transportadoras,
+                "enrutadores": enrutadores,
+                "alistadores": alistadores,
+                "empacadores": empacadores,
+                "tipos_recaudo": tipos_recaudo
+            }, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
