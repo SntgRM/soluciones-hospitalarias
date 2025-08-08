@@ -8,6 +8,8 @@ from .views import EnrutadoresView, EnrutadorCreate
 from .views import TransportadorasView, TransportadoraCreate
 from .views import VendedoresView, VendedorCreate
 from .views import EstadosView
+from .views import PedidoResumenFechas, AlistadoresResumen
+from .views import PqrsViewAll, PqrsCreate
 from .views import FilterOptionsView
 
 urlpatterns = [
@@ -53,4 +55,13 @@ urlpatterns = [
 
     # Filtro de opciones
      path('filter_options/', FilterOptionsView.as_view(), name='filter-options'),
+
+    #Pqrs
+    path('pqrsviewall/', PqrsViewAll.as_view(), name='pqrs-viewall'),
+    path('pqrscreate/', PqrsCreate.as_view(), name='pqrs-create'),
+
+     # Informes URLs
+    path('resumenfechas/', PedidoResumenFechas.as_view(), name='resumen-fechas'),
+    path('alistadoresresumen/', AlistadoresResumen.as_view(), name='alistadores-resumen')
+
 ]
