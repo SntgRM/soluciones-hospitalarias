@@ -19,6 +19,7 @@ import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import RoleProtectedRoute from "./components/RoleProtectedRoute.jsx";
 import Inicio from "./pages/inicio/inicio.jsx"
 import Dashboard from "./pages/dashboard/dashboard.jsx"
+import PQR from "./pages/pqr/pqr.jsx"
 
 function App() {
   useResizeAnimationStopper();
@@ -68,6 +69,16 @@ function App() {
                     allowedRoles={["administrador", "bodega", "ventas"]}
                   >
                     <Dashboard />
+                  </RoleProtectedRoute>
+                }
+              />
+              <Route
+                path="pqr"
+                element={
+                  <RoleProtectedRoute
+                    allowedRoles={["administrador", "bodega", "ventas"]}
+                  >
+                    <PQR />
                   </RoleProtectedRoute>
                 }
               />
