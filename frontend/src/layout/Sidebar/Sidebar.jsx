@@ -111,11 +111,10 @@ const Sidebar = () => {
                   onClick={handleLinkClick}
                   role="menuitem"
                 >
-                  <img
-                    src={inicioLink.image || "/placeholder.svg"}
+                  <inicioLink.icon
                     className="nav-link-icon"
-                    style={{ filter: "invert(100%)" }}
-                    alt={inicioLink.title}
+                    size={20}
+                    stroke="#fff"
                   />
                   <span className="nav-link-text">
                     {inicioLink.title}
@@ -171,11 +170,10 @@ const Sidebar = () => {
                             onClick={handleLinkClick}
                             role="menuitem"
                           >
-                            <img
-                              src={navigationLink.image || "/placeholder.svg"}
+                            <navigationLink.icon
                               className="nav-link-icon"
-                              style={{ filter: "invert(100%)" }}
-                              alt={navigationLink.title}
+                              size={20}
+                              strokeWidth={2}
                             />
                             <span className="nav-link-text">
                               {navigationLink.title}
@@ -236,11 +234,10 @@ const Sidebar = () => {
                             onClick={handleLinkClick}
                             role="menuitem"
                           >
-                            <img
-                              src={navigationLink.image || "/placeholder.svg"}
+                            <navigationLink.icon
                               className="nav-link-icon"
-                              style={{ filter: "invert(100%)" }}
-                              alt={navigationLink.title}
+                              size={20}
+                              strokeWidth={2}
                             />
                             <span className="nav-link-text">
                               {navigationLink.title}
@@ -253,7 +250,7 @@ const Sidebar = () => {
               </div>
             )}
 
-            {/* Enlaces individuales (ayuda, usuarios, salir) */}
+            {/* Enlaces individuales (ayuda, usuarios) */}
             <ul className="nav-list extra-links">
               {navigationLinks_admin
                 .filter((link) => {
@@ -289,11 +286,10 @@ const Sidebar = () => {
                         onClick={handleLinkClick}
                         role="menuitem"
                       >
-                        <img
-                          src={navigationLink.image || "/placeholder.svg"}
+                        <navigationLink.icon
                           className="nav-link-icon"
-                          style={{ filter: "invert(100%)" }}
-                          alt={navigationLink.title}
+                          size={20}
+                          strokeWidth={2}
                         />
                         <span className="nav-link-text">
                           {navigationLink.title}
