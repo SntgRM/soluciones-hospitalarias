@@ -140,6 +140,8 @@ class Pedidos(models.Model):
     fecha_recibido = models.DateTimeField(blank=True, null=True)
     valor = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     tipo_recaudo = models.CharField(max_length=24, choices=RECAUDO_CHOICES, blank=True, null=True)
+    direccion = models.CharField(max_length=150, blank=True, null=True)
+    fecha_preparacion = models.DateTimeField(blank=True, null=True)
     recaudo_efectivo = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     recaudo_transferencia = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     no_caja = models.IntegerField(blank=True, null=True)
@@ -178,3 +180,29 @@ class HistorialEstados(models.Model):
         db_table = 'historial_estados'
         verbose_name = "Historial de Estado"
         verbose_name_plural = "Historiales de Estados"
+
+class Pqrs(models.Model):
+    id_pqr = models.AutoField(primary_key=True)
+    fecha_novedadcliente = models.DateTimeField(null=True, blank=True)
+    clasificacion = models.CharField(max_length=50, choices=[
+        ('BODEGA', 'BODEGA'),
+        ('VENTAS', 'VENTAS'),
+        ('CLIENTES', 'CLIENTES'),
+        ('TRANSPORTE INTERNO', 'TRANSPORTE INTERNO'),
+        ('TRANSPORTE EXTERNO', 'TRANSPORTE EXTERNO'),
+    ])
+    novedad_cliente = models.TextField()
+    resuelto = models.BooleanField(default=False)
+    fecha_novedadbodega = models.DateTimeField(null=True, blank=True)
+    novedad_bodega = models.TextField(null=True, blank=True)
+    id_factura = models.ForeignKey('Pedidos', on_delete=models.CASCADE)
+    id_vendedor = models.ForeignKey('Vendedores', on_delete=models.CASCADE)
+    id_cliente = models.ForeignKey('Clientes', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Pqr {self.id_pqr} - ID factura {self.id_factura} - Cliente {self.id_cliente}"
+
+    class Meta:
+        db_table = 'Pqrs'
+        verbose_name = "Pqr"
+        verbose_name_plural = "Pqrs"
