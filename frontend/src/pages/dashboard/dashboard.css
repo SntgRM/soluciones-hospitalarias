@@ -528,3 +528,73 @@ width: 100%;
     height: 200px;
   }
 }
+
+/* Controles de periodo (segmented control) */
+.period-buttons {
+display: inline-flex;
+align-items: center;
+gap: 6px;
+padding: 6px;
+margin: 0 0 12px 0; /* reemplaza el margin inline */
+background: var(--dashboard-bg-light);
+border: 1px solid var(--dashboard-border-color);
+border-radius: 9999px;
+box-shadow: var(--dashboard-shadow-sm);
+}
+
+.period-buttons button {
+appearance: none;
+border: 0;
+background: transparent;
+color: var(--dashboard-text-medium);
+font-weight: 600;
+padding: 8px 14px;
+border-radius: 9999px;
+cursor: pointer;
+transition: var(--dashboard-transition);
+position: relative;
+line-height: 1;
+}
+
+.period-buttons button:hover {
+background: var(--dashboard-light-green);
+color: var(--dashboard-text-dark);
+}
+
+.period-buttons button.active {
+background: var(--dashboard-primary-color);
+color: #ffffff;
+box-shadow: 0 2px 6px rgba(16, 185, 129, 0.35);
+transform: translateY(-1px);
+}
+
+.period-buttons button.active:hover {
+background: var(--dashboard-primary-hover);
+}
+
+.period-buttons button:focus-visible {
+outline: none;
+box-shadow: 0 0 0 3px var(--color-green-light);
+}
+
+.period-buttons button[disabled] {
+opacity: 0.6;
+pointer-events: none;
+}
+
+@media (max-width: 480px) {
+.period-buttons {
+  gap: 4px;
+  padding: 4px;
+}
+.period-buttons button {
+  padding: 6px 10px;
+  font-size: 0.875rem;
+}
+}
+
+@media (prefers-reduced-motion: reduce) {
+.period-buttons button {
+  transition: none;
+}
+}
