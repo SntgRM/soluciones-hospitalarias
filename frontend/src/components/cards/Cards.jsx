@@ -2,21 +2,7 @@
 
 import { useNavigate } from "react-router-dom"
 import { iconsImgs } from "../../utils/images"
-import {
-  TrendingUp,
-  TrendingDown,
-  Package,
-  Clock,
-  AlertTriangle,
-  CheckCircle,
-  Users,
-  ShoppingCart,
-  DollarSign,
-  Activity,
-  Calendar,
-  Eye,
-  Truck,
-} from "lucide-react"
+import { Package, Clock, AlertTriangle, Users, ShoppingCart, DollarSign, Activity, Calendar, Eye, Truck, } from "lucide-react"
 import "./Cards.css"
 
 const Cards = () => {
@@ -26,43 +12,6 @@ const Cards = () => {
     navigate("/pedidos")
   }
 
-
-
-  // Datos simulados para el dashboard
-  const dashboardStats = [
-    {
-      title: "Pedidos Hoy",
-      value: "24",
-      change: "+12%",
-      trend: "up",
-      icon: ShoppingCart,
-      color: "blue",
-    },
-    {
-      title: "Ventas del Mes",
-      value: "$45,230",
-      change: "+8.2%",
-      trend: "up",
-      icon: DollarSign,
-      color: "green",
-    },
-    {
-      title: "Productos Activos",
-      value: "1,247",
-      change: "+3.1%",
-      trend: "up",
-      icon: Package,
-      color: "purple",
-    },
-    {
-      title: "Clientes Nuevos",
-      value: "89",
-      change: "-2.4%",
-      trend: "down",
-      icon: Users,
-      color: "orange",
-    },
-  ]
 
   const recentActivity = [
     {
@@ -157,7 +106,8 @@ const Cards = () => {
                 <h5>Pedido sin bajar a bodega</h5>
                 <p>La factura $factura no sigue el consecutivo</p>
               </div>
-              <button className="cards-dashboard-alert-action">REVISAR</button>
+              <button className="cards-dashboard-alert-action" 
+              onClick={() => navigate("/pedidos?status=ANULADO&page=1")}>REVISAR</button>
             </div>
             <div className="cards-dashboard-alert cards-dashboard-alert-info">
               <Calendar size={18} />
