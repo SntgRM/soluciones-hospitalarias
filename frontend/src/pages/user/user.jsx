@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react"
 import "./User.css"
+import { topContent } from "../../data/data.js";
+import * as LucideIcons from 'lucide-react';
 import { personsImgs } from "../../utils/images"
 import {
   AlertTriangle,
@@ -26,6 +28,7 @@ import {
   Warehouse,
   X,
 } from "lucide-react"
+import { getUsers, deleteUser, createUserWithFile, updateUserWithFile } from "../../services/api"
 
 const roles = [
   { value: "administrador", label: "Administrador", color: "#f59e0b" },
@@ -33,9 +36,13 @@ const roles = [
   { value: "ventas", label: "Ventas", color: "#ef4444" },
 ]
 
-import { getUsers, deleteUser, createUserWithFile, updateUserWithFile } from "../../services/api"
-
 function User() {
+  const headerData = topContent[3] || {
+    title: 'Gestión de Usuarios',
+    description: 'Panel de control de usuarios del sistema',
+    iconName: 'Users'
+  }
+  const IconComponent = LucideIcons[topContent[3].iconName];
   const [users, setUsers] = useState([])
   const [filteredUsers, setFilteredUsers] = useState([])
   const [searchTerm, setSearchTerm] = useState("")
@@ -244,21 +251,21 @@ function User() {
 
   return (
     <div className="user-management-container">
-      {/* Header */}
-      <div className="user-management-header">
-        <div className="user-header-title-section">
-          <div className="header-icon">
-            <Users size={32} />
-          </div>
-          <div>
-            <h2 className="user-page-title">Gestión de Usuarios</h2>
-            <p className="user-page-subtitle">Administra los usuarios del sistema</p>
+     <div className="dashboard-header">
+        <div className="header-content">
+          <div className="header-left">
+            <div className="header-icon">
+              <IconComponent />
+            </div>
+            <div className="header-text">
+              <h1 className="header-title">{ topContent[3].title }</h1>
+              <p className="header-subtitle">{ topContent[3].description }</p>
+            </div>
           </div>
         </div>
-
         <button className="user-btn-primary" onClick={() => openModal("create")}>
           <UserPlus size={18} />
-          Nuevo Usuario
+          <span>Nuevo Usuario</span>
         </button>
       </div>
 

@@ -25,7 +25,10 @@ import {
   getTransportadoras,
   getPedidosPorTransportadora,
 } from "../../services/api";
+import { topContent } from "../../data/data.js"
+import * as LucideIcons from 'lucide-react';
 import "./transportadora.css";
+
 
 const statusToIdMap = {
   "ENTREGADO AL CLIENTE": 1,
@@ -38,6 +41,8 @@ const statusToIdMap = {
   "EN PREPARACION": 8,
   EMPACADO: 9,
 };
+
+const IconComponent = LucideIcons[topContent[2].iconName];
 
 const colorMap = {
   green: "#28a745",
@@ -171,10 +176,24 @@ export default function Transportadora() {
     fetchPedidosPorTransportadora(selectedTransportadora, page, searchFactura);
   }, [page]);
 
-  return (
+  return ( 
     <div className="transportadora-container">
+      {/* Header de Bienvenida */}
+      <div className="dashboard-header">
+        <div className="header-content">
+          <div className="header-left">
+            <div className="header-icon">
+              <IconComponent />
+            </div>
+            <div className="header-text">
+              <h1 className="header-title">{ topContent[2].title }</h1>
+              <p className="header-subtitle">{ topContent[2].description }</p>
+            </div>
+          </div>
+        </div>
+      </div>
       <div className="header">
-        <h1>TRANSPORTADORA</h1>
+        {/* <h1>TRANSPORTADORA</h1> */}
       </div>
       <div className="content">
         <div className="pedidos-section">

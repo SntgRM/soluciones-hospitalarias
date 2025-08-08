@@ -5,7 +5,10 @@ import ProductSummaryCards from "../../components/cards/cards.jsx"
 import ProductCard from "../../components/ProductCard/productCard.jsx"
 import "./home.css"
 import { SidebarContext } from "../../context/sidebarContext"
-import { BarChart3, Package, TrendingUp, Activity, ShoppingCart, Users, AlertTriangle, CheckCircle } from "lucide-react"
+import { topContent } from "../../data/data.js"
+import * as LucideIcons from 'lucide-react';
+
+const IconComponent = LucideIcons[topContent[1].iconName];
 
 const Home = () => {
   const { isSidebarOpen } = useContext(SidebarContext)
@@ -45,19 +48,20 @@ const Home = () => {
 
   return (
     <div className={getMainContentClass()}>
-      <div className="dashboard-header">
-        <div className="header-title-section">
+        {/* Header de Bienvenida */}
+        <div className="dashboard-header">
+          <div className="header-content">
             <div className="header-left">
               <div className="header-icon">
-                <Activity size={28} />
+                <IconComponent />
               </div>
               <div className="header-text">
-                <h1 className="header-title">Bodega</h1>
-                <p className="header-subtitle">Panel de control y gestion de bodega</p>
+                <h1 className="header-title">{ topContent[1].title }</h1>
+                <p className="header-subtitle">{ topContent[1].description }</p>
               </div>
             </div>
+          </div>
         </div>
-      </div>
 
       <div className="main-content-holder">
         <div className="content-grid-one">

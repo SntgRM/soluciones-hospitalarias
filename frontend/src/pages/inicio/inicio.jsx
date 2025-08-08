@@ -1,18 +1,22 @@
 "use client"
 import { Home, Shield, Package, ShoppingCart, Users, BarChart3, Settings, Bell, Calendar, Clock, CheckCircle } from "lucide-react"
 import "./inicio.css"
+import { topContent } from "../../data/data"
+import * as LucideIcons from 'lucide-react';
+
+const IconComponent = LucideIcons[topContent[0].iconName];
 
 const WelcomePage = () => {
-  const currentTime = new Date().toLocaleTimeString('es-ES', { 
-    hour: '2-digit', 
-    minute: '2-digit' 
-  })
-  const currentDate = new Date().toLocaleDateString('es-ES', { 
-    weekday: 'long', 
-    year: 'numeric', 
-    month: 'long', 
-    day: 'numeric' 
-  })
+  // const currentTime = new Date().toLocaleTimeString('es-ES', { 
+  //   hour: '2-digit', 
+  //   minute: '2-digit' 
+  // })
+  // const currentDate = new Date().toLocaleDateString('es-ES', { 
+  //   weekday: 'long', 
+  //   year: 'numeric', 
+  //   month: 'long', 
+  //   day: 'numeric' 
+  // })
 
   const roleFeatures = {
     admin: [
@@ -35,16 +39,17 @@ const WelcomePage = () => {
   return (
     <div className="dashboard-container">
       <div className="dashboard-wrapper">
+
         {/* Header de Bienvenida */}
         <div className="dashboard-header">
           <div className="header-content">
             <div className="header-left">
               <div className="header-icon">
-                <Home size={28} />
+                <IconComponent />
               </div>
               <div className="header-text">
-                <h1 className="header-title">Soluciones Hospitalarias de la Costa S.A.S</h1>
-                <p className="header-subtitle">Un mundo de Soluciones - Sistema de Gestión Integral</p>
+                <h1 className="header-title">{ topContent[0].title }</h1>
+                <p className="header-subtitle">{ topContent[0].description }</p>
               </div>
             </div>
           </div>

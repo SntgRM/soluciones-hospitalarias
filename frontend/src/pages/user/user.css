@@ -476,6 +476,12 @@ input::-ms-reveal {
   transform: none;
 }
 
+.user-btn-primary span {
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+
 .user-btn-secondary {
   background: #ffffff;
   color: var(--user-gray-700);
