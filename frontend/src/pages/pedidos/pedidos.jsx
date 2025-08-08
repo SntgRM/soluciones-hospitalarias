@@ -3,7 +3,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 import EditPedidoModal from "./editPedidoModal";
 import { ChevronUp, ChevronDown, Building2, User, Package, Truck, CheckCircle, XCircle, Clock, AlertCircle, MapPin, DollarSign, Users, ListChecks, Archive, PackageCheck, Inbox, Warehouse, Settings, Filter, X } from 'lucide-react';
 import "./pedidos.css";
-import { getPedidosAll, getPedidosPorEstado, getResumenPedidos, } from "../../services/api";
+import { 
+  getPedidosAll, 
+  getPedidosPorEstado, 
+  getResumenPedidos,
+  getFilterOptions,
+  getPedidosWithFilters,
+  getPedidosPorEstadoWithFilters
+} from "../../services/api";
 
 const statusToIdMap = {
 "ENTREGADO AL CLIENTE": 1,
@@ -70,7 +77,33 @@ const [currentPage, setCurrentPage] = useState(1);
 const [searchTerm, setSearchTerm] = useState("");
 const [hasMore, setHasMore] = useState(true);
 const observer = useRef();
-const [showFilterModal, setShowFilterModal] = useState(false); // Estado para el nuevo modal de filtros
+const [showFilterModal, setShowFilterModal] = useState(false);
+
+const [additionalFilters, setAdditionalFilters] = useState({
+  vendedor: '',
+  fecha_inicio: '',
+  fecha_fin: '',
+  tipo_recaudo: '',
+  enrutador: '',
+  fecha_enrutamiento_inicio: '',
+  fecha_enrutamiento_fin: '',
+  alistador: '',
+  empacador: '',
+  transportadora: '',
+  fecha_entrega_inicio: '',
+  fecha_entrega_fin: ''
+});
+
+const [filterOptions, setFilterOptions] = useState({
+  vendedores: [],
+  tipos_recaudo: [],
+  enrutadores: [],
+  alistadores: [],
+  empacadores: [],
+  transportadoras: []
+});
+
+const [loadingFilters, setLoadingFilters] = useState(false);
 
 const handlePedidoUpdate = (updatedPedido) => {
   // Actualizar el pedido en la lista
@@ -87,6 +120,37 @@ const handlePedidoUpdate = (updatedPedido) => {
     setSelectedPedido(updatedPedido);
   }
 };
+
+const fetchFilterOptions = async () => {
+  setLoadingFilters(true);
+  try {
+    console.log('Cargando opciones de filtro...');
+    const options = await getFilterOptions();
+    console.log('Opciones de filtro cargadas:', options);
+    
+    setFilterOptions(options);
+  } catch (error) {
+    console.error("Error cargando opciones de filtro:", error);
+    // Mantener estructura vacía en caso de error
+    setFilterOptions({
+      vendedores: [],
+      tipos_recaudo: [],
+      enrutadores: [],
+      alistadores: [],
+      empacadores: [],
+      transportadoras: []
+    });
+  } finally {
+    setLoadingFilters(false);
+  }
+};
+
+// Cargar opciones de filtro cuando se abre el modal
+useEffect(() => {
+  if (showFilterModal && Object.values(filterOptions).every(arr => arr.length === 0)) {
+    fetchFilterOptions();
+  }
+}, [showFilterModal]);
 
 useEffect(() => {
   const params = new URLSearchParams(location.search);
@@ -147,15 +211,32 @@ useEffect(() => {
     try {
       let response;
 
+      // Filtrar solo los filtros que tienen valores
+      const activeFilters = Object.entries(additionalFilters).reduce((acc, [key, value]) => {
+        if (value && value !== '') {
+          acc[key] = value;
+        }
+        return acc;
+      }, {});
+
+      console.log('Filtros activos:', activeFilters);
+
       if (filterStatus) {
         const statusId = statusToIdMap[filterStatus];
-        response = await getPedidosPorEstado(
+        // Usar la nueva función con filtros adicionales
+        response = await getPedidosPorEstadoWithFilters(
           statusId,
           currentPage,
-          searchTerm
+          searchTerm,
+          activeFilters
         );
       } else {
-        response = await getPedidosAll(currentPage, searchTerm);
+        // Usar la nueva función con filtros adicionales
+        response = await getPedidosWithFilters(
+          currentPage,
+          searchTerm,
+          activeFilters
+        );
       }
 
       if (response.results && response.results.length > 0) {
@@ -168,13 +249,14 @@ useEffect(() => {
       }
     } catch (error) {
       console.error("Error cargando pedidos:", error);
+      setError("Error al cargar los pedidos. Por favor, inténtalo de nuevo.");
     } finally {
       setLoading(false);
     }
   };
 
   fetchPedidos();
-}, [filterStatus, currentPage, searchTerm]);
+}, [filterStatus, currentPage, searchTerm, additionalFilters]);
 
 const handleFilterChange = (statusKey) => {
   if (filterStatus === statusKey) {
@@ -190,6 +272,37 @@ const handleFilterChange = (statusKey) => {
     params.append("status", encodeURIComponent(statusKey));
   }
   navigate({ search: params.toString() }, { replace: true });
+};
+
+const handleAdditionalFilterChange = (filterKey, value) => {
+  console.log(`Cambiando filtro ${filterKey} a: ${value}`);
+  setAdditionalFilters(prev => ({
+    ...prev,
+    [filterKey]: value
+  }));
+  setPedidos([]);
+  setCurrentPage(1);
+  setHasMore(true);
+};
+
+const clearAdditionalFilters = () => {
+  setAdditionalFilters({
+    vendedor: '',
+    fecha_inicio: '',
+    fecha_fin: '',
+    tipo_recaudo: '',
+    enrutador: '',
+    fecha_enrutamiento_inicio: '',
+    fecha_enrutamiento_fin: '',
+    alistador: '',
+    empacador: '',
+    transportadora: '',
+    fecha_entrega_inicio: '',
+    fecha_entrega_fin: ''
+  });
+  setPedidos([]);
+  setCurrentPage(1);
+  setHasMore(true);
 };
 
 const lastPedidoRef = useCallback(
@@ -251,6 +364,48 @@ const formatCurrency = (amount) => {
     currency: "COP",
     minimumFractionDigits: 0,
   }).format(numericAmount);
+};
+
+// Función helper para renderizar las opciones de los selects
+const renderSelectOptions = (
+  options,
+  valueKeyCandidates = ['value', 'id', 'id_vendedor', 'id_transportadora'],
+  labelKeyCandidates = ['label', 'nombre', 'nombre_vendedor', 'nombre_transportadora', 'name']
+) => {
+  if (!Array.isArray(options)) return null;
+
+  return options.map((option, index) => {
+    if (option === null || option === undefined) return null;
+
+    // Si viene un string/number directo
+    if (typeof option === 'string' || typeof option === 'number') {
+      return (
+        <option key={option + index} value={option}>
+          {option}
+        </option>
+      );
+    }
+
+    // Buscar la mejor key para value y label entre varias posibles
+    const value = valueKeyCandidates.reduce(
+      (found, key) => (found !== undefined ? found : option[key]),
+      undefined
+    );
+    const label = labelKeyCandidates.reduce(
+      (found, key) => (found !== undefined ? found : option[key]),
+      undefined
+    );
+
+    const key = value !== undefined ? value : label !== undefined ? label : index;
+    const display = label !== undefined ? label : value !== undefined ? String(value) : JSON.stringify(option);
+    const valAttr = value !== undefined ? value : display;
+
+    return (
+      <option key={key} value={valAttr}>
+        {display}
+      </option>
+    );
+  });
 };
 
 return (
@@ -342,11 +497,40 @@ return (
             <button className="filter-modal-button" onClick={() => setShowFilterModal(true)}>
               <Filter size={20} />
               Filtros
+              {Object.values(additionalFilters).filter(value => value !== '').length > 0 && (
+                <span style={{
+                  backgroundColor: '#10b981',
+                  color: 'white',
+                  borderRadius: '50%',
+                  width: '20px',
+                  height: '20px',
+                  fontSize: '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginLeft: '8px'
+                }}>
+                  {Object.values(additionalFilters).filter(value => value !== '').length}
+                </span>
+              )}
             </button>
           </div>
         </div>
 
         <div className="pedidos-content">
+          {error && (
+            <div style={{
+              padding: '16px',
+              backgroundColor: '#fef2f2',
+              border: '1px solid #fecaca',
+              borderRadius: '8px',
+              color: '#dc2626',
+              marginBottom: '16px'
+            }}>
+              {error}
+            </div>
+          )}
+          
           <div className="pedidos-grid">
             {/* Mostrar mensaje si no hay pedidos */}
             {pedidos.length === 0 && !loading && !error ? (
@@ -410,6 +594,14 @@ return (
                 );
               })
             )}
+            
+            {/* Mostrar indicador de carga */}
+            {loading && (
+              <div className="loading-message">
+                Cargando pedidos...
+              </div>
+            )}
+            
             {/* Mostrar mensaje si ya no hay más por cargar */}
             {!hasMore && !loading && pedidos.length > 0 && (
               <p className="end-message">No hay más pedidos por cargar.</p>
@@ -418,6 +610,7 @@ return (
         </div>
       </div>
 
+      {/* Panel de detalles - mantener el código existente */}
       {selectedPedido && (
         <div className="details-panel">
           <div className="details-header">
@@ -667,24 +860,246 @@ return (
           </div>
         </div>
       )}
-            {/* Nuevo Modal de Filtros */}
-    {showFilterModal && (
-      <div className="modal-overlay" onClick={() => setShowFilterModal(false)}>
-        <div className="filter-modal-content" onClick={(e) => e.stopPropagation()}>
-          <div className="modal-header">
-            <h3>Filtros Adicionales</h3>
-            <button className="close-button" onClick={() => setShowFilterModal(false)}>
-              <X size={20} />
-            </button>
-          </div>
-          <div className="modal-body">
-            {/* Contenido de los filtros en el modal */}
-            <div className="filters-list">
+
+      {/* Modal de Filtros Actualizado */}
+      {showFilterModal && (
+        <div className="modal-overlay" onClick={() => setShowFilterModal(false)}>
+          <div className="filter-modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>Filtros de Pedidos</h3>
+              <button className="close-button" onClick={() => setShowFilterModal(false)}>
+                <X size={20} />
+              </button>
+            </div>
+            <div className="modal-body">
+              {loadingFilters ? (
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  padding: '40px',
+                  color: '#666'
+                }}>
+                  <div>Cargando opciones de filtro...</div>
+                </div>
+              ) : (
+                <div className="additional-filters">
+                  
+                  {/* Filtro por Vendedor */}
+                  <div className="filter-group">
+                    <label className="filter-label">
+                      <User size={16} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+                      Vendedor:
+                    </label>
+                    <select
+                      value={additionalFilters.vendedor}
+                      onChange={(e) => handleAdditionalFilterChange('vendedor', e.target.value)}
+                      className="filter-select"
+                    >
+                      <option value="">Todos los vendedores</option>
+                      {renderSelectOptions(filterOptions.vendedores)}
+                    </select>
+                  </div>
+
+                  {/* Filtro por Fecha Recibido */}
+                  <div className="filter-group">
+                    <label className="filter-label">
+                      <Clock size={16} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+                      Fecha Recibido:
+                    </label>
+                    <div className="date-range-inputs">
+                      <input
+                        type="date"
+                        value={additionalFilters.fecha_inicio}
+                        onChange={(e) => handleAdditionalFilterChange('fecha_inicio', e.target.value)}
+                        className="filter-input date-input"
+                        placeholder="Desde"
+                        title="Fecha inicio"
+                      />
+                      <span className="date-separator">hasta</span>
+                      <input
+                        type="date"
+                        value={additionalFilters.fecha_fin}
+                        onChange={(e) => handleAdditionalFilterChange('fecha_fin', e.target.value)}
+                        className="filter-input date-input"
+                        placeholder="Hasta"
+                        title="Fecha fin"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Filtro por Tipo de Recaudo */}
+                  <div className="filter-group">
+                    <label className="filter-label">
+                      <DollarSign size={16} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+                      Tipo de Recaudo:
+                    </label>
+                    <select
+                      value={additionalFilters.tipo_recaudo}
+                      onChange={(e) => handleAdditionalFilterChange('tipo_recaudo', e.target.value)}
+                      className="filter-select"
+                    >
+                      <option value="">Todos los tipos</option>
+                      {filterOptions.tipos_recaudo.map((tipo, index) => (
+                        <option key={index} value={typeof tipo === 'object' ? tipo.value : tipo}>
+                          {typeof tipo === 'object' ? tipo.label : tipo}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Filtro por Enrutador */}
+                  <div className="filter-group">
+                    <label className="filter-label">
+                      <MapPin size={16} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+                      Enrutador:
+                    </label>
+                    <select
+                      value={additionalFilters.enrutador}
+                      onChange={(e) => handleAdditionalFilterChange('enrutador', e.target.value)}
+                      className="filter-select"
+                    >
+                      <option value="">Todos los enrutadores</option>
+                      {renderSelectOptions(filterOptions.enrutadores)}
+                    </select>
+                  </div>
+
+                  {/* Filtro por Fecha de Enrutamiento */}
+                  <div className="filter-group">
+                    <label className="filter-label">
+                      <MapPin size={16} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+                      Fecha Enrutamiento:
+                    </label>
+                    <div className="date-range-inputs">
+                      <input
+                        type="date"
+                        value={additionalFilters.fecha_enrutamiento_inicio}
+                        onChange={(e) => handleAdditionalFilterChange('fecha_enrutamiento_inicio', e.target.value)}
+                        className="filter-input date-input"
+                        placeholder="Desde"
+                        title="Fecha enrutamiento inicio"
+                      />
+                      <span className="date-separator">hasta</span>
+                      <input
+                        type="date"
+                        value={additionalFilters.fecha_enrutamiento_fin}
+                        onChange={(e) => handleAdditionalFilterChange('fecha_enrutamiento_fin', e.target.value)}
+                        className="filter-input date-input"
+                        placeholder="Hasta"
+                        title="Fecha enrutamiento fin"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Filtro por Alistador */}
+                  <div className="filter-group">
+                    <label className="filter-label">
+                      <ListChecks size={16} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+                      Alistado por:
+                    </label>
+                    <select
+                      value={additionalFilters.alistador}
+                      onChange={(e) => handleAdditionalFilterChange('alistador', e.target.value)}
+                      className="filter-select"
+                    >
+                      <option value="">Todos los alistadores</option>
+                      {renderSelectOptions(filterOptions.alistadores)}
+                    </select>
+                  </div>
+
+                  {/* Filtro por Empacador */}
+                  <div className="filter-group">
+                    <label className="filter-label">
+                      <PackageCheck size={16} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+                      Empacado por:
+                    </label>
+                    <select
+                      value={additionalFilters.empacador}
+                      onChange={(e) => handleAdditionalFilterChange('empacador', e.target.value)}
+                      className="filter-select"
+                    >
+                      <option value="">Todos los empacadores</option>
+                      {renderSelectOptions(filterOptions.empacadores)}
+                    </select>
+                  </div>
+
+                  {/* Filtro por Transportadora */}
+                  <div className="filter-group">
+                    <label className="filter-label">
+                      <Truck size={16} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+                      Transportadora:
+                    </label>
+                    <select
+                      value={additionalFilters.transportadora}
+                      onChange={(e) => handleAdditionalFilterChange('transportadora', e.target.value)}
+                      className="filter-select"
+                    >
+                      <option value="">Todas las transportadoras</option>
+                      {renderSelectOptions(filterOptions.transportadoras)}
+                    </select>
+                  </div>
+
+                  {/* Filtro por Fecha de Entrega */}
+                  <div className="filter-group">
+                    <label className="filter-label">
+                      <CheckCircle size={16} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+                      Fecha Entrega:
+                    </label>
+                    <div className="date-range-inputs">
+                      <input
+                        type="date"
+                        value={additionalFilters.fecha_entrega_inicio}
+                        onChange={(e) => handleAdditionalFilterChange('fecha_entrega_inicio', e.target.value)}
+                        className="filter-input date-input"
+                        placeholder="Desde"
+                        title="Fecha entrega inicio"
+                      />
+                      <span className="date-separator">hasta</span>
+                      <input
+                        type="date"
+                        value={additionalFilters.fecha_entrega_fin}
+                        onChange={(e) => handleAdditionalFilterChange('fecha_entrega_fin', e.target.value)}
+                        className="filter-input date-input"
+                        placeholder="Hasta"
+                        title="Fecha entrega fin"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Indicador de filtros activos */}
+                  {Object.values(additionalFilters).some(value => value !== '') && (
+                    <div className="active-filters-indicator">
+                      <div className="active-filters-badge">
+                        <Filter size={14} />
+                        <span>Filtros activos: {Object.values(additionalFilters).filter(value => value !== '').length}</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Botones de acción */}
+                  <div className="filter-actions">
+                    <button
+                      className="btn btn-secondary"
+                      onClick={clearAdditionalFilters}
+                      disabled={Object.values(additionalFilters).every(value => value === '')}
+                    >
+                      <X size={16} style={{ marginRight: '8px' }} />
+                      Limpiar Filtros
+                    </button>
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => setShowFilterModal(false)}
+                    >
+                      <CheckCircle size={16} style={{ marginRight: '8px' }} />
+                      Aplicar Filtros
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
-      </div>
-    )}
+      )}
     </div>
   </div>
 );
