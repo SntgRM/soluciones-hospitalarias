@@ -39,14 +39,11 @@ export const createPedido = async (pedidoData) => {
 };
 
 
-// Función updatePedido corregida para api.js
-export const updatePedido = async (id_factura, pedidoData) => {
+export const updatePedido = async (id_factura, data) => {
     try {
-        console.log('API updatePedido - ID:', id_factura);
-        console.log('API updatePedido - Datos a enviar:', pedidoData);
         
         // Limpiar datos undefined, null o vacíos antes de enviar
-        const cleanedData = Object.entries(pedidoData).reduce((acc, [key, value]) => {
+        const cleanedData = Object.entries(data).reduce((acc, [key, value]) => {
             if (value !== undefined && value !== null && value !== '') {
                 // Convertir strings de números a números si es necesario
                 if (key === 'valor' || key === 'recaudo_efectivo' || key === 'recaudo_transferencia') {
@@ -61,14 +58,9 @@ export const updatePedido = async (id_factura, pedidoData) => {
             return acc;
         }, {});
 
-        console.log('API updatePedido - Datos limpiados:', cleanedData);
-        
         const response = await api.put(`bodega/update/${id_factura}/`, cleanedData);
-        
-        console.log('API updatePedido - Respuesta completa:', response);
-        console.log('API updatePedido - Datos de respuesta:', response.data);
-        
-        return response.data.results || response.data.data || response.data || pedidoData;
+  
+        return response.data.results || response.data.data || response.data || data;
     } catch (error) {
         console.error('Error completo en updatePedido:', error);
         console.error('Error response:', error.response);
@@ -105,6 +97,7 @@ export const getTiposRecaudo = async () => {
         };
     }
 };
+
 export const deletePedido = async (pk) => {
     await api.delete(`bodega/delete/${pk}/`);
 };
@@ -242,6 +235,21 @@ export const getEstados = async (search = "") => {
     const response = await api.get(`bodega/estadosview/?search=${encodeURIComponent(search)}`);
     return response.data;
 }
+
+export const getResumenFechas = async () => {
+    const response = await api.get(`bodega/resumenfechas/`)
+    return response.data;
+}
+
+export const getAlistadoresResumen = async (period = "month") => {
+  try {
+    const response = await api.get(`bodega/alistadoresresumen/?period=${period}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error en getAlistadoresResumen:", error);
+    throw error;
+  }
+};
 
 // Interceptor para manejar respuestas y errores
 api.interceptors.response.use(
