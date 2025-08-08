@@ -7,6 +7,8 @@ import "./historial.css";
 import { SidebarContext } from "../../context/sidebarContext";
 import { ClipboardList, Plus, Pencil, Trash, Settings, Package, Clock, Search, ChevronDown, ChevronUp } from "lucide-react";
 import { getHistorialGeneral } from "../../services/api";
+import { topContent } from "../../data/data.js"
+import DashboardHeader from "../../components/titleContent/titleContent.jsx";
 
 const getTypeIcon = (type) => {
   switch (type) {
@@ -139,10 +141,11 @@ const Historial = () => {
 
   return (
     <div className={getMainContentClass()}>
-      <div className="historial-header">
-        <h2 className="grid-c-title-text">Historial de Productos</h2>
-
+       {/* Header de Bienvenida */}
+        <DashboardHeader icon={topContent[5].icon} title={topContent[5].title} description={topContent[5].description} />
         {/* Barra de búsqueda usando los estilos de user */}
+
+      <div className="products-history-container">
         <div className="user-search-box">
           <Search size={18} className="user-search-icon" />
           <input
@@ -150,12 +153,9 @@ const Historial = () => {
             placeholder="Buscar por número de factura..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="user-search-input"
+            className="history-search-input"
           />
         </div>
-      </div>
-
-      <div className="products-history-container">
         {filteredHistory.length > 0 ? (
           filteredHistory.map((product) => {
             const isExpanded = expandedProducts.has(product.productId);

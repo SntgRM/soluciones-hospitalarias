@@ -1,33 +1,9 @@
-"use client";
-
 import { useEffect, useState, useRef, useCallback } from "react";
-import {
-  ChevronRight,
-  User,
-  X,
-  MapPin,
-  Calendar,
-  Package,
-  Truck,
-  CreditCard,
-  HandCoins,
-  Banknote,
-  CheckCircle,
-  XCircle,
-  AlertCircle,
-  Inbox,
-  Wrench,
-  Clock,
-  Settings,
-  PackageCheck,
-} from "lucide-react";
-import {
-  getTransportadoras,
-  getPedidosPorTransportadora,
-} from "../../services/api";
+import { ChevronRight, User, X, MapPin, Calendar, Package, Truck, CreditCard, HandCoins, Banknote, CheckCircle, XCircle, AlertCircle, Inbox, Wrench, Clock, Settings, PackageCheck, } from "lucide-react";
+import { getTransportadoras,getPedidosPorTransportadora, } from "../../services/api";
 import { topContent } from "../../data/data.js"
-import * as LucideIcons from 'lucide-react';
 import "./transportadora.css";
+import DashboardHeader from "../../components/titleContent/titleContent.jsx";
 
 
 const statusToIdMap = {
@@ -41,8 +17,6 @@ const statusToIdMap = {
   "EN PREPARACION": 8,
   EMPACADO: 9,
 };
-
-const IconComponent = LucideIcons[topContent[2].iconName];
 
 const colorMap = {
   green: "#28a745",
@@ -179,21 +153,8 @@ export default function Transportadora() {
   return ( 
     <div className="transportadora-container">
       {/* Header de Bienvenida */}
-      <div className="dashboard-header">
-        <div className="header-content">
-          <div className="header-left">
-            <div className="header-icon">
-              <IconComponent />
-            </div>
-            <div className="header-text">
-              <h1 className="header-title">{ topContent[2].title }</h1>
-              <p className="header-subtitle">{ topContent[2].description }</p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <DashboardHeader icon={topContent[2].icon} title={topContent[2].title} description={topContent[2].description} />
       <div className="header">
-        {/* <h1>TRANSPORTADORA</h1> */}
       </div>
       <div className="content">
         <div className="pedidos-section">

@@ -4,6 +4,7 @@ import { useState } from "react"
 import "./ayuda.css"
 import { topContent } from "../../data/data.js";
 import * as LucideIcons from 'lucide-react';
+import DashboardHeader from "../../components/titleContent/titleContent.jsx";
 import {
   HelpCircle,
   Package,
@@ -140,7 +141,6 @@ const preguntasFrecuentes = [
       },
     ],
   },
-  // Sección de Ventas
   {
     categoria: "Ventas y Reportes",
     icono: <ShoppingCart size={20} />,
@@ -199,29 +199,17 @@ function FAQ() {
 
   return (
     <div className="faq-container">
-      {/* Header de Bienvenida */}
-      <div className="dashboard-header">
-        <div className="header-content">
-          <div className="header-left">
-            <div className="header-icon">
-              <IconComponent />
-            </div>
-            <div className="header-text">
-              <h1 className="header-title">{ topContent[4].title }</h1>
-              <p className="header-subtitle">{ topContent[4].description }</p>
-            </div>
-          </div>
-        </div>
+    {/* Header de Bienvenida */}
+      <DashboardHeader icon={topContent[4].icon} title={topContent[4].title} description={topContent[4].description} />
         <div className="faq-search">
           <input
             type="text"
             placeholder="Buscar en preguntas frecuentes..."
             value={busqueda}
             onChange={(e) => setBusqueda(e.target.value)}
-            className="search-input"
+            className="search-input-help"
           />
         </div>
-      </div>
 
 
       <div className="faq-stats">

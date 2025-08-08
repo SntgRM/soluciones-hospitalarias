@@ -1,0 +1,55 @@
+/* Variables CSS específicas para el contenedor de los titulos */
+:root {
+  --title-gray-50: #f9fafb;
+  --title-gray-200: #e5e7eb;
+  --title-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --title-border-radius-lg: 16px;
+  --title-bg-card: #ffffff; 
+  --title-border-color: #e5e7eb;
+  --title-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --title-border-radius: 12px;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  background: linear-gradient(135deg, #ffffff 0%, var(--title-gray-50) 100%);
+  border: 1px solid var(--title-gray-200);
+  border-radius: var(--title-border-radius-lg);
+  padding: 16px;
+  box-shadow: var(--title-shadow-sm);
+}
+
+@media screen and (max-width: 992px) {
+
+  .dashboard-header {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .main-content-home {
+    padding: 16px;
+  }
+
+  .dashboard-header {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .dashboard-header {
+    padding: 12px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .main-content-home {
+    padding: 12px;
+  }
+}

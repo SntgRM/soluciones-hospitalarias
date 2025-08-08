@@ -2,27 +2,14 @@
 import { Home, Shield, Package, ShoppingCart, Users, BarChart3, Settings, Bell, Calendar, Clock, CheckCircle } from "lucide-react"
 import "./inicio.css"
 import { topContent } from "../../data/data"
-import * as LucideIcons from 'lucide-react';
-
-const IconComponent = LucideIcons[topContent[0].iconName];
+import DashboardHeader from "../../components/titleContent/titleContent.jsx";
 
 const WelcomePage = () => {
-  // const currentTime = new Date().toLocaleTimeString('es-ES', { 
-  //   hour: '2-digit', 
-  //   minute: '2-digit' 
-  // })
-  // const currentDate = new Date().toLocaleDateString('es-ES', { 
-  //   weekday: 'long', 
-  //   year: 'numeric', 
-  //   month: 'long', 
-  //   day: 'numeric' 
-  // })
-
   const roleFeatures = {
     admin: [
       { icon: Users, title: "Gestión de Usuarios", description: "Administra permisos y roles del sistema" },
-      { icon: BarChart3, title: "Reportes Avanzados", description: "Accede a análisis detallados y métricas" },
-      { icon: Settings, title: "Configuración", description: "Personaliza el sistema según tus necesidades" }
+      { icon: BarChart3, title: "Reportes de Bodega", description: "Consulta estadísticas de inventario" },
+      { icon: BarChart3, title: "Métricas de Ventas", description: "Revisa tu rendimiento y comisiones" },
     ],
     bodega: [
       { icon: Package, title: "Control de Inventario", description: "Gestiona stock y movimientos de productos" },
@@ -39,22 +26,8 @@ const WelcomePage = () => {
   return (
     <div className="dashboard-container">
       <div className="dashboard-wrapper">
-
         {/* Header de Bienvenida */}
-        <div className="dashboard-header">
-          <div className="header-content">
-            <div className="header-left">
-              <div className="header-icon">
-                <IconComponent />
-              </div>
-              <div className="header-text">
-                <h1 className="header-title">{ topContent[0].title }</h1>
-                <p className="header-subtitle">{ topContent[0].description }</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
+        <DashboardHeader icon={topContent[0].icon} title={topContent[0].title} description={topContent[0].description} />
         {/* Información de la empresa */}
         <div className="company-info-section">
           <div className="company-card">

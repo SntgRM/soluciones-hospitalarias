@@ -5,6 +5,7 @@ import "./User.css"
 import { topContent } from "../../data/data.js";
 import * as LucideIcons from 'lucide-react';
 import { personsImgs } from "../../utils/images"
+import DashboardHeader from "../../components/titleContent/titleContent.jsx";
 import {
   AlertTriangle,
   AtSign,
@@ -251,23 +252,12 @@ function User() {
 
   return (
     <div className="user-management-container">
-     <div className="dashboard-header">
-        <div className="header-content">
-          <div className="header-left">
-            <div className="header-icon">
-              <IconComponent />
-            </div>
-            <div className="header-text">
-              <h1 className="header-title">{ topContent[3].title }</h1>
-              <p className="header-subtitle">{ topContent[3].description }</p>
-            </div>
-          </div>
-        </div>
+      {/* Header de Bienvenida */}
+      <DashboardHeader icon={topContent[3].icon} title={topContent[3].title} description={topContent[3].description} />
         <button className="user-btn-primary" onClick={() => openModal("create")}>
           <UserPlus size={18} />
           <span>Nuevo Usuario</span>
         </button>
-      </div>
 
       {/* Filtros y búsqueda */}
       <div className="user-filters-section">

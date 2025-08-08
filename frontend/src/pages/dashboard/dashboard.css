@@ -29,7 +29,6 @@
 /* Contenedor principal del dashboard */
 .dashboard-container {
   background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
-  padding: 16px;
   min-height: 100%;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
@@ -38,15 +37,6 @@
   width: 100%;
 }
 
-/* Header del dashboard */
-.dashboard-header {
-  background: var(--dashboard-bg-card);
-  border-radius: var(--dashboard-border-radius);
-  box-shadow: var(--dashboard-shadow-sm);
-  border: 1px solid var(--dashboard-border-color);
-  padding: 16px;
-  margin-bottom: 24px;
-}
 
 .header-content {
 width: 100%;
@@ -473,11 +463,6 @@ width: 100%;
   .dashboard-container {
     padding: 8px;
   }
-
-  .dashboard-header {
-    padding: 12px;
-  }
-
   .stat-card {
     padding: 16px;
   }

@@ -4,6 +4,8 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { LayoutDashboard, Package } from "lucide-react";
 import { getResumenFechas, getAlistadoresResumen } from "../../services/api";
 import "./dashboard.css";
+import { topContent } from "../../data/data.js";
+import DashboardHeader from "../../components/titleContent/titleContent.jsx";
 
 const DashboardPage = () => {
   const [resumen, setResumen] = useState({
@@ -11,7 +13,7 @@ const DashboardPage = () => {
     mensuales: 0,
     anuales: 0,
   });
-  const [period, setPeriod] = useState("month"); // 'day' | 'month' | 'year'
+  const [period, setPeriod] = useState("month");
   const [alistadoresData, setAlistadoresData] = useState([]);
   const [loadingAlistadores, setLoadingAlistadores] = useState(false);
 
@@ -60,23 +62,8 @@ const DashboardPage = () => {
   return (
     <div className="dashboard-container">
       <div className="dashboard-wrapper">
-        {/* Header mejorado */}
-        <div className="dashboard-header">
-          <div className="header-content">
-            <div className="header-left">
-              <div className="header-icon">
-                <LayoutDashboard size={28} />
-              </div>
-              <div className="header-text">
-                <h1 className="header-title">Dashboard Ejecutivo</h1>
-                <p className="header-subtitle">
-                  Panel de control y análisis de datos
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
+        {/* Header de Bienvenida */}
+        <DashboardHeader icon={topContent[6].icon} title={topContent[6].title} description={topContent[6].description} />
         {/* Tarjetas de estadísticas */}
         <div className="stats-grid">
           <div className="stat-card">
