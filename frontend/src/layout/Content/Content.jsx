@@ -13,7 +13,7 @@ const Content = () => {
     const lastSegment = pathSegments[pathSegments.length - 1];
 
     switch (lastSegment) {
-      case 'dashboard':
+      case 'Dashboard':
         return 'dashboard'
       case undefined:
         return 'Inicio';
