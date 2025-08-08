@@ -3,11 +3,13 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.pagination import PageNumberPagination
-from .models import Pedidos, EstadosPedidos, HistorialEstados, Clientes, Alistadores, Empacadores, Enrutadores, Transportadoras, Vendedores
+from .models import Pedidos, EstadosPedidos, HistorialEstados, Clientes, Alistadores, Empacadores, Enrutadores, Transportadoras, Vendedores, Pqrs
 from django.db.models import Count, Q
 from django.utils import timezone
+from datetime import timedelta
+from django.db.models.functions import TruncDate
 from datetime import datetime
-from .serializers import PedidoSerializer, ClienteSerializer, AlistadorSerializer, EmpacadorSerializer, EnrutadorSerializer, TransportadoraSerializer, VendedorSerializer, EstadoPedidoSerializer
+from .serializers import PedidoSerializer, ClienteSerializer, AlistadorSerializer, EmpacadorSerializer, EnrutadorSerializer, TransportadoraSerializer, VendedorSerializer, EstadoPedidoSerializer, PqrsSerializer
 
 # Mostrar todas los pedidos
 class PedidoViewAll(APIView):
@@ -167,14 +169,20 @@ class PedidoCreate(APIView):
 
 # Actualizar un pedido según su ID
 class PedidoUpdate(APIView):
-
     permission_classes = [IsAuthenticated]
 
     def put(self, request, pk):
         try:
             pedido = Pedidos.objects.get(id_factura=pk)
-            serializer = PedidoSerializer(pedido, data=request.data)
+            data = request.data.copy()
 
+            nuevo_estado = int(data.get("id_estado", 0))
+
+            # Si pasa de SIN REGISTRO (4) a otro estado, se asigna fecha_recibido
+            if pedido.id_estado.id_estado == 4 and nuevo_estado != 4:
+                data["fecha_recibido"] = timezone.now()
+
+            serializer = PedidoSerializer(pedido, data=data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
@@ -182,18 +190,10 @@ class PedidoUpdate(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         except Pedidos.DoesNotExist:
-            return Response(
-                {'error': 'Pedido no encontrado.'},
-                status=status.HTTP_404_NOT_FOUND
-            )
+            return Response({'error': 'Pedido no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
 
         except Exception as e:
-            return Response(
-                {
-                    'error': 'Ocurrió un error al actualizar el pedido.',
-                },
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
+            return Response({'error': 'Error al actualizar el pedido.', 'detalle': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 # Eliminar un pedido según su ID
 class PedidoDelete(APIView):
@@ -374,7 +374,6 @@ class PedidosPorEstado(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
             
-
 # Mostrar los pedidos de cada transportador asignado
 class PedidosPorTransportadora(APIView):
     permission_classes = [IsAuthenticated]
@@ -828,7 +827,7 @@ class EstadosView(APIView):
         except Exception as e:
             return Response({'error': 'Error al obtener estados'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-
+# --------------------------------------------------------------------------------------------------------
 class FilterOptionsView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -872,3 +871,142 @@ class FilterOptionsView(APIView):
 
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+# --------------------------------------------------------------------------------------------------------
+
+class PedidoResumenFechas(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            today = timezone.now().date()
+            current_month = today.month
+            current_year = today.year
+
+            diarios = Pedidos.objects.annotate(fecha=TruncDate('fecha_recibido')) \
+                .filter(fecha=today).count()
+
+            # Contar pedidos por fecha_recibido
+            mensuales = Pedidos.objects.filter(
+                fecha_recibido__year=current_year,
+                fecha_recibido__month=current_month
+            ).count()
+            anuales = Pedidos.objects.filter(fecha_recibido__year=current_year).count()
+
+            return Response({
+                'diarios': diarios,
+                'mensuales': mensuales,
+                'anuales': anuales,
+            }, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response(
+                {"error": "Error al obtener resumen por fechas.", "detalle": str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+        
+class AlistadoresResumen(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            now = timezone.now().date()
+            period = request.query_params.get('period', 'month').lower()
+
+            today_start = timezone.now().replace(hour=0, minute=0, second=0, microsecond=0)
+            today_end = today_start + timedelta(days=1)
+
+            pedidos = Pedidos.objects.all()
+
+            if period == 'day':
+                pedidos = pedidos.filter(
+                    fecha_enrutamiento__isnull=False,
+                    fecha_enrutamiento__gte=today_start,
+                    fecha_enrutamiento__lt=today_end
+                )
+            elif period == 'month':
+                pedidos = pedidos.filter(
+                    fecha_enrutamiento__isnull=False,
+                    fecha_enrutamiento__year=now.year,
+                    fecha_enrutamiento__month=now.month
+                )
+            elif period == 'year':
+                pedidos = pedidos.filter(
+                    fecha_enrutamiento__isnull=False,
+                    fecha_enrutamiento__year=now.year
+                )
+            else: 
+                return Response({'error': 'Periodo no válido. Use day, month o year.'}, status=400)
+
+            resumen = pedidos.values('id_alistador', 'id_alistador__nombre_alistador') \
+                .annotate(total=Count('id_alistador')) \
+                .order_by('-total')[:20]
+            
+            
+            # Normalizar nombre cuando id_alistador sea null
+            data = []
+            for item in resumen:
+                nombre = item.get('id_alistador__nombre_alistador') or 'SIN ALISTADOR'
+                data.append({
+                    'id_alistador': item.get('id_alistador'),
+                    'nombre_alistador': nombre,
+                    'total': item.get('total', 0)
+                })
+            
+            return Response(data, status=200)
+        
+        except Exception as e:
+            return Response({'error': 'Error al obtener resumen de alistadores.', 'detalle': str(e)},
+                            status=500)
+
+# -----------------------------------------------------------------------------------------------------------
+
+class PqrsViewAll(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            pqrs = Pqrs.objects.all()
+            if not pqrs.exists():
+                return Response(
+                    {"message": "No hay registros de PQR disponibles."},
+                    status=status.HTTP_204_NO_CONTENT
+                )
+
+            serializer = PqrsSerializer(pqrs, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response(
+                {"error": f"Error inesperado: {str(e)}"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+class PqrsCreate(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request):
+        try:
+            serializer = PqrsSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(
+                    {
+                        "message": "PQR creado correctamente.",
+                        "data": serializer.data
+                    },
+                    status=status.HTTP_201_CREATED
+                )
+
+            return Response(
+                {
+                    "error": "Datos inválidos.",
+                    "detalles": serializer.errors
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        except Exception as e:
+            return Response(
+                {"error": f"Error inesperado: {str(e)}"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
