@@ -100,7 +100,7 @@ export const getTiposRecaudo = async () => {
             results: [
                 { value: 'efectivo', label: 'Efectivo' },
                 { value: 'transferencia', label: 'Transferencia' },
-                { value: 'efectivo y transferencia', label: 'efectivo y transferencia' }
+                { value: 'efectivo y transferencia', label: 'Efectivo y Transferencia' }
             ]
         };
     }
@@ -356,6 +356,57 @@ export const processImageFile = async (file) => {
     }
 
     return await fileToBase64(file);
+};
+
+export const getPedidosWithFilters = async (page = 1, search = "", filters = {}) => {
+    try {
+        const params = new URLSearchParams();
+        params.append('page', page);
+        
+        if (search) {
+            params.append('search', search);
+        }
+
+        Object.entries(filters).forEach(([key, value]) => {
+            if (value && value !== '') {
+                params.append(key, value);
+            }
+        });
+
+        const response = await api.get(`bodega/showall/?${params.toString()}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error obteniendo pedidos con filtros:', error);
+        throw error;
+    }
+};
+
+export const getFilterOptions = async () => {
+    const response = await api.get('bodega/filter_options/');
+    return response.data;
+};
+
+export const getPedidosPorEstadoWithFilters = async (id_estado, page = 1, search = "", filters = {}) => {
+    try {
+        const params = new URLSearchParams();
+        params.append('page', page);
+        
+        if (search) {
+            params.append('search', search);
+        }
+
+        Object.entries(filters).forEach(([key, value]) => {
+            if (value && value !== '') {
+                params.append(key, value);
+            }
+        });
+
+        const response = await api.get(`bodega/por_estado/${id_estado}/?${params.toString()}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error obteniendo pedidos por estado con filtros:', error);
+        throw error;
+    }
 };
 
 export default api;
