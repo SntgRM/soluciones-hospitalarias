@@ -1014,3 +1014,180 @@ padding: 0; /* Remove padding if already applied by modal-body */
   padding: 4px;
 }
 }
+
+
+.additional-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.filter-label {
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: var(--gray-700);
+  margin-bottom: 4px;
+}
+
+.filter-select,
+.filter-input {
+  padding: 10px 12px;
+  border: 2px solid var(--gray-200);
+  border-radius: var(--border-radius);
+  font-size: 0.875rem;
+  color: var(--gray-700);
+  background: #ffffff;
+  transition: var(--transition);
+  font-family: inherit;
+}
+
+.filter-select:focus,
+.filter-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.filter-select {
+  cursor: pointer;
+}
+
+.date-range-inputs {
+  display: flex;
+  gap: 12px;
+}
+
+.date-input {
+  flex: 1;
+}
+
+.filter-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--gray-200);
+}
+
+.filter-actions .btn {
+  flex: 1;
+  padding: 12px 16px;
+  font-weight: 500;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: var(--transition);
+  border: none;
+  font-size: 0.875rem;
+}
+
+.filter-actions .btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.filter-actions .btn-primary:hover {
+  background-color: var(--primary-hover);
+}
+
+.filter-actions .btn-secondary {
+  background-color: transparent;
+  color: var(--gray-700);
+  border: 1px solid var(--gray-300);
+}
+
+.filter-actions .btn-secondary:hover {
+  background-color: var(--gray-50);
+}
+
+/* Separador para rangos de fecha */
+.date-separator {
+  display: flex;
+  align-items: center;
+  font-size: 0.875rem;
+  color: var(--gray-500);
+  margin: 0 8px;
+  white-space: nowrap;
+}
+
+/* Indicador de filtros activos */
+.active-filters-indicator {
+  padding: 12px;
+  background-color: rgba(16, 185, 129, 0.05);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: var(--border-radius);
+  margin-top: 8px;
+}
+
+.active-filters-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+/* Mejoras para botones deshabilitados */
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn:disabled:hover {
+  background-color: inherit;
+}
+
+/* Ajustar el tamaño del modal para filtros */
+.filter-modal-content {
+  max-width: 650px; /* Aumentar el ancho máximo */
+  max-height: 85vh; /* Limitar la altura máxima */
+  min-width: 500px; /* Ancho mínimo */
+}
+
+/* Responsive para filtros adicionales */
+@media (max-width: 768px) {
+  .date-range-inputs {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .filter-actions {
+    flex-direction: column;
+  }
+  
+  .filter-modal-content {
+    max-width: 95%;
+    margin: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-header,
+  .modal-body {
+    padding: 16px;
+  }
+  
+  .additional-filters {
+    gap: 16px;
+  }
+  
+  .filter-group {
+    gap: 6px;
+  }
+  
+  .filter-label {
+    font-size: 0.8rem;
+  }
+  
+  .filter-select,
+  .filter-input {
+    padding: 8px 10px;
+    font-size: 0.8rem;
+  }
+}
