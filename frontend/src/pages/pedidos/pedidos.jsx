@@ -124,13 +124,10 @@ const handlePedidoUpdate = (updatedPedido) => {
 const fetchFilterOptions = async () => {
   setLoadingFilters(true);
   try {
-    console.log('Cargando opciones de filtro...');
     const options = await getFilterOptions();
-    console.log('Opciones de filtro cargadas:', options);
     
     setFilterOptions(options);
   } catch (error) {
-    console.error("Error cargando opciones de filtro:", error);
     // Mantener estructura vacía en caso de error
     setFilterOptions({
       vendedores: [],
@@ -219,8 +216,6 @@ useEffect(() => {
         return acc;
       }, {});
 
-      console.log('Filtros activos:', activeFilters);
-
       if (filterStatus) {
         const statusId = statusToIdMap[filterStatus];
         // Usar la nueva función con filtros adicionales
@@ -240,7 +235,14 @@ useEffect(() => {
       }
 
       if (response.results && response.results.length > 0) {
-        setPedidos((prev) => [...prev, ...response.results]);
+        setPedidos((prev) => {
+          const combinados = [...prev, ...response.results];
+          // Elimina duplicados por id_factura
+          return combinados.filter(
+            (pedido, index, self) =>
+              index === self.findIndex(p => p.id_factura === pedido.id_factura)
+          );
+        });
         setTotalPedidos(response.count || 0);
       }
 
@@ -248,7 +250,6 @@ useEffect(() => {
         setHasMore(false);
       }
     } catch (error) {
-      console.error("Error cargando pedidos:", error);
       setError("Error al cargar los pedidos. Por favor, inténtalo de nuevo.");
     } finally {
       setLoading(false);
@@ -275,7 +276,6 @@ const handleFilterChange = (statusKey) => {
 };
 
 const handleAdditionalFilterChange = (filterKey, value) => {
-  console.log(`Cambiando filtro ${filterKey} a: ${value}`);
   setAdditionalFilters(prev => ({
     ...prev,
     [filterKey]: value
@@ -293,7 +293,7 @@ const clearAdditionalFilters = () => {
     tipo_recaudo: '',
     enrutador: '',
     fecha_enrutamiento_inicio: '',
-    fecha_enrutamiento_fin: '',
+    fecha_enrutamiento_fin: '', 
     alistador: '',
     empacador: '',
     transportadora: '',
@@ -690,11 +690,23 @@ return (
                   </span>
                 </div>
                 <div className="info-row">
+                  <span className="info-label">Dirección:</span>
+                  <span className="info-value">
+                    {selectedPedido.direccion || 'N/A'}
+                  </span>
+                </div>
+                <div className="info-row">
                   <span className="info-label">Transportadora:</span>
                   <span className="info-value">
                     {selectedPedido.transportadora_nombre ||
                       selectedPedido.transportadora ||
                       `ID: ${selectedPedido.id_transportadora}`}
+                  </span>
+                </div>
+                <div className="info-row">
+                  <span className="info-label">Fecha en preparación:</span>
+                  <span className="info-value">
+                    {formatDate(selectedPedido.fecha_preparacion)}
                   </span>
                 </div>
                 {selectedPedido.fecha_enrutamiento && (
