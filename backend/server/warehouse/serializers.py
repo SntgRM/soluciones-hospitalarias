@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Pedidos, EstadosPedidos, Clientes, Alistadores, Empacadores, Enrutadores, Transportadoras, Vendedores
+from .models import Pedidos, EstadosPedidos, Clientes, Alistadores, Empacadores, Enrutadores, Transportadoras, Vendedores, Pqrs
 
 class PedidoSerializer(serializers.ModelSerializer):
     cliente_nombre = serializers.StringRelatedField(source='id_cliente', read_only=True)
@@ -51,5 +51,11 @@ class EstadoPedidoSerializer(serializers.ModelSerializer):
         model = EstadosPedidos
         fields = '__all__'
 
-        
+class PqrsSerializer(serializers.ModelSerializer):
+    cliente_nombre = serializers.StringRelatedField(source='id_cliente', read_only=True)
+    vendedor_nombre = serializers.StringRelatedField(source='id_vendedor', read_only=True)
+    
+    class Meta:
+        model = Pqrs
+        fields = '__all__'     
         
