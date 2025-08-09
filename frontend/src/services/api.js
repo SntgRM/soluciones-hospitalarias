@@ -241,9 +241,14 @@ export const getResumenFechas = async () => {
     return response.data;
 }
 
-export const getAlistadoresResumen = async (period = "month") => {
+export const getAlistadoresResumen = async (period = "month", filters = {}) => {
   try {
-    const response = await api.get(`bodega/alistadoresresumen/?period=${period}`);
+    const params = new URLSearchParams({ period });
+    if (filters.year) params.append("year", filters.year);
+    if (filters.month) params.append("month", filters.month);
+    if (filters.day) params.append("day", filters.day);
+
+    const response = await api.get(`bodega/alistadoresresumen/?${params.toString()}`);
     return response.data;
   } catch (error) {
     console.error("Error en getAlistadoresResumen:", error);
