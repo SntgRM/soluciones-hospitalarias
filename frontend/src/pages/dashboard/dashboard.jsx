@@ -56,17 +56,21 @@ const DashboardPage = () => {
   useEffect(() => {
     fetchResumen();
     fetchAlistadores();
+
     const interval = setInterval(() => {
       fetchResumen();
-      fetchAlistadores();
+      fetchAlistadores(period);
     }, 60000);
+
     return () => clearInterval(interval);
-  }, []);
+
+  }, [period]);
 
   // Cuando cambia el periodo, recargar datos
   useEffect(() => {
+    fetchResumen();
     fetchAlistadores(period);
-  }, [period]);
+  }, []);
 
   return (
     <div className="dashboard-container">
