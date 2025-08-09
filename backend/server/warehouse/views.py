@@ -910,39 +910,71 @@ class AlistadoresResumen(APIView):
 
     def get(self, request):
         try:
-            now = timezone.now().date()
-            period = request.query_params.get('period', 'month').lower()
-
-            today_start = timezone.now().replace(hour=0, minute=0, second=0, microsecond=0)
-            today_end = today_start + timedelta(days=1)
-
             pedidos = Pedidos.objects.all()
+            now = timezone.now().date()
 
+            period = request.query_params.get('period', 'month').lower()
+            year_param = request.query_params.get('year')
+            month_param = request.query_params.get('month')
+            day_param = request.query_params.get('day')
+
+            # Validar y convertir a enteros si existen
+            try:
+                if year_param:
+                    year_param = int(year_param)
+                if month_param:
+                    month_param = int(month_param)
+                if day_param:
+                    day_param = int(day_param)
+            except ValueError:
+                return Response({'error': 'Parámetros de fecha inválidos'}, status=400)
+
+            # Filtros según el periodo
             if period == 'day':
-                pedidos = pedidos.filter(
-                    fecha_enrutamiento__isnull=False,
-                    fecha_enrutamiento__gte=today_start,
-                    fecha_enrutamiento__lt=today_end
-                )
+                if year_param and month_param and day_param:
+                    pedidos = pedidos.filter(
+                        fecha_enrutamiento__year=year_param,
+                        fecha_enrutamiento__month=month_param,
+                        fecha_enrutamiento__day=day_param
+                    )
+                else:
+                    today_start = timezone.now().replace(hour=0, minute=0, second=0, microsecond=0)
+                    today_end = today_start + timedelta(days=1)
+                    pedidos = pedidos.filter(
+                        fecha_enrutamiento__gte=today_start,
+                        fecha_enrutamiento__lt=today_end
+                    )
+
             elif period == 'month':
-                pedidos = pedidos.filter(
-                    fecha_enrutamiento__isnull=False,
-                    fecha_enrutamiento__year=now.year,
-                    fecha_enrutamiento__month=now.month
-                )
+                if year_param and month_param:
+                    pedidos = pedidos.filter(
+                        fecha_enrutamiento__year=year_param,
+                        fecha_enrutamiento__month=month_param
+                    )
+                else:
+                    pedidos = pedidos.filter(
+                        fecha_enrutamiento__year=now.year,
+                        fecha_enrutamiento__month=now.month
+                    )
+
             elif period == 'year':
-                pedidos = pedidos.filter(
-                    fecha_enrutamiento__isnull=False,
-                    fecha_enrutamiento__year=now.year
-                )
-            else: 
+                if year_param:
+                    pedidos = pedidos.filter(
+                        fecha_enrutamiento__year=year_param
+                    )
+                else:
+                    pedidos = pedidos.filter(
+                        fecha_enrutamiento__year=now.year
+                    )
+
+            else:
                 return Response({'error': 'Periodo no válido. Use day, month o year.'}, status=400)
 
+            # Agrupar y contar
             resumen = pedidos.values('id_alistador', 'id_alistador__nombre_alistador') \
                 .annotate(total=Count('id_alistador')) \
                 .order_by('-total')[:20]
-            
-            
+
             # Normalizar nombre cuando id_alistador sea null
             data = []
             for item in resumen:
@@ -952,12 +984,14 @@ class AlistadoresResumen(APIView):
                     'nombre_alistador': nombre,
                     'total': item.get('total', 0)
                 })
-            
+
             return Response(data, status=200)
-        
+
         except Exception as e:
-            return Response({'error': 'Error al obtener resumen de alistadores.', 'detalle': str(e)},
-                            status=500)
+            return Response(
+                {'error': 'Error al obtener resumen de alistadores.', 'detalle': str(e)},
+                status=500
+            )
 
 # -----------------------------------------------------------------------------------------------------------
 
