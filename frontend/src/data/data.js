@@ -1,19 +1,6 @@
 // import { iconsImgs } from "../utils/images";
 
-import {
-  Home,
-  Folder,
-  Truck,
-  AreaChart,
-  ScrollText,
-  BookText,
-  User,
-  Info,
-  Warehouse,
-  CircleHelp,
-  LayoutDashboard
-} from "lucide-react";
-
+import { Home, Folder, Truck, AreaChart, ScrollText, BookText, User, Info, Warehouse, CircleHelp, LayoutDashboard } from "lucide-react";
 
 export const navigationLinks_bodega = [
   {
@@ -118,14 +105,14 @@ export const topContent = [
   },
   {
     id: 6,
-    title: 'Historial de Productos',
-    description: 'Visualiza todos los eventos registrados para cada producto del sistema.',
+    title: 'Historial de Pedidos',
+    description: 'Visualiza todos los eventos registrados para cada pedido del sistema.',
     icon: CircleHelp,
   },
   {
     id: 7,
     title: 'Panel de Bodega',
-    description: 'Análisis integral del movimiento y rendimiento de productos en bodega.',
+    description: 'Análisis integral del movimiento y rendimiento de pedidos en bodega.',
     icon: LayoutDashboard,
   }
 ];
