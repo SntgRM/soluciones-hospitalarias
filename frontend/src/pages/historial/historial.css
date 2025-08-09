@@ -1,4 +1,4 @@
-.historial-header {
+.history-header {
   --user-primary-color: #0db30d;
   --user-primary-hover: #0cb40c;
   --user-primary-light: rgba(59, 130, 246, 0.1);
@@ -29,10 +29,11 @@
   --user-transition: all 0.2s ease;
 }
 
-.historial-header {
-  display: flex;
-  justify-content: space-between;
+.history-header {
+  display: block;
+  justify-content: flex-end;
   align-items: center;
+  gap: 20px;  
   padding: 0 0 20px 0;
   flex-wrap: wrap;
   margin-bottom: 20px;
@@ -51,7 +52,15 @@
   flex: 1;
 }
 
-.user-search-icon {
+.history-search-box {
+  position: relative;
+  flex: 1;
+  max-width: 300px;
+  margin-left: auto;
+  margin-bottom: 15px;
+}
+
+.history-search-icon {
   position: absolute;
   left: 12px;
   top: 50%;
@@ -129,14 +138,14 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  background: rgba(255, 107, 53, 0.1);
+  background: var(--user-success-light);
   color: var(--clr-pumpkin, #ff6b35);
   padding: 4px 8px;
   border-radius: 6px;
   font-family: var(--font-family-main);
   font-size: 14px;
   font-weight: 700;
-  border: 1px solid rgba(255, 107, 53, 0.2);
+  border: 1px solid #0db30d5b;
 }
 
 .product-name-compact {
@@ -231,12 +240,14 @@
 
 .type-icon {
   padding: 3px;
-  border-radius: 3px;
+  border-radius: 10px;
 }
 
 .type-icon.edition {
   color: #007bff;
   background: rgba(0, 123, 255, 0.1);
+  width: 18px;
+  height: 18px;
 }
 
 .type-label {
