@@ -11,9 +11,9 @@ export const navigationLinks_bodega = [
   },
   {
     id: 2,
-    title: "Historial",
-    icon: Folder,
-    path: "/historial",
+    title: "Dashboard",
+    icon: AreaChart,
+    path: "/dashboard",
   },
   {
     id: 3,
@@ -23,9 +23,9 @@ export const navigationLinks_bodega = [
   },
   {
     id: 4,
-    title: "Dashboard",
-    icon: AreaChart,
-    path: "/dashboard",
+    title: "Historial",
+    icon: Folder,
+    path: "/historial",
   },
   {
     id: 5,
