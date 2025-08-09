@@ -29,10 +29,6 @@ const getTypeLabel = (type) => {
   switch (type) {
     case "edicion":
       return "Edición";
-    case "eliminacion":
-      return "Eliminación";
-    default:
-      return "Actividad";
   }
 };
 
@@ -57,14 +53,14 @@ const Historial = () => {
   const [expandedProducts, setExpandedProducts] = useState(new Set());
   const [searchTerm, setSearchTerm] = useState("");
 
-  const [historialFacturas, setHistorialFacturas] = useState([]);
+  const [historialPedidos, setHistorialPedidos] = useState([]);
 
   useEffect(() => {
     const fetchHistorial = async () => {
       try {
         const data = await getHistorialGeneral();
         console.log("Historial recibido:", JSON.stringify(data, null, 2));
-        setHistorialFacturas(data);
+        setHistorialPedidos(data);
       } catch (error) {
         console.error("Error al obtener historial:", error);
       }
@@ -73,7 +69,7 @@ const Historial = () => {
     fetchHistorial();
   }, []);
 
-  const grouped = historialFacturas.reduce((acc, item) => {
+  const grouped = historialPedidos.reduce((acc, item) => {
     const id = item.id_pedido;
     if (!acc[id]) {
       acc[id] = [];
@@ -87,7 +83,7 @@ const Historial = () => {
     ([id_pedido, modificaciones]) => ({
       rawId: id_pedido,
       productId: `FACT-${id_pedido}`,
-      productName: `Historial de Factura #${id_pedido}`,
+      productName: `Historial de Pedido #${id_pedido}`,
       lastModificationType: "edicion",
       modifications: modificaciones.map((item) => ({
         id: item.id_historial,
@@ -143,14 +139,13 @@ const Historial = () => {
     <div className={getMainContentClass()}>
        {/* Header de Bienvenida */}
         <DashboardHeader icon={topContent[5].icon} title={topContent[5].title} description={topContent[5].description} />
-        {/* Barra de búsqueda usando los estilos de user */}
 
-      <div className="products-history-container">
-        <div className="user-search-box">
-          <Search size={18} className="user-search-icon" />
+      <div className="history-header">
+        <div className="history-search-box">
+          <Search size={18} className="history-search-icon" />
           <input
             type="text"
-            placeholder="Buscar por número de factura..."
+            placeholder="Buscar por número de pedido..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="history-search-input"
