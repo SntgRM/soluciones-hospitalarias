@@ -381,6 +381,88 @@ width: 100%;
   margin: 0;
 }
 
+.period-buttons {
+display: inline-flex;
+align-items: center;
+gap: 6px;
+padding: 6px;
+margin: 0 0 12px 0; /* reemplaza el margin inline */
+background: var(--dashboard-bg-light);
+border: 1px solid var(--dashboard-border-color);
+border-radius: 9999px;
+box-shadow: var(--dashboard-shadow-sm);
+}
+
+.period-buttons button {
+appearance: none;
+border: 0;
+background: transparent;
+color: var(--dashboard-text-medium);
+font-weight: 600;
+padding: 8px 14px;
+border-radius: 9999px;
+cursor: pointer;
+transition: var(--dashboard-transition);
+position: relative;
+line-height: 1;
+}
+
+.period-buttons button:hover {
+background: var(--dashboard-light-green);
+color: var(--dashboard-text-dark);
+}
+
+.period-buttons button.active {
+background: var(--dashboard-primary-color);
+color: #ffffff;
+box-shadow: 0 2px 6px rgba(16, 185, 129, 0.35);
+transform: translateY(-1px);
+}
+
+.period-buttons button.active:hover {
+background: var(--dashboard-primary-hover);
+}
+
+.period-buttons button:focus-visible {
+outline: none;
+box-shadow: 0 0 0 3px var(--color-green-light);
+}
+
+.period-buttons button[disabled] {
+opacity: 0.6;
+pointer-events: none;
+}
+
+.controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.period-input input {
+  width: 220px;
+  max-width: 100%;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  background: #ffffff;
+  color: #111827;
+  outline: none;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.period-input input::placeholder {
+  color: #9ca3af;
+}
+
+.period-input input:focus {
+  border-color: #10b981;
+  box-shadow: 0 0 0 4px #10b98122;
+}
+
 /* Responsive design */
 @media (max-width: 1200px) {
   .charts-grid {
@@ -512,70 +594,17 @@ width: 100%;
   .chart-container-line {
     height: 200px;
   }
-}
 
-/* Controles de periodo (segmented control) */
-.period-buttons {
-display: inline-flex;
-align-items: center;
-gap: 6px;
-padding: 6px;
-margin: 0 0 12px 0; /* reemplaza el margin inline */
-background: var(--dashboard-bg-light);
-border: 1px solid var(--dashboard-border-color);
-border-radius: 9999px;
-box-shadow: var(--dashboard-shadow-sm);
-}
-
-.period-buttons button {
-appearance: none;
-border: 0;
-background: transparent;
-color: var(--dashboard-text-medium);
-font-weight: 600;
-padding: 8px 14px;
-border-radius: 9999px;
-cursor: pointer;
-transition: var(--dashboard-transition);
-position: relative;
-line-height: 1;
-}
-
-.period-buttons button:hover {
-background: var(--dashboard-light-green);
-color: var(--dashboard-text-dark);
-}
-
-.period-buttons button.active {
-background: var(--dashboard-primary-color);
-color: #ffffff;
-box-shadow: 0 2px 6px rgba(16, 185, 129, 0.35);
-transform: translateY(-1px);
-}
-
-.period-buttons button.active:hover {
-background: var(--dashboard-primary-hover);
-}
-
-.period-buttons button:focus-visible {
-outline: none;
-box-shadow: 0 0 0 3px var(--color-green-light);
-}
-
-.period-buttons button[disabled] {
-opacity: 0.6;
-pointer-events: none;
-}
-
-@media (max-width: 480px) {
-.period-buttons {
+  .period-buttons {
   gap: 4px;
   padding: 4px;
 }
-.period-buttons button {
-  padding: 6px 10px;
-  font-size: 0.875rem;
-}
+
+  .period-buttons button {
+    padding: 6px 10px;
+    font-size: 0.875rem;
+  }
+
 }
 
 @media (prefers-reduced-motion: reduce) {

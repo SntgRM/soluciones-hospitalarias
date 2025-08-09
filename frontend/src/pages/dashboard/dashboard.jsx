@@ -1,6 +1,14 @@
 "use client";
 import { useEffect, useState } from "react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 import { LayoutDashboard, Package } from "lucide-react";
 import { getResumenFechas, getAlistadoresResumen } from "../../services/api";
 import "./dashboard.css";
@@ -15,6 +23,8 @@ const DashboardPage = () => {
   });
   const [period, setPeriod] = useState("month");
   const [alistadoresData, setAlistadoresData] = useState([]);
+  const [periodValue, setPeriodValue] = useState(""); // valor concreto (ej. "2025-08-01" o "2025-08" o "2025")
+  const [availablePeriods, setAvailablePeriods] = useState([]);
   const [loadingAlistadores, setLoadingAlistadores] = useState(false);
 
   const fetchResumen = async () => {
@@ -26,11 +36,10 @@ const DashboardPage = () => {
     }
   };
 
-  const fetchAlistadores = async (p = period) => {
+  const fetchAlistadores = async (p = period, filters = {}) => {
     try {
       setLoadingAlistadores(true);
-      const data = await getAlistadoresResumen(p);
-      // Recharts se lleva mejor con arrays: [{nombre_alistador, total}, ...]
+      const data = await getAlistadoresResumen(p, filters);
       const formatted = (Array.isArray(data) ? data : []).map((item) => ({
         nombre_alistador: item.nombre_alistador,
         total: item.total,
@@ -63,7 +72,11 @@ const DashboardPage = () => {
     <div className="dashboard-container">
       <div className="dashboard-wrapper">
         {/* Header de Bienvenida */}
-        <DashboardHeader icon={topContent[6].icon} title={topContent[6].title} description={topContent[6].description} />
+        <DashboardHeader
+          icon={topContent[6].icon}
+          title={topContent[6].title}
+          description={topContent[6].description}
+        />
         {/* Tarjetas de estadísticas */}
         <div className="stats-grid">
           <div className="stat-card">
@@ -116,25 +129,87 @@ const DashboardPage = () => {
             </div>
 
             {/* Botones para cambiar periodo */}
-            <div className="period-buttons" style={{ marginBottom: "10px" }}>
+            <div className="period-buttons">
               <button
                 className={period === "day" ? "active" : ""}
                 onClick={() => setPeriod("day")}
+                aria-pressed={period === "day"}
+                type="button"
               >
                 Día
               </button>
               <button
                 className={period === "month" ? "active" : ""}
                 onClick={() => setPeriod("month")}
+                aria-pressed={period === "month"}
+                type="button"
               >
                 Mes
               </button>
               <button
                 className={period === "year" ? "active" : ""}
                 onClick={() => setPeriod("year")}
+                aria-pressed={period === "year"}
+                type="button"
               >
                 Año
               </button>
+            </div>
+
+            {/* Inputs dinámicos a la derecha */}
+            <div className="period-input">
+              {period === "day" && (
+                <input
+                  aria-label="Seleccionar fecha"
+                  type="date"
+                  value={periodValue}
+                  onChange={(e) => {
+                    const v = e.target.value;
+                    setPeriodValue(v);
+                    if (!v) return;
+                    const date = new Date(v);
+                    if (isNaN(date.getTime())) return;
+                    fetchAlistadores("day", {
+                      year: date.getFullYear(),
+                      month: date.getMonth() + 1,
+                      day: date.getDate(),
+                    });
+                  }}
+                />
+              )}
+
+              {period === "month" && (
+                <input
+                  aria-label="Seleccionar mes"
+                  type="month"
+                  value={periodValue}
+                  onChange={(e) => {
+                    const v = e.target.value;
+                    setPeriodValue(v);
+                    if (!v) return;
+                    const [year, month] = v.split("-");
+                    if (!year || !month) return;
+                    fetchAlistadores("month", { year, month });
+                  }}
+                />
+              )}
+
+              {period === "year" && (
+                <input
+                  aria-label="Seleccionar año"
+                  type="number"
+                  placeholder="Año"
+                  min={2000}
+                  max={2100}
+                  value={periodValue}
+                  onChange={(e) => {
+                    const y = e.target.value;
+                    setPeriodValue(y);
+                    if (!y) return;
+                    fetchAlistadores("year", { year: y });
+                  }}
+                />
+              )}
             </div>
 
             <div className="chart-container">
@@ -151,7 +226,7 @@ const DashboardPage = () => {
                     angle={-45}
                     textAnchor="end"
                     interval={0}
-                    height={80}
+                    height={40}
                   />
                   <YAxis stroke="#000000ff" fontSize={12} />
                   <Tooltip
